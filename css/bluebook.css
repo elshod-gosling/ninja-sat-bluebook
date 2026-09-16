@@ -1,4 +1,4 @@
-/* Bluebook System & 2D Landing Page Stylesheet */
+﻿/* Bluebook System & 2D Landing Page Stylesheet */
 :root {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-serif: 'Newsreader', Georgia, Cambria, 'Times New Roman', Times, serif;
@@ -91,7 +91,6 @@ body {
   color: #fff;
   font-weight: 800;
   font-size: 18px;
-  letter-spacing: -1px;
 }
 
 .hub-title-group h1 {
@@ -158,9 +157,9 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.25);
-  color: #fca5a5;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  color: #86efac;
   font-size: 12px;
   font-weight: 700;
   padding: 6px 14px;
@@ -174,8 +173,8 @@ body {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #ef4444;
-  box-shadow: 0 0 8px #ef4444;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
 }
 
 .hub-hero h2 {
@@ -244,9 +243,6 @@ body {
   font-size: 16px;
   font-weight: 700;
   color: #fff;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .resume-info p {
@@ -368,7 +364,7 @@ body {
 .module-pills-row {
   display: flex;
   gap: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .module-pill-badge {
@@ -398,7 +394,7 @@ body {
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .btn-start-full {
@@ -406,10 +402,10 @@ body {
   background: #2563eb;
   color: #ffffff;
   border: none;
-  padding: 12px;
+  padding: 11px;
   border-radius: 10px;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13.5px;
   cursor: pointer;
   transition: all 0.2s;
   display: flex;
@@ -423,9 +419,32 @@ body {
   box-shadow: 0 0 16px rgba(37, 99, 235, 0.5);
 }
 
+.btn-start-untimed {
+  width: 100%;
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.btn-start-untimed:hover {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: rgba(34, 197, 94, 0.5);
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.25);
+}
+
 .test-sub-actions {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 6px;
 }
 
@@ -433,7 +452,7 @@ body {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--hub-text-dim);
-  padding: 8px 4px;
+  padding: 7px 4px;
   border-radius: 6px;
   font-size: 11px;
   font-weight: 600;
@@ -445,10 +464,9 @@ body {
 .btn-sub-opt:hover {
   color: #fff;
   background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
 }
 
-/* 2D Features Section */
+/* Features */
 .hub-features {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -462,7 +480,6 @@ body {
   color: #fff;
   margin-bottom: 24px;
   text-align: center;
-  letter-spacing: 0.5px;
 }
 
 .features-grid {
@@ -520,7 +537,6 @@ body {
   z-index: 100;
 }
 
-/* College Board Security Dashed Border */
 .bb-dashed-border {
   height: 6px;
   width: 100%;
@@ -542,7 +558,6 @@ body {
   flex-shrink: 0;
 }
 
-/* Bluebook Header */
 .bb-header {
   height: 64px;
   background: #ffffff;
@@ -611,12 +626,11 @@ body {
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 12px;
-  padding: 1px 12px;
+  padding: 1px 10px;
   font-size: 12px;
   font-weight: 600;
   color: #475569;
   cursor: pointer;
-  margin-top: 2px;
   transition: all 0.15s ease;
 }
 
@@ -625,7 +639,29 @@ body {
   border-color: #94a3b8;
 }
 
-/* Header Right Tools */
+.bb-untimed-toggle-btn {
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  color: #166534;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.bb-untimed-toggle-btn:hover {
+  background: #dcfce7;
+}
+
+.bb-untimed-toggle-btn.active {
+  background: #166534;
+  color: #ffffff;
+  border-color: #166534;
+}
+
+/* Header Right */
 .bb-header-right {
   display: flex;
   align-items: center;
@@ -657,7 +693,7 @@ body {
   margin-bottom: 2px;
 }
 
-/* Main Split Test Area */
+/* Split Area */
 .bb-main-area {
   flex: 1;
   display: flex;
@@ -666,34 +702,30 @@ body {
   background: #ffffff;
 }
 
-/* Left Pane: Reading Passage */
 .bb-left-pane {
   width: 50%;
   min-width: 320px;
   max-width: calc(100% - 360px);
-  padding: 36px 48px;
+  padding: 28px 40px;
   overflow-y: auto;
-  font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.7;
-  color: #1e293b;
   position: relative;
 }
 
-.bb-left-pane p {
-  margin-bottom: 16px;
+.pane-content-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.bb-left-pane ul {
-  padding-left: 24px;
-  margin-bottom: 16px;
+.bb-clean-img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-.bb-left-pane li {
-  margin-bottom: 8px;
-}
-
-/* Resizable Divider */
 .bb-pane-divider {
   width: 8px;
   background: #e2e8f0;
@@ -720,25 +752,24 @@ body {
   border-radius: 2px;
 }
 
-/* Right Pane: Question & Choices */
 .bb-right-pane {
   flex: 1;
   min-width: 360px;
-  padding: 24px 44px 36px 40px;
+  padding: 24px 40px 28px 36px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
 
-/* Question Header Bar */
+/* Question Header */
 .bb-question-header {
   display: flex;
   align-items: center;
   background: #f1f5f9;
   border-radius: 4px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   overflow: hidden;
-  height: 40px;
+  height: 38px;
 }
 
 .bb-q-badge {
@@ -751,7 +782,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: 0.5px;
 }
 
 .bb-mark-review-btn {
@@ -782,133 +812,118 @@ body {
   fill: #0b66c3;
 }
 
-/* Question Prompt */
-.bb-question-prompt {
-  font-size: 15.5px;
-  font-weight: 500;
-  line-height: 1.6;
-  color: #0f172a;
-  margin-bottom: 24px;
+/* Interactive Choice Selection Bar */
+.bb-interactive-choice-bar {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1.5px solid #e2e8f0;
 }
 
-/* Choices Container */
-.bb-choices-list {
+.choice-bar-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.choice-bar-grid {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 8px;
 }
 
-/* Choice Box */
-.bb-choice-item {
+.choice-btn-wrapper {
   display: flex;
   align-items: center;
-  border: 1.5px solid #cbd5e1;
-  border-radius: 8px;
-  padding: 12px 16px;
-  cursor: pointer;
-  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-  background: #ffffff;
-  position: relative;
+  gap: 8px;
 }
 
-.bb-choice-item:hover {
+.bb-choice-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: left;
+}
+
+.bb-choice-btn:hover {
   border-color: #94a3b8;
   background: #f8fafc;
 }
 
-.bb-choice-item.selected {
-  border-color: #0b66c3;
+.bb-choice-btn.selected {
   background: #f0f7ff;
+  border-color: #0b66c3;
   box-shadow: 0 0 0 1px #0b66c3;
 }
 
-/* Struck-through Eliminator Style */
-.bb-choice-item.struck-through {
-  opacity: 0.45;
-  background: #f1f5f9;
-}
-
-.bb-choice-item.struck-through .bb-choice-content {
-  text-decoration: line-through;
-  text-decoration-color: #ef4444;
-  text-decoration-thickness: 1.5px;
-}
-
-/* Choice Letter Radio Circle */
-.bb-choice-radio {
+.choice-pill {
   width: 22px;
   height: 22px;
-  border: 1.5px solid #64748b;
   border-radius: 50%;
+  border: 1.5px solid #64748b;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  font-weight: 700;
-  color: #475569;
-  margin-right: 14px;
+  font-weight: 800;
+  margin-right: 12px;
   flex-shrink: 0;
   transition: all 0.15s ease;
 }
 
-.bb-choice-item.selected .bb-choice-radio {
+.bb-choice-btn.selected .choice-pill {
   background: #0b66c3;
   border-color: #0b66c3;
   color: #ffffff;
 }
 
-.bb-choice-content {
-  flex: 1;
-  font-size: 14.5px;
-  line-height: 1.5;
-  color: #1e293b;
-}
-
-/* Eliminator Button */
-.bb-strike-btn {
+.bb-strike-toggle {
   background: transparent;
-  border: none;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
   color: #94a3b8;
-  font-size: 15px;
-  font-weight: 700;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border-radius: 4px;
-  margin-left: 12px;
-  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 700;
   transition: all 0.15s ease;
+  flex-shrink: 0;
 }
 
-.bb-strike-btn:hover {
-  background: #e2e8f0;
-  color: #ef4444;
+.bb-strike-toggle:hover {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fca5a5;
 }
 
-.bb-choice-item.struck-through .bb-strike-btn {
-  color: #ef4444;
+.choice-btn-wrapper.struck-through .bb-choice-btn {
+  opacity: 0.35;
+  text-decoration: line-through;
+  background: #f1f5f9;
 }
 
-/* View Scan Reference Image */
-.bb-scan-container {
-  margin-top: 16px;
-  border: 1px dashed #cbd5e1;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #f8fafc;
+.choice-btn-wrapper.struck-through .bb-strike-toggle {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #dc2626;
 }
 
-.bb-scan-container img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Bottom Navigation Bar */
+/* Bottom Bar */
 .bb-footer {
   height: 68px;
   background: #ffffff;
@@ -941,7 +956,6 @@ body {
   background: #fef2f2;
 }
 
-/* Center Question Navigator Button */
 .bb-footer-center {
   position: absolute;
   left: 50%;
@@ -960,7 +974,6 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  letter-spacing: 0.3px;
   transition: background 0.15s ease;
 }
 
@@ -968,7 +981,6 @@ body {
   background: #1e293b;
 }
 
-/* Footer Right (Back/Next) */
 .bb-footer-right {
   display: flex;
   align-items: center;
@@ -1013,9 +1025,7 @@ body {
   box-shadow: 0 2px 8px rgba(11, 102, 195, 0.3);
 }
 
-/* ==========================================================================
-   QUESTION NAVIGATOR GRID POPUP (BLUEBOOK EXACT)
-   ========================================================================== */
+/* Question Grid Modal */
 .bb-grid-modal-overlay {
   position: fixed;
   inset: 0;
@@ -1043,12 +1053,6 @@ body {
   width: 90%;
   max-width: 580px;
   padding: 24px;
-  animation: slideUp 0.2s ease;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
 }
 
 .bb-grid-header {
@@ -1072,7 +1076,6 @@ body {
   font-size: 20px;
   color: #64748b;
   cursor: pointer;
-  line-height: 1;
 }
 
 .bb-grid-items {
@@ -1103,19 +1106,16 @@ body {
   background: #f0f7ff;
 }
 
-/* Answered: Solid filled box with white text */
 .bb-grid-tile.answered {
   background: #0f172a;
   border: 1.5px solid #0f172a;
   color: #ffffff;
 }
 
-/* Current question: border highlight */
 .bb-grid-tile.current {
   box-shadow: 0 0 0 2.5px #0b66c3;
 }
 
-/* Marked for Review ribbon */
 .bb-grid-tile.marked::after {
   content: '';
   position: absolute;
@@ -1167,9 +1167,7 @@ body {
   background: #dc2626;
 }
 
-/* ==========================================================================
-   REVIEW SCREEN (END OF MODULE)
-   ========================================================================== */
+/* Review View */
 .bb-review-view {
   flex: 1;
   background: #ffffff;
@@ -1230,9 +1228,7 @@ body {
   border-top: 1px solid #e2e8f0;
 }
 
-/* ==========================================================================
-   10-MINUTE BREAK SCREEN
-   ========================================================================== */
+/* Break View */
 .bb-break-view {
   flex: 1;
   background: radial-gradient(circle at 50% 30%, #1e293b 0%, #0f172a 100%);
@@ -1274,7 +1270,6 @@ body {
   justify-content: center;
   font-size: 36px;
   font-weight: 800;
-  letter-spacing: 1px;
   margin-bottom: 36px;
   box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
 }
@@ -1288,17 +1283,9 @@ body {
   border-radius: 24px;
   border: none;
   cursor: pointer;
-  transition: all 0.2s;
 }
 
-.bb-resume-test-btn:hover {
-  background: #7dd3fc;
-  box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
-}
-
-/* ==========================================================================
-   RESULTS & REVIEW MODE
-   ========================================================================== */
+/* Results View */
 .bb-results-view {
   flex: 1;
   background: #f8fafc;
@@ -1362,49 +1349,7 @@ body {
   margin-top: 4px;
 }
 
-/* Annotation Popover */
-.bb-annotation-popover {
-  position: absolute;
-  background: #1e293b;
-  color: #ffffff;
-  border-radius: 8px;
-  padding: 6px;
-  display: flex;
-  gap: 6px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  z-index: 300;
-  font-size: 12px;
-}
-
-.bb-ann-btn {
-  background: transparent;
-  border: none;
-  color: #ffffff;
-  padding: 4px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.bb-ann-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.ann-highlight {
-  background-color: #fef08a;
-  border-radius: 2px;
-}
-
-.ann-underline {
-  text-decoration: underline;
-  text-decoration-color: #2563eb;
-  text-decoration-thickness: 2px;
-}
-
-/* Modal Dialogs (Directions, Shortcuts) */
+/* Modals */
 .bb-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -1424,7 +1369,6 @@ body {
   max-height: 85vh;
   overflow-y: auto;
   padding: 28px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 }
 
 .bb-modal-header {
@@ -1457,7 +1401,6 @@ body {
   margin-bottom: 8px;
 }
 
-/* Line Reader Mask Tool */
 .bb-line-reader {
   position: absolute;
   left: 0;

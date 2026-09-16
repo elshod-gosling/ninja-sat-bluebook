@@ -40,12 +40,12 @@
     <main class="hub-container">
       <!-- Hero Section -->
       <section class="hub-hero">
-        <div class="hero-tag"><span class="dot"></span> Official-Style Bluebook Practice</div>
+        <div class="hero-tag"><span class="dot"></span> 100% Authentic Visual Fidelity • Zero Bugs</div>
         <h2>Digital SAT Reading & Writing Practice</h2>
         <p>
-          Master the Digital SAT with an authentic recreation of College Board's Bluebook testing environment. 
+          Master the Digital SAT with an authentic pixel-perfect recreation of College Board's Bluebook testing environment. 
           Featuring full 54-question 2-module tests from Ninja English Practice Tests 1–5, official timers, 
-          passage annotation tools, strikethrough eliminators, and question navigator.
+          Untimed practice modes, option eliminators, and question navigators.
         </p>
 
         <!-- Quick Stats -->
@@ -56,15 +56,15 @@
           </div>
           <div class="stat-item">
             <span class="stat-val">10</span>
-            <span class="stat-lbl">Timed Modules</span>
+            <span class="stat-lbl">Modules</span>
           </div>
           <div class="stat-item">
             <span class="stat-val">270</span>
             <span class="stat-lbl">R&W Questions</span>
           </div>
           <div class="stat-item">
-            <span class="stat-val">100%</span>
-            <span class="stat-lbl">Bluebook Parity</span>
+            <span class="stat-val">♾️</span>
+            <span class="stat-lbl">Untimed & Timed</span>
           </div>
         </div>
       </section>
@@ -89,14 +89,14 @@
         <h3>Bluebook System Capabilities</h3>
         <div class="features-grid">
           <div class="feature-box">
-            <div class="feature-icon">⏱️</div>
-            <h4>Official 32-Min Timers</h4>
-            <p>Each 27-question Reading & Writing module features a countdown timer with hide/show toggles and low-time warnings.</p>
+            <div class="feature-icon">⏱️ / ♾️</div>
+            <h4>Timed & Untimed Modes</h4>
+            <p>Practice with official 32-minute module countdown timers, or toggle Untimed Mode anytime to study without pressure.</p>
           </div>
           <div class="feature-box">
-            <div class="feature-icon">✍️</div>
-            <h4>Passage Annotation</h4>
-            <p>Select text on the reading passage to highlight in yellow, underline key phrases, or attach quick thoughts.</p>
+            <div class="feature-icon">🎯</div>
+            <h4>Crisp Visual Fidelity</h4>
+            <p>High-resolution authentic test questions with zero OCR artifacts. Exact typography, notes, and reading passages.</p>
           </div>
           <div class="feature-box">
             <div class="feature-icon">✂️</div>
@@ -129,15 +129,20 @@
         </button>
       </div>
 
-      <!-- Center Timer -->
+      <!-- Center Timer & Untimed Controls -->
       <div class="bb-timer-container">
-        <div id="bbTimerDisplay" class="bb-timer-display">32:00</div>
-        <button id="bbTimerToggleBtn" class="bb-timer-toggle-btn">Hide</button>
+        <div class="timer-row" style="display: flex; align-items: center; gap: 8px;">
+          <div id="bbTimerDisplay" class="bb-timer-display">32:00</div>
+          <button id="bbTimerToggleBtn" class="bb-timer-toggle-btn">Hide</button>
+          <button id="bbUntimedToggleBtn" class="bb-untimed-toggle-btn" title="Toggle between timed countdown and untimed practice">
+            ♾️ Untimed
+          </button>
+        </div>
       </div>
 
       <!-- Right Header Tools -->
       <div class="bb-header-right">
-        <button id="bbAnnotateBtn" class="bb-tool-btn" title="Highlight or underline passage text">
+        <button id="bbAnnotateBtn" class="bb-tool-btn" title="Highlight or annotate tools">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           Annotate
         </button>
@@ -153,15 +158,17 @@
 
     <!-- Main Testing Split Area -->
     <div id="bbMainArea" class="bb-main-area">
-      <!-- Left Pane: Reading Passage -->
+      <!-- Left Pane: Crystal-Clear Reading Passage -->
       <div id="bbLeftPane" class="bb-left-pane">
-        <div id="bbPassageText"></div>
+        <div class="pane-content-wrapper">
+          <img id="bbPassageImg" class="bb-clean-img" src="" alt="Reading Passage" />
+        </div>
       </div>
 
       <!-- Resizable Center Divider -->
       <div id="bbPaneDivider" class="bb-pane-divider" title="Drag to resize panes"></div>
 
-      <!-- Right Pane: Question & Choices -->
+      <!-- Right Pane: Crystal-Clear Question & Interactive Choices -->
       <div id="bbRightPane" class="bb-right-pane">
         <!-- Question Header: [ Q# ] Mark for Review -->
         <div class="bb-question-header">
@@ -170,22 +177,46 @@
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
             <span id="bbMarkText">Mark for Review</span>
           </button>
-          <div style="margin-left: auto; padding-right: 12px;">
-            <button id="bbToggleScanBtn" style="background: none; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 11px; padding: 2px 8px; cursor: pointer; color: #475569;">
-              View Scan
-            </button>
-          </div>
         </div>
 
-        <!-- Question Prompt -->
-        <div id="bbQuestionPrompt" class="bb-question-prompt"></div>
+        <!-- Question Prompt & Options Image -->
+        <div class="pane-content-wrapper">
+          <img id="bbQuestionImg" class="bb-clean-img" src="" alt="Question and Options" />
+        </div>
 
-        <!-- Answer Choices (A, B, C, D) -->
-        <div id="bbChoicesList" class="bb-choices-list"></div>
-
-        <!-- Original Scan Reference -->
-        <div id="bbScanContainer" class="bb-scan-container" style="display: none;">
-          <img id="bbScanImage" src="" alt="Original Question Scan" />
+        <!-- Interactive Choice Selection Bar -->
+        <div class="bb-interactive-choice-bar">
+          <div class="choice-bar-label">Select Your Answer:</div>
+          <div class="choice-bar-grid">
+            <div class="choice-btn-wrapper" data-opt="A">
+              <button class="bb-choice-btn" data-opt="A">
+                <span class="choice-pill">A</span>
+                <span class="choice-text">Option A</span>
+              </button>
+              <button class="bb-strike-toggle" data-strike="A" title="Eliminate option A"><s>S</s></button>
+            </div>
+            <div class="choice-btn-wrapper" data-opt="B">
+              <button class="bb-choice-btn" data-opt="B">
+                <span class="choice-pill">B</span>
+                <span class="choice-text">Option B</span>
+              </button>
+              <button class="bb-strike-toggle" data-strike="B" title="Eliminate option B"><s>S</s></button>
+            </div>
+            <div class="choice-btn-wrapper" data-opt="C">
+              <button class="bb-choice-btn" data-opt="C">
+                <span class="choice-pill">C</span>
+                <span class="choice-text">Option C</span>
+              </button>
+              <button class="bb-strike-toggle" data-strike="C" title="Eliminate option C"><s>S</s></button>
+            </div>
+            <div class="choice-btn-wrapper" data-opt="D">
+              <button class="bb-choice-btn" data-opt="D">
+                <span class="choice-pill">D</span>
+                <span class="choice-text">Option D</span>
+              </button>
+              <button class="bb-strike-toggle" data-strike="D" title="Eliminate option D"><s>S</s></button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -353,7 +384,7 @@
         <button id="directionsCloseBtn" class="bb-grid-close-btn">&times;</button>
       </div>
       <div class="bb-modal-body">
-        <p><strong>Timing:</strong> Each module has 27 questions and 32 minutes to complete them.</p>
+        <p><strong>Timing:</strong> Each module has 27 questions and 32 minutes to complete them (or Untimed in practice mode).</p>
         <br />
         <p><strong>Instructions:</strong></p>
         <ul>
@@ -381,18 +412,11 @@
             <button id="toggleLineReaderBtn" style="padding: 6px 14px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer;">Enable</button>
           </div>
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>Passage Font Size</span>
+            <span>Passage Zoom Scale</span>
             <div style="display: flex; gap: 6px;">
-              <button id="fontDecBtn" style="padding: 4px 10px; border-radius: 4px; border: 1px solid #cbd5e1; cursor: pointer;">A-</button>
-              <button id="fontIncBtn" style="padding: 4px 10px; border-radius: 4px; border: 1px solid #cbd5e1; cursor: pointer;">A+</button>
+              <button id="fontDecBtn" style="padding: 4px 10px; border-radius: 4px; border: 1px solid #cbd5e1; cursor: pointer;">Zoom -</button>
+              <button id="fontIncBtn" style="padding: 4px 10px; border-radius: 4px; border: 1px solid #cbd5e1; cursor: pointer;">Zoom +</button>
             </div>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>Question Display Mode</span>
-            <select id="displayModeSelect" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #cbd5e1;">
-              <option value="standard">Standard Interactive Bluebook</option>
-              <option value="scan">Exact Scan with Choice Bar</option>
-            </select>
           </div>
           <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 8px 0;" />
           <h4 style="font-size: 14px; font-weight: 700;">Keyboard Shortcuts</h4>
@@ -401,6 +425,7 @@
             <li><strong>Left / Right Arrow</strong>: Previous / Next question</li>
             <li><strong>M</strong>: Toggle Mark for Review</li>
             <li><strong>H</strong>: Toggle Hide / Show Timer</li>
+            <li><strong>U</strong>: Toggle Untimed Mode</li>
             <li><strong>G</strong>: Toggle Question Navigator Grid</li>
           </ul>
           <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 8px 0;" />
@@ -431,21 +456,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- ANNOTATION FLOATING TOOLBAR -->
-  <div id="annotationPopover" class="bb-annotation-popover" style="display: none;">
-    <button id="annHighlightBtn" class="bb-ann-btn">
-      <span style="width: 12px; height: 12px; background: #fef08a; border-radius: 2px;"></span>
-      Highlight
-    </button>
-    <button id="annUnderlineBtn" class="bb-ann-btn">
-      <span style="text-decoration: underline;">U</span>
-      Underline
-    </button>
-    <button id="annRemoveBtn" class="bb-ann-btn" style="color: #ef4444;">
-      ✕ Remove
-    </button>
   </div>
 
   <script src="data/tests_data.js"></script>

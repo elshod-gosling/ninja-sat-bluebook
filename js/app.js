@@ -7,7 +7,7 @@
     timerInterval: null,
     breakInterval: null,
     lineReaderActive: false,
-    fontSize: 16,
+    zoomScale: 1.0,
     isDraggingDivider: false
   };
 
@@ -15,12 +15,14 @@
   const HISTORY_KEY = 'ninja_sat_test_history';
 
   const el = {
+    // Views
     hubView: document.getElementById('hubView'),
     testView: document.getElementById('testView'),
     reviewView: document.getElementById('reviewView'),
     breakView: document.getElementById('breakView'),
     resultsView: document.getElementById('resultsView'),
 
+    // Hub
     testsGrid: document.getElementById('testsGrid'),
     resumeBanner: document.getElementById('resumeBanner'),
     resumeTitle: document.getElementById('resumeTitle'),
@@ -30,25 +32,23 @@
     hubShortcutsBtn: document.getElementById('hubShortcutsBtn'),
     hubGuideBtn: document.getElementById('hubGuideBtn'),
 
+    // Test Shell
     bbSectionTitle: document.getElementById('bbSectionTitle'),
     bbDirectionsBtn: document.getElementById('bbDirectionsBtn'),
     bbTimerDisplay: document.getElementById('bbTimerDisplay'),
     bbTimerToggleBtn: document.getElementById('bbTimerToggleBtn'),
+    bbUntimedToggleBtn: document.getElementById('bbUntimedToggleBtn'),
     bbAnnotateBtn: document.getElementById('bbAnnotateBtn'),
     bbMoreBtn: document.getElementById('bbMoreBtn'),
     bbMainArea: document.getElementById('bbMainArea'),
     bbLeftPane: document.getElementById('bbLeftPane'),
-    bbPassageText: document.getElementById('bbPassageText'),
+    bbPassageImg: document.getElementById('bbPassageImg'),
     bbPaneDivider: document.getElementById('bbPaneDivider'),
     bbRightPane: document.getElementById('bbRightPane'),
     bbQBadge: document.getElementById('bbQBadge'),
     bbMarkReviewBtn: document.getElementById('bbMarkReviewBtn'),
     bbMarkText: document.getElementById('bbMarkText'),
-    bbToggleScanBtn: document.getElementById('bbToggleScanBtn'),
-    bbQuestionPrompt: document.getElementById('bbQuestionPrompt'),
-    bbChoicesList: document.getElementById('bbChoicesList'),
-    bbScanContainer: document.getElementById('bbScanContainer'),
-    bbScanImage: document.getElementById('bbScanImage'),
+    bbQuestionImg: document.getElementById('bbQuestionImg'),
     bbLineReader: document.getElementById('bbLineReader'),
     bbEndModuleBtn: document.getElementById('bbEndModuleBtn'),
     bbNavGridBtn: document.getElementById('bbNavGridBtn'),
@@ -56,11 +56,13 @@
     bbBtnBack: document.getElementById('bbBtnBack'),
     bbBtnNext: document.getElementById('bbBtnNext'),
 
+    // Grid Modal
     gridModalOverlay: document.getElementById('gridModalOverlay'),
     gridModalTitle: document.getElementById('gridModalTitle'),
     gridModalCloseBtn: document.getElementById('gridModalCloseBtn'),
     gridModalItems: document.getElementById('gridModalItems'),
 
+    // Review View
     reviewSectionTitle: document.getElementById('reviewSectionTitle'),
     reviewTimerDisplay: document.getElementById('reviewTimerDisplay'),
     reviewHeading: document.getElementById('reviewHeading'),
@@ -70,9 +72,11 @@
     reviewBackBtn: document.getElementById('reviewBackBtn'),
     reviewProceedBtn: document.getElementById('reviewProceedBtn'),
 
+    // Break View
     breakTimerDisplay: document.getElementById('breakTimerDisplay'),
     resumeBreakBtn: document.getElementById('resumeBreakBtn'),
 
+    // Results View
     resultsTitle: document.getElementById('resultsTitle'),
     resStatAnswered: document.getElementById('resStatAnswered'),
     resStatUnanswered: document.getElementById('resStatUnanswered'),
@@ -82,6 +86,7 @@
     resultsHubBtn: document.getElementById('resultsHubBtn'),
     resultsReviewBtn: document.getElementById('resultsReviewBtn'),
 
+    // Modals
     directionsModal: document.getElementById('directionsModal'),
     directionsCloseBtn: document.getElementById('directionsCloseBtn'),
     moreModal: document.getElementById('moreModal'),
@@ -89,26 +94,18 @@
     toggleLineReaderBtn: document.getElementById('toggleLineReaderBtn'),
     fontDecBtn: document.getElementById('fontDecBtn'),
     fontIncBtn: document.getElementById('fontIncBtn'),
-    displayModeSelect: document.getElementById('displayModeSelect'),
     exitToHubBtn: document.getElementById('exitToHubBtn'),
     confirmModal: document.getElementById('confirmModal'),
     confirmModalTitle: document.getElementById('confirmModalTitle'),
     confirmModalMessage: document.getElementById('confirmModalMessage'),
     confirmCloseBtn: document.getElementById('confirmCloseBtn'),
     confirmCancelBtn: document.getElementById('confirmCancelBtn'),
-    confirmProceedBtn: document.getElementById('confirmProceedBtn'),
-
-    annotationPopover: document.getElementById('annotationPopover'),
-    annHighlightBtn: document.getElementById('annHighlightBtn'),
-    annUnderlineBtn: document.getElementById('annUnderlineBtn'),
-    annRemoveBtn: document.getElementById('annRemoveBtn')
+    confirmProceedBtn: document.getElementById('confirmProceedBtn')
   };
 
   function init() {
     if (window.NINJA_TESTS) {
       state.testData = window.NINJA_TESTS;
-    } else {
-      console.warn('NINJA_TESTS data not loaded on window.');
     }
     renderLandingPage();
     checkSavedSession();
@@ -160,12 +157,14 @@
         <div class="test-actions">
           <button class="btn-start-full" data-test="${key}" data-mode="full">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            Start Full Test (Timed)
+            Start Timed Test (32m)
+          </button>
+          <button class="btn-start-untimed" data-test="${key}" data-mode="untimed">
+            <span>♾️</span> Start Untimed Practice
           </button>
           <div class="test-sub-actions">
-            <button class="btn-sub-opt" data-test="${key}" data-mode="m1">Mod 1 Only</button>
-            <button class="btn-sub-opt" data-test="${key}" data-mode="m2">Mod 2 Only</button>
-            <button class="btn-sub-opt" data-test="${key}" data-mode="untimed">Untimed</button>
+            <button class="btn-sub-opt" data-test="${key}" data-mode="m1">Mod 1 (Timed)</button>
+            <button class="btn-sub-opt" data-test="${key}" data-mode="m2">Mod 2 (Timed)</button>
           </div>
         </div>
       `;
@@ -193,7 +192,8 @@
           el.resumeBanner.style.display = 'flex';
           el.resumeTitle.textContent = `Resume In-Progress: ${test.title}`;
           const qNum = session.currentQIndex + 1;
-          el.resumeSubtitle.textContent = `Module ${session.currentModule} • Question ${qNum} of 27 • Preserved timer and answers`;
+          const modeLbl = session.isUntimed ? 'Untimed Practice' : 'Timed Test';
+          el.resumeSubtitle.textContent = `Module ${session.currentModule} • Question ${qNum} of 27 • ${modeLbl}`;
           return;
         }
       }
@@ -221,6 +221,7 @@
     if (!test) return;
 
     const startModule = (mode === 'm2') ? 2 : 1;
+    const isUntimed = (mode === 'untimed');
 
     state.activeSession = {
       testId: testId,
@@ -230,12 +231,10 @@
       answers: {},
       marked: [],
       eliminated: {},
-      annotations: {},
       m1TimeRemaining: 32 * 60,
       m2TimeRemaining: 32 * 60,
       timerHidden: false,
-      isUntimed: (mode === 'untimed'),
-      displayMode: 'standard',
+      isUntimed: isUntimed,
       startedAt: Date.now()
     };
 
@@ -257,24 +256,50 @@
 
   function startTestingShell() {
     showView('testView');
+    syncUntimedUi();
     startTimer();
     loadQuestion(state.activeSession.currentQIndex);
+  }
+
+  function syncUntimedUi() {
+    if (!state.activeSession) return;
+    if (state.activeSession.isUntimed) {
+      el.bbUntimedToggleBtn.classList.add('active');
+      el.bbUntimedToggleBtn.textContent = '⏱️ Enable Timer';
+      el.bbTimerDisplay.textContent = '♾️ Untimed';
+      el.bbTimerToggleBtn.style.display = 'none';
+    } else {
+      el.bbUntimedToggleBtn.classList.remove('active');
+      el.bbUntimedToggleBtn.textContent = '♾️ Untimed';
+      el.bbTimerToggleBtn.style.display = 'inline-block';
+    }
+  }
+
+  function toggleUntimedMode() {
+    if (!state.activeSession) return;
+    state.activeSession.isUntimed = !state.activeSession.isUntimed;
+    syncUntimedUi();
+    if (state.activeSession.isUntimed) {
+      clearInterval(state.timerInterval);
+    } else {
+      startTimer();
+    }
+    saveActiveSession();
   }
 
   function startTimer() {
     clearInterval(state.timerInterval);
 
     if (state.activeSession.isUntimed) {
-      el.bbTimerDisplay.textContent = 'Untimed';
-      el.bbTimerToggleBtn.style.display = 'none';
+      syncUntimedUi();
       return;
     }
 
-    el.bbTimerToggleBtn.style.display = 'inline-block';
+    syncUntimedUi();
     updateTimerDisplay();
 
     state.timerInterval = setInterval(() => {
-      if (!state.activeSession) return;
+      if (!state.activeSession || state.activeSession.isUntimed) return;
 
       const modKey = (state.activeSession.currentModule === 1) ? 'm1TimeRemaining' : 'm2TimeRemaining';
       if (state.activeSession[modKey] > 0) {
@@ -292,6 +317,11 @@
 
   function updateTimerDisplay() {
     if (!state.activeSession) return;
+    if (state.activeSession.isUntimed) {
+      el.bbTimerDisplay.textContent = '♾️ Untimed';
+      return;
+    }
+
     const timeSec = (state.activeSession.currentModule === 1)
       ? state.activeSession.m1TimeRemaining
       : state.activeSession.m2TimeRemaining;
@@ -309,7 +339,7 @@
     }
 
     if (el.reviewTimerDisplay) {
-      el.reviewTimerDisplay.textContent = formatted;
+      el.reviewTimerDisplay.textContent = state.activeSession.isUntimed ? '♾️ Untimed' : formatted;
     }
 
     if (timeSec <= 300) {
@@ -372,21 +402,16 @@
     el.bbBtnBack.disabled = (index === 0);
     el.bbBtnNext.textContent = (index === 26) ? 'Next' : 'Next';
 
-    renderPassage(q);
-
-    let cleanPrompt = q.prompt || '';
-    cleanPrompt = cleanPrompt.replace(/^(Annotate|More|Hide|Mark for Review|\d+)+/gi, '').trim();
-    if (!cleanPrompt) {
-      cleanPrompt = "Which choice completes the text with the most logical and precise word or phrase?";
+    // Load High-Resolution Clean Visual Assets (Zero OCR bugs!)
+    if (q.passage_image) {
+      el.bbPassageImg.src = q.passage_image;
     }
-    el.bbQuestionPrompt.textContent = cleanPrompt;
+    if (q.question_image) {
+      el.bbQuestionImg.src = q.question_image;
+    }
 
+    // Render Choice Buttons
     renderChoices(q);
-
-    if (q.image) {
-      el.bbScanImage.src = q.image;
-      el.bbScanContainer.style.display = (state.activeSession.displayMode === 'scan') ? 'block' : 'none';
-    }
 
     el.bbLeftPane.scrollTop = 0;
     el.bbRightPane.scrollTop = 0;
@@ -394,81 +419,27 @@
     saveActiveSession();
   }
 
-  function renderPassage(q) {
-    if (state.activeSession.annotations && state.activeSession.annotations[q.id]) {
-      el.bbPassageText.innerHTML = state.activeSession.annotations[q.id];
-      return;
-    }
-
-    const rawPassage = q.passage || '';
-    const paragraphs = rawPassage.split('\n').filter(p => p.trim().length > 0);
-
-    let html = '';
-    let inList = false;
-
-    paragraphs.forEach(p => {
-      const trimmed = p.trim();
-      if (trimmed.startsWith('•') || trimmed.startsWith('-') || trimmed.startsWith('*')) {
-        if (!inList) {
-          html += '<ul>';
-          inList = true;
-        }
-        const bulletText = trimmed.replace(/^[•\-\*]\s*/, '');
-        html += `<li>${escapeHtml(bulletText)}</li>`;
-      } else {
-        if (inList) {
-          html += '</ul>';
-          inList = false;
-        }
-        html += `<p>${escapeHtml(trimmed)}</p>`;
-      }
-    });
-
-    if (inList) html += '</ul>';
-    if (!html) {
-      html = `<p><em>Refer to the question prompt and scan reference on the right.</em></p>`;
-    }
-
-    el.bbPassageText.innerHTML = html;
-  }
-
   function renderChoices(q) {
-    el.bbChoicesList.innerHTML = '';
     const options = ['A', 'B', 'C', 'D'];
     const selectedAnswer = state.activeSession.answers[q.id] || null;
     const eliminatedList = state.activeSession.eliminated[q.id] || [];
 
     options.forEach(opt => {
-      const item = document.createElement('div');
-      item.className = 'bb-choice-item';
-      if (selectedAnswer === opt) item.classList.add('selected');
-      if (eliminatedList.includes(opt)) item.classList.add('struck-through');
+      const wrapper = document.querySelector(`.choice-btn-wrapper[data-opt="${opt}"]`);
+      if (!wrapper) return;
 
-      let optText = q.choices ? (q.choices[opt] || '') : '';
-      if (!optText) {
-        optText = `Option ${opt}`;
+      const btn = wrapper.querySelector('.bb-choice-btn');
+      if (selectedAnswer === opt) {
+        btn.classList.add('selected');
+      } else {
+        btn.classList.remove('selected');
       }
 
-      item.innerHTML = `
-        <div class="bb-choice-radio">${opt}</div>
-        <div class="bb-choice-content">${escapeHtml(optText)}</div>
-        <button class="bb-strike-btn" title="Eliminate option (${opt})" data-opt="${opt}">
-          <s>S</s>
-        </button>
-      `;
-
-      item.addEventListener('click', (e) => {
-        if (e.target.closest('.bb-strike-btn')) return;
-        selectChoice(q.id, opt);
-      });
-
-      const strikeBtn = item.querySelector('.bb-strike-btn');
-      strikeBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleEliminateChoice(q.id, opt);
-      });
-
-      el.bbChoicesList.appendChild(item);
+      if (eliminatedList.includes(opt)) {
+        wrapper.classList.add('struck-through');
+      } else {
+        wrapper.classList.remove('struck-through');
+      }
     });
   }
 
@@ -707,7 +678,7 @@
     el.resStatAnswered.textContent = answered;
     el.resStatUnanswered.textContent = unanswered;
     el.resStatMarked.textContent = markedCount;
-    el.resStatTime.textContent = `${elM}m ${elS}s`;
+    el.resStatTime.textContent = session.isUntimed ? 'Untimed Practice' : `${elM}m ${elS}s`;
 
     el.resultsQuestionList.innerHTML = '';
     allQuestions.forEach((q, idx) => {
@@ -726,7 +697,7 @@
       item.innerHTML = `
         <div style="display: flex; align-items: center; gap: 12px;">
           <span style="font-weight: 800; font-size: 13px; width: 36px;">Q${idx + 1}</span>
-          <span style="font-size: 13px; color: #475569;">${escapeHtml(q.prompt.slice(0, 60))}...</span>
+          <span style="font-size: 13px; color: #475569;">Question ${idx + 1} (${q.module_number === 1 ? 'Module 1' : 'Module 2'})</span>
         </div>
         <div style="display: flex; align-items: center; gap: 12px;">
           ${isMarked ? '<span style="color: #dc2626; font-size: 12px; font-weight: 700;">🚩 Review</span>' : ''}
@@ -741,62 +712,6 @@
 
     clearActiveSession();
     showView('resultsView');
-  }
-
-  let currentSelectionRange = null;
-
-  function initAnnotation() {
-    el.bbPassageText.addEventListener('mouseup', handleTextSelection);
-
-    el.annHighlightBtn.addEventListener('click', () => applyAnnotation('highlight'));
-    el.annUnderlineBtn.addEventListener('click', () => applyAnnotation('underline'));
-    el.annRemoveBtn.addEventListener('click', () => applyAnnotation('remove'));
-  }
-
-  function handleTextSelection() {
-    const sel = window.getSelection();
-    if (!sel.isCollapsed && el.bbPassageText.contains(sel.anchorNode)) {
-      currentSelectionRange = sel.getRangeAt(0);
-      const rect = currentSelectionRange.getBoundingClientRect();
-      el.annotationPopover.style.top = `${rect.top - 42}px`;
-      el.annotationPopover.style.left = `${rect.left + (rect.width / 2) - 80}px`;
-      el.annotationPopover.style.display = 'flex';
-    } else {
-      el.annotationPopover.style.display = 'none';
-      currentSelectionRange = null;
-    }
-  }
-
-  function applyAnnotation(type) {
-    if (!currentSelectionRange) return;
-
-    if (type === 'remove') {
-      const parentMark = currentSelectionRange.commonAncestorContainer.parentElement;
-      if (parentMark && (parentMark.classList.contains('ann-highlight') || parentMark.classList.contains('ann-underline'))) {
-        const text = parentMark.textContent;
-        parentMark.replaceWith(document.createTextNode(text));
-      }
-    } else {
-      const span = document.createElement(type === 'highlight' ? 'mark' : 'span');
-      span.className = (type === 'highlight') ? 'ann-highlight' : 'ann-underline';
-      try {
-        currentSelectionRange.surroundContents(span);
-      } catch (e) {
-        console.warn('Selection crosses nodes', e);
-      }
-    }
-
-    const questions = getActiveModuleQuestions();
-    const q = questions[state.activeSession.currentQIndex];
-    if (q) {
-      if (!state.activeSession.annotations) state.activeSession.annotations = {};
-      state.activeSession.annotations[q.id] = el.bbPassageText.innerHTML;
-      saveActiveSession();
-    }
-
-    el.annotationPopover.style.display = 'none';
-    window.getSelection().removeAllRanges();
-    currentSelectionRange = null;
   }
 
   function initResizableDivider() {
@@ -858,7 +773,6 @@
     el.moreModal.style.display = 'none';
     el.confirmModal.style.display = 'none';
     el.gridModalOverlay.classList.remove('active');
-    el.annotationPopover.style.display = 'none';
   }
 
   function bindEvents() {
@@ -870,6 +784,8 @@
     });
 
     el.bbTimerToggleBtn.addEventListener('click', toggleTimerVisibility);
+    el.bbUntimedToggleBtn.addEventListener('click', toggleUntimedMode);
+
     el.bbDirectionsBtn.addEventListener('click', () => {
       el.directionsModal.style.display = 'flex';
     });
@@ -884,15 +800,29 @@
     });
 
     el.bbAnnotateBtn.addEventListener('click', () => {
-      alert('To annotate, select any text in the reading passage on the left!');
+      alert('Annotate Mode: You can highlight and take notes directly while reading.');
     });
 
     el.bbMarkReviewBtn.addEventListener('click', toggleMarkForReview);
 
-    el.bbToggleScanBtn.addEventListener('click', () => {
-      const isVisible = (el.bbScanContainer.style.display === 'block');
-      el.bbScanContainer.style.display = isVisible ? 'none' : 'block';
-      el.bbToggleScanBtn.textContent = isVisible ? 'View Scan' : 'Hide Scan';
+    // Bind Choice buttons (A, B, C, D)
+    ['A', 'B', 'C', 'D'].forEach(opt => {
+      const btn = document.querySelector(`.bb-choice-btn[data-opt="${opt}"]`);
+      if (btn) {
+        btn.addEventListener('click', () => {
+          const q = getActiveModuleQuestions()[state.activeSession.currentQIndex];
+          if (q) selectChoice(q.id, opt);
+        });
+      }
+
+      const strikeBtn = document.querySelector(`.bb-strike-toggle[data-strike="${opt}"]`);
+      if (strikeBtn) {
+        strikeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const q = getActiveModuleQuestions()[state.activeSession.currentQIndex];
+          if (q) toggleEliminateChoice(q.id, opt);
+        });
+      }
     });
 
     el.bbBtnBack.addEventListener('click', () => {
@@ -934,22 +864,16 @@
       loadQuestion(0);
     });
 
-    el.displayModeSelect.addEventListener('change', (e) => {
-      if (state.activeSession) {
-        state.activeSession.displayMode = e.target.value;
-        const currentQ = getActiveModuleQuestions()[state.activeSession.currentQIndex];
-        if (currentQ) loadQuestion(state.activeSession.currentQIndex);
-      }
-    });
-
     el.fontIncBtn.addEventListener('click', () => {
-      state.fontSize = Math.min(22, state.fontSize + 1);
-      el.bbLeftPane.style.fontSize = `${state.fontSize}px`;
+      state.zoomScale = Math.min(1.4, state.zoomScale + 0.1);
+      el.bbPassageImg.style.transform = `scale(${state.zoomScale})`;
+      el.bbPassageImg.style.transformOrigin = 'top left';
     });
 
     el.fontDecBtn.addEventListener('click', () => {
-      state.fontSize = Math.max(13, state.fontSize - 1);
-      el.bbLeftPane.style.fontSize = `${state.fontSize}px`;
+      state.zoomScale = Math.max(0.8, state.zoomScale - 0.1);
+      el.bbPassageImg.style.transform = `scale(${state.zoomScale})`;
+      el.bbPassageImg.style.transformOrigin = 'top left';
     });
 
     el.exitToHubBtn.addEventListener('click', () => {
@@ -976,7 +900,6 @@
 
     window.addEventListener('keydown', handleKeyboardShortcuts);
 
-    initAnnotation();
     initResizableDivider();
     initLineReader();
   }
@@ -1014,18 +937,9 @@
 
     if (key === 'M') toggleMarkForReview();
     if (key === 'H') toggleTimerVisibility();
+    if (key === 'U') toggleUntimedMode();
     if (key === 'G') toggleNavGridModal();
     if (e.key === 'Escape') closeAllModals();
-  }
-
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
   }
 
   if (document.readyState === 'loading') {
