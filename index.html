@@ -1,0 +1,454 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ninja SAT Bluebook Practice Suite</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <!-- Bluebook CSS -->
+  <link rel="stylesheet" href="css/bluebook.css" />
+</head>
+<body>
+
+  <!-- =====================================================================
+       2D LANDING PAGE / HUB VIEW
+       ===================================================================== -->
+  <div id="hubView" class="hub-view">
+    <!-- Top Navigation -->
+    <header class="hub-nav">
+      <div class="hub-brand">
+        <div class="hub-logo-icon">🥷</div>
+        <div class="hub-title-group">
+          <h1>NINJA SAT <span class="hub-badge">Bluebook Suite</span></h1>
+        </div>
+      </div>
+      <div class="hub-nav-links">
+        <button id="hubShortcutsBtn" class="hub-link-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8"/></svg>
+          Shortcuts
+        </button>
+        <button id="hubGuideBtn" class="hub-link-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+          Testing Guide
+        </button>
+      </div>
+    </header>
+
+    <main class="hub-container">
+      <!-- Hero Section -->
+      <section class="hub-hero">
+        <div class="hero-tag"><span class="dot"></span> Official-Style Bluebook Practice</div>
+        <h2>Digital SAT Reading & Writing Practice</h2>
+        <p>
+          Master the Digital SAT with an authentic recreation of College Board's Bluebook testing environment. 
+          Featuring full 54-question 2-module tests from Ninja English Practice Tests 1–5, official timers, 
+          passage annotation tools, strikethrough eliminators, and question navigator.
+        </p>
+
+        <!-- Quick Stats -->
+        <div class="hub-stats-row">
+          <div class="stat-item">
+            <span class="stat-val">5</span>
+            <span class="stat-lbl">Practice Tests</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-val">10</span>
+            <span class="stat-lbl">Timed Modules</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-val">270</span>
+            <span class="stat-lbl">R&W Questions</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-val">100%</span>
+            <span class="stat-lbl">Bluebook Parity</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Resume Active Test Banner -->
+      <div id="resumeBanner" class="resume-banner" style="display: none;">
+        <div class="resume-info">
+          <h4 id="resumeTitle">Active Test Session Found</h4>
+          <p id="resumeSubtitle">Resume where you left off with preserved timer and responses.</p>
+        </div>
+        <div class="resume-actions">
+          <button id="resumeBtn" class="resume-btn">Resume Test</button>
+          <button id="discardBtn" class="discard-btn">Discard</button>
+        </div>
+      </div>
+
+      <!-- Practice Tests 2D Grid -->
+      <div id="testsGrid" class="tests-grid"></div>
+
+      <!-- Features Section -->
+      <section class="hub-features">
+        <h3>Bluebook System Capabilities</h3>
+        <div class="features-grid">
+          <div class="feature-box">
+            <div class="feature-icon">⏱️</div>
+            <h4>Official 32-Min Timers</h4>
+            <p>Each 27-question Reading & Writing module features a countdown timer with hide/show toggles and low-time warnings.</p>
+          </div>
+          <div class="feature-box">
+            <div class="feature-icon">✍️</div>
+            <h4>Passage Annotation</h4>
+            <p>Select text on the reading passage to highlight in yellow, underline key phrases, or attach quick thoughts.</p>
+          </div>
+          <div class="feature-box">
+            <div class="feature-icon">✂️</div>
+            <h4>Option Eliminator</h4>
+            <p>Use the strikethrough tool (S̶) on answer choices to cross out incorrect options and eliminate distractions.</p>
+          </div>
+          <div class="feature-box">
+            <div class="feature-icon">📑</div>
+            <h4>Question Review Grid</h4>
+            <p>Jump to any question via the 1–27 navigator grid. Track answered, unanswered, and flagged questions at a glance.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- =====================================================================
+       AUTHENTIC BLUEBOOK TEST APP SHELL
+       ===================================================================== -->
+  <div id="testView" class="test-app-shell" style="display: none;">
+    <!-- Top Security Dashed Border -->
+    <div class="bb-dashed-border"></div>
+
+    <!-- Bluebook Header -->
+    <header class="bb-header">
+      <div class="bb-header-left">
+        <div id="bbSectionTitle" class="bb-section-title">Section 1, Module 1: Reading and Writing</div>
+        <button id="bbDirectionsBtn" class="bb-directions-btn">
+          Directions <span style="font-size: 10px;">▼</span>
+        </button>
+      </div>
+
+      <!-- Center Timer -->
+      <div class="bb-timer-container">
+        <div id="bbTimerDisplay" class="bb-timer-display">32:00</div>
+        <button id="bbTimerToggleBtn" class="bb-timer-toggle-btn">Hide</button>
+      </div>
+
+      <!-- Right Header Tools -->
+      <div class="bb-header-right">
+        <button id="bbAnnotateBtn" class="bb-tool-btn" title="Highlight or underline passage text">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Annotate
+        </button>
+        <button id="bbMoreBtn" class="bb-tool-btn" title="More tools & options">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
+          More
+        </button>
+      </div>
+    </header>
+
+    <!-- Top Security Dashed Border Below Header -->
+    <div class="bb-dashed-border"></div>
+
+    <!-- Main Testing Split Area -->
+    <div id="bbMainArea" class="bb-main-area">
+      <!-- Left Pane: Reading Passage -->
+      <div id="bbLeftPane" class="bb-left-pane">
+        <div id="bbPassageText"></div>
+      </div>
+
+      <!-- Resizable Center Divider -->
+      <div id="bbPaneDivider" class="bb-pane-divider" title="Drag to resize panes"></div>
+
+      <!-- Right Pane: Question & Choices -->
+      <div id="bbRightPane" class="bb-right-pane">
+        <!-- Question Header: [ Q# ] Mark for Review -->
+        <div class="bb-question-header">
+          <div id="bbQBadge" class="bb-q-badge">1</div>
+          <button id="bbMarkReviewBtn" class="bb-mark-review-btn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            <span id="bbMarkText">Mark for Review</span>
+          </button>
+          <div style="margin-left: auto; padding-right: 12px;">
+            <button id="bbToggleScanBtn" style="background: none; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 11px; padding: 2px 8px; cursor: pointer; color: #475569;">
+              View Scan
+            </button>
+          </div>
+        </div>
+
+        <!-- Question Prompt -->
+        <div id="bbQuestionPrompt" class="bb-question-prompt"></div>
+
+        <!-- Answer Choices (A, B, C, D) -->
+        <div id="bbChoicesList" class="bb-choices-list"></div>
+
+        <!-- Original Scan Reference -->
+        <div id="bbScanContainer" class="bb-scan-container" style="display: none;">
+          <img id="bbScanImage" src="" alt="Original Question Scan" />
+        </div>
+      </div>
+
+      <!-- Line Reader Tool Overlay -->
+      <div id="bbLineReader" class="bb-line-reader"></div>
+    </div>
+
+    <!-- Bottom Security Dashed Border -->
+    <div class="bb-dashed-border"></div>
+
+    <!-- Bottom Navigation Bar -->
+    <footer class="bb-footer">
+      <div class="bb-footer-left">
+        <button id="bbEndModuleBtn" class="bb-end-module-btn">End module early</button>
+      </div>
+
+      <!-- Center Question Navigator Dropdown Button -->
+      <div class="bb-footer-center">
+        <button id="bbNavGridBtn" class="bb-nav-grid-btn">
+          <span id="bbNavGridLabel">Question 1 of 27</span>
+          <span style="font-size: 10px;">▼</span>
+        </button>
+      </div>
+
+      <!-- Navigation Next / Back Buttons -->
+      <div class="bb-footer-right">
+        <button id="bbBtnBack" class="bb-btn-back" disabled>Back</button>
+        <button id="bbBtnNext" class="bb-btn-next">Next</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- =====================================================================
+       MODULE REVIEW SCREEN (END OF MODULE)
+       ===================================================================== -->
+  <div id="reviewView" class="test-app-shell" style="display: none;">
+    <div class="bb-dashed-border"></div>
+    <header class="bb-header">
+      <div class="bb-header-left">
+        <div id="reviewSectionTitle" class="bb-section-title">Section 1, Module 1: Review</div>
+      </div>
+      <div class="bb-timer-container">
+        <div id="reviewTimerDisplay" class="bb-timer-display">32:00</div>
+      </div>
+      <div class="bb-header-right"></div>
+    </header>
+    <div class="bb-dashed-border"></div>
+
+    <div class="bb-review-view">
+      <div class="bb-review-container">
+        <div class="bb-review-header">
+          <h2 id="reviewHeading">Section 1, Module 1: Review</h2>
+          <p>
+            Check your work before submitting this module. Once you move on, you cannot return to this module.
+            Click any question number below to review or change your response.
+          </p>
+        </div>
+
+        <div id="reviewAlertBox" class="bb-review-alert" style="display: none;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="reviewAlertText">You have unanswered questions.</span>
+        </div>
+
+        <!-- 27-Question Interactive Grid -->
+        <div id="reviewGrid" class="bb-review-grid"></div>
+
+        <div class="bb-review-actions">
+          <button id="reviewBackBtn" class="bb-btn-back">Return to Questions</button>
+          <button id="reviewProceedBtn" class="bb-btn-next">Next Section</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bb-dashed-border"></div>
+  </div>
+
+  <!-- =====================================================================
+       10-MINUTE BREAK SCREEN
+       ===================================================================== -->
+  <div id="breakView" class="test-app-shell" style="display: none;">
+    <div class="bb-dashed-border"></div>
+    <div class="bb-break-view">
+      <div class="bb-break-icon">☕</div>
+      <h2 class="bb-break-title">Take a Break</h2>
+      <p class="bb-break-desc">
+        You have completed Module 1! You can now take an optional 10-minute break before proceeding to Module 2.
+        Your timer for Module 2 will not start until you click resume.
+      </p>
+      <div id="breakTimerDisplay" class="bb-break-timer-circle">10:00</div>
+      <button id="resumeBreakBtn" class="bb-resume-test-btn">Resume Testing (Start Module 2)</button>
+    </div>
+    <div class="bb-dashed-border"></div>
+  </div>
+
+  <!-- =====================================================================
+       RESULTS & PERFORMANCE VIEW
+       ===================================================================== -->
+  <div id="resultsView" class="test-app-shell" style="display: none;">
+    <div class="bb-dashed-border"></div>
+    <div class="bb-results-view">
+      <div class="results-container">
+        <div class="results-card">
+          <div class="results-header">
+            <div style="font-size: 40px; margin-bottom: 8px;">🎯</div>
+            <h2 id="resultsTitle">Practice Test Completed!</h2>
+            <p style="color: #64748b; margin-top: 6px;">Digital SAT Reading and Writing Performance Summary</p>
+          </div>
+
+          <div class="results-stats-row">
+            <div class="res-stat-card">
+              <div id="resStatAnswered" class="res-stat-num">54</div>
+              <div class="res-stat-label">Answered</div>
+            </div>
+            <div class="res-stat-card">
+              <div id="resStatUnanswered" class="res-stat-num" style="color: #dc2626;">0</div>
+              <div class="res-stat-label">Unanswered</div>
+            </div>
+            <div class="res-stat-card">
+              <div id="resStatMarked" class="res-stat-num" style="color: #eab308;">4</div>
+              <div class="res-stat-label">Marked for Review</div>
+            </div>
+            <div class="res-stat-card">
+              <div id="resStatTime" class="res-stat-num" style="color: #0284c7;">48:12</div>
+              <div class="res-stat-label">Total Time</div>
+            </div>
+          </div>
+
+          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;">Question Responses Overview</h3>
+          <div id="resultsQuestionList" style="display: flex; flex-direction: column; gap: 8px; max-height: 380px; overflow-y: auto; padding-right: 8px;"></div>
+
+          <div style="margin-top: 32px; display: flex; justify-content: space-between;">
+            <button id="resultsHubBtn" class="bb-btn-back">Back to Practice Hub</button>
+            <button id="resultsReviewBtn" class="bb-btn-next">Review All Questions</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bb-dashed-border"></div>
+  </div>
+
+  <!-- =====================================================================
+       QUESTION NAVIGATOR GRID POPOVER
+       ===================================================================== -->
+  <div id="gridModalOverlay" class="bb-grid-modal-overlay">
+    <div class="bb-grid-card">
+      <div class="bb-grid-header">
+        <h3 id="gridModalTitle">Section 1: Reading and Writing Questions</h3>
+        <button id="gridModalCloseBtn" class="bb-grid-close-btn">&times;</button>
+      </div>
+      <div id="gridModalItems" class="bb-grid-items"></div>
+      <div class="bb-grid-legend">
+        <div class="legend-item"><span class="legend-swatch sw-current"></span><span>Current</span></div>
+        <div class="legend-item"><span class="legend-swatch sw-unanswered"></span><span>Unanswered</span></div>
+        <div class="legend-item"><span class="legend-swatch sw-answered"></span><span>Answered</span></div>
+        <div class="legend-item"><span class="legend-swatch sw-flag"></span><span>For Review</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIRECTIONS MODAL -->
+  <div id="directionsModal" class="bb-modal-backdrop" style="display: none;">
+    <div class="bb-modal-content">
+      <div class="bb-modal-header">
+        <h3>Reading and Writing Directions</h3>
+        <button id="directionsCloseBtn" class="bb-grid-close-btn">&times;</button>
+      </div>
+      <div class="bb-modal-body">
+        <p><strong>Timing:</strong> Each module has 27 questions and 32 minutes to complete them.</p>
+        <br />
+        <p><strong>Instructions:</strong></p>
+        <ul>
+          <li>Each question has four answer choices. Read each question and choose the best answer.</li>
+          <li>All questions in this section are multiple-choice with four answer choices. Only one choice is correct.</li>
+          <li>You may take notes, highlight text, underline text, and eliminate answer choices as you work.</li>
+          <li>You can mark questions for review and return to them at any time before your time in the module expires.</li>
+          <li>Once you complete a module and proceed to the next module or submit the test, you will not be able to return to it.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- MORE OPTIONS MODAL -->
+  <div id="moreModal" class="bb-modal-backdrop" style="display: none;">
+    <div class="bb-modal-content">
+      <div class="bb-modal-header">
+        <h3>Tools & Settings</h3>
+        <button id="moreCloseBtn" class="bb-grid-close-btn">&times;</button>
+      </div>
+      <div class="bb-modal-body">
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Line Reader Overlay</span>
+            <button id="toggleLineReaderBtn" style="padding: 6px 14px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer;">Enable</button>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Passage Font Size</span>
+            <div style="display: flex; gap: 6px;">
+              <button id="fontDecBtn" style="padding: 4px 10px; border-radius: 4px; border: 1px solid #cbd5e1; cursor: pointer;">A-</button>
+              <button id="fontIncBtn" style="padding: 4px 10px; border-radius: 4px; border: 1px solid #cbd5e1; cursor: pointer;">A+</button>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Question Display Mode</span>
+            <select id="displayModeSelect" style="padding: 6px 12px; border-radius: 6px; border: 1px solid #cbd5e1;">
+              <option value="standard">Standard Interactive Bluebook</option>
+              <option value="scan">Exact Scan with Choice Bar</option>
+            </select>
+          </div>
+          <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 8px 0;" />
+          <h4 style="font-size: 14px; font-weight: 700;">Keyboard Shortcuts</h4>
+          <ul style="font-size: 13px; color: #475569;">
+            <li><strong>A / B / C / D</strong> or <strong>1 / 2 / 3 / 4</strong>: Select answer choice</li>
+            <li><strong>Left / Right Arrow</strong>: Previous / Next question</li>
+            <li><strong>M</strong>: Toggle Mark for Review</li>
+            <li><strong>H</strong>: Toggle Hide / Show Timer</li>
+            <li><strong>G</strong>: Toggle Question Navigator Grid</li>
+          </ul>
+          <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 8px 0;" />
+          <div>
+            <button id="exitToHubBtn" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ef4444; color: #ef4444; background: transparent; font-weight: 700; cursor: pointer;">
+              Save & Exit to Hub
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM END MODULE MODAL -->
+  <div id="confirmModal" class="bb-modal-backdrop" style="display: none;">
+    <div class="bb-modal-content" style="max-width: 480px;">
+      <div class="bb-modal-header">
+        <h3 id="confirmModalTitle">End Module 1?</h3>
+        <button id="confirmCloseBtn" class="bb-grid-close-btn">&times;</button>
+      </div>
+      <div class="bb-modal-body">
+        <p id="confirmModalMessage">
+          Are you sure you want to end this module? Once you proceed to the next module, you will not be able to return to review or change your answers.
+        </p>
+        <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
+          <button id="confirmCancelBtn" class="bb-btn-back">Cancel</button>
+          <button id="confirmProceedBtn" class="bb-btn-next">Confirm & Proceed</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANNOTATION FLOATING TOOLBAR -->
+  <div id="annotationPopover" class="bb-annotation-popover" style="display: none;">
+    <button id="annHighlightBtn" class="bb-ann-btn">
+      <span style="width: 12px; height: 12px; background: #fef08a; border-radius: 2px;"></span>
+      Highlight
+    </button>
+    <button id="annUnderlineBtn" class="bb-ann-btn">
+      <span style="text-decoration: underline;">U</span>
+      Underline
+    </button>
+    <button id="annRemoveBtn" class="bb-ann-btn" style="color: #ef4444;">
+      ✕ Remove
+    </button>
+  </div>
+
+  <script src="data/tests_data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
