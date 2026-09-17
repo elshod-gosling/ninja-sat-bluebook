@@ -1,464 +1,2423 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ninja SAT Bluebook Practice Suite</title>
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
-  <!-- Bluebook CSS -->
-  <link rel="stylesheet" href="css/bluebook.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital SAT Reading & Writing Suite – Ninja Practice Tests (270 Questions)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-serif: "Newsreader", Georgia, serif;
+    --font-mono: "JetBrains Mono", monospace;
+
+    /* PsychSAT Dark Palette (Default) */
+    --bg-page: #08090e;
+    --bg-card: #10121d;
+    --bg-panel: #0e101a;
+    --bg-subtle: #171a2b;
+    --bg-hover: #22263d;
+    --border: #21263d;
+    --border-strong: #333b5c;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    /* PsychSAT Neon Purple Accents */
+    --neon-purple: #8b5cf6;
+    --neon-purple-hover: #7c3aed;
+    --neon-purple-subtle: #1e1838;
+    --neon-purple-border: #4c2889;
+    --neon-lilac: #c4b5fd;
+    --neon-glow: rgba(139, 92, 246, 0.25);
+
+    --accent-blue: #8b5cf6;
+    --accent-blue-hover: #7c3aed;
+    --accent-blue-subtle: #1e1838;
+    --accent-blue-border: #4c2889;
+
+    --correct: #22c55e;
+    --correct-bg: #064e3b;
+    --correct-border: #059669;
+    --incorrect: #ef4444;
+    --incorrect-bg: #450a0a;
+    --incorrect-border: #b91c1c;
+
+    --flag-color: #fbbf24;
+    --flag-bg: #451a03;
+    --flag-border: #92400e;
+
+    /* Highlights */
+    --hl-yellow: #ffe066;
+    --hl-yellow-text: #1a1a1a;
+    --hl-pink: #ffb3c6;
+    --hl-pink-text: #1a1a1a;
+    --hl-cyan: #99e9f2;
+    --hl-cyan-text: #1a1a1a;
+
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.5);
+    --shadow-md: 0 4px 20px -2px rgba(0,0,0,0.6), 0 2px 6px -2px rgba(139, 92, 246, 0.15);
+    --shadow-lg: 0 12px 40px -4px rgba(0,0,0,0.7), 0 0 30px rgba(139, 92, 246, 0.2);
+    --shadow-modal: 0 24px 70px -12px rgba(0,0,0,0.85);
+  }
+
+  [data-theme="light"] {
+    /* PsychSAT High-Performance Solar Theme */
+    --bg-page: #fcf9f1;
+    --bg-card: rgba(255, 255, 255, 0.94);
+    --bg-panel: #ffffff;
+    --bg-subtle: #fef8ee;
+    --bg-hover: #fef3c7;
+    --border: #fde68a;
+    --border-strong: #fcd34d;
+    --text-primary: #1c1917;
+    --text-secondary: #44403c;
+    --text-muted: #78716c;
+
+    --neon-purple: #d97706;
+    --neon-purple-hover: #b45309;
+    --neon-purple-subtle: #fffbeb;
+    --neon-purple-border: #fde68a;
+    --neon-lilac: #b45309;
+    --neon-glow: rgba(245, 158, 11, 0.28);
+
+    --accent-blue: #d97706;
+    --accent-blue-hover: #b45309;
+    --accent-blue-subtle: #fffbeb;
+    --accent-blue-border: #fde68a;
+
+    --correct: #16a34a;
+    --correct-bg: #ecfdf5;
+    --correct-border: #86efac;
+    --incorrect: #dc2626;
+    --incorrect-bg: #fef2f2;
+    --incorrect-border: #fca5a5;
+
+    --flag-color: #f59e0b;
+    --flag-bg: #fffbeb;
+    --flag-border: #fcd34d;
+
+    --shadow-sm: 0 1px 3px rgba(217, 119, 6, 0.08);
+    --shadow-md: 0 4px 20px -2px rgba(217, 119, 6, 0.12);
+    --shadow-lg: 0 14px 36px -4px rgba(217, 119, 6, 0.16);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-page);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button, .btn {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-radius: 8px;
+    padding: 7px 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    transition: all 0.15s ease;
+    user-select: none;
+    line-height: 1.2;
+  }
+  button:hover, .btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-strong);
+  }
+  button.primary, .btn.primary {
+    background: var(--neon-purple);
+    color: #ffffff;
+    border-color: var(--neon-purple);
+    box-shadow: 0 2px 10px rgba(139, 92, 246, 0.35);
+  }
+  button.primary:hover, .btn.primary:hover {
+    background: var(--neon-purple-hover);
+    border-color: var(--neon-purple-hover);
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.5);
+  }
+  button.subtle {
+    border-color: transparent;
+    background: transparent;
+    color: var(--text-secondary);
+  }
+  button.subtle:hover {
+    background: var(--bg-subtle);
+    color: var(--text-primary);
+  }
+  button:disabled, .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* ========================================================= */
+  /* PSYCHSAT 2D CYBER MATRIX & AMBIENT AURORA            */
+  /* ========================================================= */
+  .ps-aura {
+    position: fixed;
+    top: -160px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 960px;
+    height: 640px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.22) 0%, rgba(124, 58, 237, 0.08) 50%, transparent 75%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ps-aura-secondary {
+    position: fixed;
+    bottom: -200px;
+    right: -100px;
+    width: 700px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(167, 139, 250, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* COOL 2D HIGH-PERFORMANCE ANIMATED ENVIRONMENT (0% CPU, 120 FPS) */
+  .cyber-2d-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  /* Hardware-Accelerated 2D Cyber Grid Matrix */
+  .cyber-grid-plane {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      linear-gradient(to right, rgba(139, 92, 246, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(139, 92, 246, 0.08) 1px, transparent 1px);
+    background-size: 52px 52px;
+    mask-image: radial-gradient(ellipse 85% 65% at 50% 35%, black 20%, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 35%, black 20%, transparent 85%);
+    animation: grid-drift 32s linear infinite;
+  }
+  @keyframes grid-drift {
+    0% { background-position: 0 0; }
+    100% { background-position: 52px 52px; }
+  }
+  [data-theme="light"] .cyber-grid-plane {
+    background-image:
+      linear-gradient(to right, rgba(217, 119, 6, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(217, 119, 6, 0.08) 1px, transparent 1px);
+  }
+
+  /* Floating Ambient Aurora Orbs (Smooth GPU Compositing) */
+  .ambient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(85px);
+    opacity: 0.55;
+    will-change: transform;
+    pointer-events: none;
+  }
+  .orb-1 {
+    top: 6%;
+    left: 16%;
+    width: 540px;
+    height: 540px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.32) 0%, rgba(99, 102, 241, 0.12) 65%, transparent 85%);
+    animation: orb-float-1 22s ease-in-out infinite alternate;
+  }
+  .orb-2 {
+    top: 20%;
+    right: 12%;
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(196, 181, 253, 0.26) 0%, rgba(56, 189, 248, 0.12) 65%, transparent 85%);
+    animation: orb-float-2 26s ease-in-out infinite alternate;
+  }
+  .orb-3 {
+    bottom: 8%;
+    left: 30%;
+    width: 580px;
+    height: 420px;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.22) 0%, rgba(167, 139, 250, 0.08) 60%, transparent 80%);
+    animation: orb-float-3 28s ease-in-out infinite alternate;
+  }
+  @keyframes orb-float-1 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-35px, 25px) scale(1.08); }
+    100% { transform: translate(25px, -15px) scale(0.96); }
+  }
+  @keyframes orb-float-2 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -20px) scale(1.06); }
+    100% { transform: translate(-20px, 30px) scale(0.94); }
+  }
+  @keyframes orb-float-3 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(20px, -30px) scale(1.10); }
+    100% { transform: translate(-25px, 15px) scale(0.95); }
+  }
+
+  [data-theme="light"] .orb-1 {
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.25) 0%, rgba(245, 158, 11, 0.10) 65%, transparent 85%);
+  }
+  [data-theme="light"] .orb-2 {
+    background: radial-gradient(circle, rgba(254, 240, 138, 0.30) 0%, rgba(251, 146, 60, 0.08) 65%, transparent 85%);
+  }
+  [data-theme="light"] .orb-3 {
+    background: radial-gradient(circle, rgba(217, 119, 6, 0.15) 0%, transparent 80%);
+  }
+
+  /* High-Efficiency 2D Canvas for Particle Constellation */
+  #heroCanvas2D {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+  }
+
+  /* Cool 2D Hero Aura & Glow Badge */
+  .hero-2d-glow {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 780px;
+    height: 380px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.18) 0%, rgba(196, 181, 253, 0.08) 40%, transparent 75%);
+    filter: blur(40px);
+    pointer-events: none;
+    z-index: 0;
+    animation: hero-glow-pulse 8s ease-in-out infinite alternate;
+  }
+  @keyframes hero-glow-pulse {
+    0% { transform: translate(-50%, -50%) scale(0.96); opacity: 0.6; }
+    50% { transform: translate(-50%, -50%) scale(1.06); opacity: 0.9; }
+    100% { transform: translate(-50%, -50%) scale(0.96); opacity: 0.6; }
+  }
+  [data-theme="light"] .hero-2d-glow {
+    background: radial-gradient(ellipse at center, rgba(251, 191, 36, 0.22) 0%, rgba(245, 158, 11, 0.08) 45%, transparent 75%);
+  }
+
+  /* PsychSAT scattered scores (Easter Egg) */
+  .score-scatter {
+    position: absolute;
+    font-family: 'Comic Sans MS', 'Segoe UI', cursive, sans-serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: #c4b5fd;
+    text-shadow: 0 0 16px rgba(139, 92, 246, 0.95), 0 0 30px rgba(196, 181, 253, 0.65);
+    opacity: 0.92;
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 4;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease, color 0.2s ease;
+    animation: score-pulse 4.5s ease-in-out infinite alternate;
+  }
+  .score-scatter:hover {
+    transform: scale(1.35) rotate(0deg) !important;
+    color: #fef08a !important;
+    text-shadow: 0 0 20px #fef08a, 0 0 40px rgba(254, 240, 138, 0.8) !important;
+    filter: drop-shadow(0 0 14px rgba(254, 240, 138, 0.85));
+  }
+  [data-theme="light"] .score-scatter {
+    color: #7c3aed;
+    text-shadow: 0 0 14px rgba(124, 58, 237, 0.45);
+  }
+  @keyframes score-pulse {
+    0% { transform: scale(1) translateY(0px); }
+    50% { transform: scale(1.08) translateY(-6px); }
+    100% { transform: scale(1) translateY(0px); }
+  }
+  .s1 { top: 30px; left: 240px; transform: rotate(-12deg); animation-delay: 0s; }
+  .s2 { top: 115px; left: 170px; transform: rotate(8deg); animation-delay: 0.6s; }
+  .s3 { bottom: 125px; left: 180px; transform: rotate(-6deg); animation-delay: 1.2s; }
+  .s4 { bottom: 30px; left: 260px; transform: rotate(10deg); animation-delay: 1.8s; }
+  .s5 { top: 35px; right: 240px; transform: rotate(14deg); animation-delay: 0.9s; }
+  .s6 { top: 125px; right: 170px; transform: rotate(-10deg); animation-delay: 1.5s; }
+  .s7 { bottom: 125px; right: 190px; transform: rotate(12deg); animation-delay: 2.1s; }
+  .s8 { bottom: 30px; right: 260px; transform: rotate(-8deg); animation-delay: 0.3s; }
+
+  /* Cissia Tail Animation (Easter Egg) */
+  .cissia-tail-wrapper {
+    position: absolute;
+    right: -25px;
+    bottom: -30px;
+    width: 220px;
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 12;
+    transform-origin: 20% 20%;
+    animation: cissia-tail-sway 4s ease-in-out infinite alternate;
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+  .cissia-tail-wrapper:hover {
+    animation: cissia-tail-wag 0.8s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 20px rgba(167, 139, 250, 0.9)) drop-shadow(0 6px 20px rgba(0,0,0,0.8));
+  }
+  .cissia-tail-img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 8px 24px rgba(139, 92, 246, 0.7)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.85));
+  }
+  @keyframes cissia-tail-sway {
+    0% { transform: rotate(-8deg) translateY(0); }
+    50% { transform: rotate(18deg) translateY(-14px) scale(1.05); }
+    100% { transform: rotate(-10deg) translateY(6px); }
+  }
+  @keyframes cissia-tail-wag {
+    0% { transform: rotate(-14deg) scale(1.08); }
+    100% { transform: rotate(24deg) scale(1.12); }
+  }
+
+  /* Miyabi Ears (Top & Bottom Easter Eggs) */
+  .miyabi-ear-top {
+    position: absolute;
+    top: -34px;
+    left: -10px;
+    width: 58px;
+    height: auto;
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 20;
+    filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.85)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+    animation: ear-twitch 4.5s ease-in-out infinite;
+    transform-origin: 50% 90%;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .miyabi-ear-top:hover {
+    transform: scale(1.3) rotate(-14deg);
+    filter: drop-shadow(0 0 20px rgba(196, 181, 253, 1)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
+  }
+  .miyabi-ear-bottom {
+    position: absolute;
+    top: -46px;
+    right: 50px;
+    width: 72px;
+    height: auto;
+    pointer-events: auto;
+    cursor: pointer;
+    z-index: 20;
+    filter: drop-shadow(0 0 16px rgba(139, 92, 246, 0.85)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8));
+    transform-origin: 50% 90%;
+    animation: ear-twitch-bottom 6s ease-in-out infinite;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .miyabi-ear-bottom:hover {
+    transform: scale(1.28) rotate(12deg) translateY(-6px);
+    filter: drop-shadow(0 0 24px rgba(196, 181, 253, 1)) drop-shadow(0 6px 16px rgba(0, 0, 0, 0.9));
+  }
+  @keyframes ear-twitch {
+    0%, 88%, 100% { transform: rotate(0deg); }
+    90% { transform: rotate(-16deg) scale(1.1); }
+    93% { transform: rotate(12deg) scale(1.08); }
+    96% { transform: rotate(-6deg); }
+  }
+  @keyframes ear-twitch-bottom {
+    0%, 86%, 100% { transform: rotate(0deg); }
+    88% { transform: rotate(16deg) scale(1.12); }
+    92% { transform: rotate(-10deg) scale(1.06); }
+    95% { transform: rotate(4deg); }
+  }
+
+  /* Easter Egg Toast Notification */
+  .easter-egg-toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(40px) scale(0.9);
+    background: rgba(16, 18, 29, 0.96);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--neon-purple-border);
+    color: var(--neon-lilac);
+    font-size: 14.5px;
+    font-weight: 700;
+    padding: 12px 28px;
+    border-radius: 99px;
+    box-shadow: 0 0 35px rgba(139, 92, 246, 0.5), 0 8px 32px rgba(0,0,0,0.8);
+    pointer-events: none;
+    z-index: 99999;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .easter-egg-toast.show {
+    transform: translateX(-50%) translateY(0) scale(1);
+    opacity: 1;
+  }
+
+  /* ========================================================= */
+  /* PSYCHSAT NAVBAR                                           */
+  /* ========================================================= */
+  .ps-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    width: 100%;
+    background: rgba(8, 9, 14, 0.85);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .ps-nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 66px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .ps-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    cursor: pointer;
+  }
+  .ps-brand-badge {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: var(--neon-purple-subtle);
+    color: var(--neon-lilac);
+    border: 1px solid var(--neon-purple-border);
+    padding: 3px 9px;
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+  }
+  .ps-brand-text {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+  .ps-brand-text span {
+    color: var(--neon-purple);
+  }
+  .ps-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .ps-nav-link {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.15s ease;
+    cursor: pointer;
+  }
+  .ps-nav-link:hover {
+    color: var(--text-primary);
+  }
+  .ps-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* ========================================================= */
+  /* SCREEN 1: PSYCHSAT LANDING HUB                            */
+  /* ========================================================= */
+  #homeHubView {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    padding-bottom: 90px;
+    position: relative;
+    z-index: 1;
+  }
+  .hub-container {
+    width: 100%;
+    max-width: 1120px;
+    padding: 0 24px;
+    margin: 0 auto;
+    position: relative;
+    transform: skewY(var(--scroll-skew, 0deg));
+    transition: transform 0.08s ease-out;
+    will-change: transform;
+  }
+
+  /* HERO SECTION */
+  .ps-hero {
+    position: relative;
+    padding: 56px 0 36px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Score Target Ruler (PsychSAT signature) */
+  .ps-score-ruler {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(16, 18, 29, 0.82);
+    border: 1px solid var(--neon-purple-border);
+    backdrop-filter: blur(10px);
+    padding: 6px 18px;
+    border-radius: 99px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--neon-lilac);
+    margin-bottom: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 16px rgba(139, 92, 246, 0.2);
+    position: relative;
+    z-index: 5;
+  }
+  [data-theme="light"] .ps-score-ruler {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(109, 40, 217, 0.3);
+    color: #475569;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  }
+  .ps-score-pill {
+    padding: 3px 9px;
+    border-radius: 99px;
+    transition: all 0.2s ease;
+  }
+  .ps-score-pill.active {
+    background: var(--neon-purple);
+    color: #ffffff !important;
+    font-weight: 800;
+    box-shadow: 0 0 16px rgba(139, 92, 246, 0.7);
+  }
+
+  .hub-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 12px;
+    border-radius: 99px;
+    background: var(--neon-purple-subtle);
+    border: 1px solid var(--neon-purple-border);
+    color: var(--neon-lilac);
+    margin-bottom: 18px;
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.25);
+  }
+  /* HERO PRE-TITLE FROSTED BADGE & GLOW */
+  .hero-pre {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    color: var(--neon-lilac);
+    font-style: italic;
+    margin-bottom: 20px;
+    display: inline-block;
+    background: rgba(16, 18, 29, 0.78);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    padding: 5px 20px;
+    border-radius: 99px;
+    box-shadow: 0 0 16px rgba(139, 92, 246, 0.25);
+    animation: hero-pre-glow 4.5s ease-in-out infinite alternate;
+    position: relative;
+    z-index: 5;
+  }
+  [data-theme="light"] .hero-pre {
+    background: rgba(255, 255, 255, 0.88);
+    color: #6d28d9;
+    border: 1px solid rgba(109, 40, 217, 0.25);
+    box-shadow: 0 2px 10px rgba(109, 40, 217, 0.15);
+  }
+  @keyframes hero-pre-glow {
+    0%, 100% { opacity: 0.88; text-shadow: 0 0 8px rgba(196, 181, 253, 0.4); letter-spacing: 0.16em; }
+    50% { opacity: 1; text-shadow: 0 0 20px rgba(139, 92, 246, 0.95), 0 0 36px rgba(196, 181, 253, 0.6); letter-spacing: 0.18em; }
+  }
+
+  /* HEADLINE WITH ETHEREAL NEON PULSE & CRISP LEGIBILITY */
+  .hub-title {
+    font-size: 52px;
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    line-height: 1.15;
+    margin-bottom: 22px;
+    max-width: 860px;
+    color: #ffffff;
+    position: relative;
+    z-index: 5;
+    text-shadow: 0 4px 28px rgba(0, 0, 0, 0.98), 0 2px 8px rgba(0, 0, 0, 0.9);
+    animation: title-glow 5s ease-in-out infinite alternate;
+  }
+  [data-theme="light"] .hub-title {
+    color: #0f172a;
+    text-shadow: 0 2px 18px rgba(255, 255, 255, 0.95), 0 1px 4px rgba(255, 255, 255, 0.9);
+  }
+  @keyframes title-glow {
+    0%, 100% { filter: drop-shadow(0 0 12px rgba(139, 92, 246, 0.3)); }
+    50% { filter: drop-shadow(0 0 26px rgba(196, 181, 253, 0.7)); }
+  }
+
+  /* HIGHLIGHT BADGES: INDEPENDENT FLOATING PULSES & HOVER FLEX */
+  .hl-purple, .hl-yellow, .hl-mint {
+    -webkit-text-fill-color: initial !important;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, filter 0.25s ease;
+    cursor: default;
+  }
+  .hl-purple {
+    background: rgba(167, 139, 250, 0.38);
+    padding: 2px 14px;
+    border-radius: 8px;
+    color: #ffffff;
+    display: inline-block;
+    box-shadow: 0 0 16px rgba(167, 139, 250, 0.35);
+    animation: hl-float-1 4.5s ease-in-out infinite alternate;
+  }
+  .hl-yellow {
+    background: rgba(253, 224, 71, 0.3);
+    padding: 2px 14px;
+    border-radius: 8px;
+    color: #fef08a;
+    display: inline-block;
+    box-shadow: 0 0 16px rgba(253, 224, 71, 0.3);
+    animation: hl-float-2 5.2s ease-in-out infinite alternate 0.4s;
+  }
+  .hl-mint {
+    background: rgba(110, 231, 183, 0.28);
+    padding: 2px 14px;
+    border-radius: 8px;
+    color: #a7f3d0;
+    display: inline-block;
+    box-shadow: 0 0 16px rgba(110, 231, 183, 0.3);
+    animation: hl-float-3 4.8s ease-in-out infinite alternate 0.8s;
+  }
+  .hl-purple:hover {
+    transform: scale(1.08) translateY(-4px);
+    box-shadow: 0 0 28px rgba(167, 139, 250, 0.75);
+  }
+  .hl-yellow:hover {
+    transform: scale(1.08) translateY(-4px);
+    box-shadow: 0 0 28px rgba(253, 224, 71, 0.7);
+  }
+  .hl-mint:hover {
+    transform: scale(1.08) translateY(-4px);
+    box-shadow: 0 0 28px rgba(110, 231, 183, 0.7);
+  }
+  @keyframes hl-float-1 {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+    100% { transform: translateY(1.5px); }
+  }
+  @keyframes hl-float-2 {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(2px); }
+  }
+  @keyframes hl-float-3 {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-3.5px); }
+    100% { transform: translateY(1px); }
+  }
+
+  [data-theme="light"] .hl-purple {
+    color: #6d28d9;
+    background: rgba(124, 58, 237, 0.16);
+    box-shadow: 0 0 14px rgba(124, 58, 237, 0.2);
+  }
+  [data-theme="light"] .hl-yellow {
+    color: #854d0e;
+    background: rgba(234, 179, 8, 0.22);
+    box-shadow: 0 0 14px rgba(234, 179, 8, 0.2);
+  }
+  [data-theme="light"] .hl-mint {
+    color: #065f46;
+    background: rgba(16, 185, 129, 0.2);
+    box-shadow: 0 0 14px rgba(16, 185, 129, 0.2);
+  }
+
+  /* HERO SUBTITLE HOVER LIFT & GLOW */
+  .hub-subtitle {
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: #f8fafc;
+    max-width: 740px;
+    margin-bottom: 28px;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 2px 14px rgba(8, 9, 14, 0.95);
+    background: rgba(16, 18, 29, 0.76);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(139, 92, 246, 0.32);
+    border-radius: 12px;
+    padding: 12px 24px;
+    display: inline-block;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), 0 0 20px rgba(139, 92, 246, 0.15);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .hub-subtitle:hover {
+    transform: translateY(-2px);
+    border-color: rgba(167, 139, 250, 0.6);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 28px rgba(139, 92, 246, 0.3);
+  }
+  [data-theme="light"] .hub-subtitle {
+    color: #1e293b;
+    text-shadow: 0 1px 8px rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(109, 40, 217, 0.28);
+  }
+
+  /* Mode Bar */
+  .hub-mode-bar {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(23, 26, 43, 0.85);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+    padding: 4px;
+    border-radius: 12px;
+    gap: 4px;
+    margin-bottom: 34px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    z-index: 2;
+  }
+  .hub-mode-btn {
+    border: none;
+    background: transparent;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .hub-mode-btn:hover {
+    color: var(--text-primary);
+  }
+  .hub-mode-btn.active {
+    background: var(--neon-purple);
+    color: #ffffff;
+    box-shadow: 0 2px 10px rgba(139, 92, 246, 0.4);
+  }
+
+  /* STATS PILLS BAR */
+  .ps-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    width: 100%;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 2;
+  }
+  /* ps-stat-card defined with hover flex above */
+  .ps-stat-val {
+    font-family: var(--font-mono);
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .ps-stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* RESUME BANNER */
+  .resume-banner {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.18) 0%, rgba(16, 18, 29, 0.9) 100%);
+    border: 1px solid var(--neon-purple-border);
+    border-radius: 14px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .resume-banner:hover {
+    transform: translateY(-2px);
+    border-color: var(--neon-purple);
+  }
+  .resume-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .resume-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 3px;
+  }
+
+  /* SECTION HEADINGS WITH CYBER SCANNING BEAMS */
+  .hub-section-heading {
+    margin: 38px 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding-bottom: 12px;
+  }
+  .hub-section-heading::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--neon-purple) 0%, #38bdf8 35%, rgba(139, 92, 246, 0.25) 75%, transparent 100%);
+    background-size: 200% 100%;
+    border-radius: 99px;
+    animation: beam-sweep 6s ease-in-out infinite;
+    opacity: 0.8;
+  }
+  @keyframes beam-sweep {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 0%; }
+    100% { background-position: 0% 0%; }
+  }
+
+  .hub-section-title {
+    font-size: 21px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hub-section-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 99px;
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    text-transform: uppercase;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  }
+
+  /* SCORE RULER KINETIC ARROW TRAVEL */
+  .ps-score-ruler span:not(.ps-score-pill) {
+    animation: arrow-travel 2.8s ease-in-out infinite;
+    display: inline-block;
+  }
+  @keyframes arrow-travel {
+    0%, 100% { opacity: 0.45; transform: translateX(0); }
+    50% { opacity: 1; transform: translateX(3px); color: var(--neon-lilac); }
+  }
+
+  /* SCROLL REVEAL STAGGERED FADE-IN */
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(28px) scale(0.985);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* INTERACTIVE HOVER FLEX ON CARDS */
+  .ps-stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .ps-stat-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: var(--neon-purple-border);
+    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.25);
+  }
+
+  /* VOLUMES / VARIANTS GRID */
+  .volumes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-bottom: 28px;
+    position: relative;
+  }
+  .volume-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .volume-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--card-accent, var(--neon-purple));
+    opacity: 0.85;
+  }
+  .volume-card:hover {
+    transform: translateY(-5px) scale(1.008);
+    border-color: var(--card-accent, var(--neon-purple-border));
+    box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.5), 0 0 25px rgba(139, 92, 246, 0.2);
+  }
+
+  .volume-tag {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--card-accent, var(--neon-purple));
+    margin-bottom: 8px;
+    display: inline-block;
+  }
+  .volume-title {
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+  .volume-desc {
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-secondary);
+    margin-bottom: 18px;
+  }
+  .volume-stats {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .vol-stat-num {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+  .vol-stat-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* Button Row for Variants */
+  .variant-btn-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .variant-btn-row button {
+    flex: 1;
+    min-width: 120px;
+    justify-content: center;
+    padding: 9px 12px;
+    font-size: 12.5px;
+    border-radius: 8px;
+  }
+
+  /* FOOTER */
+  .ps-footer {
+    width: 100%;
+    margin-top: 50px;
+    padding: 30px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    max-width: 1120px;
+  }
+  .ps-footer-text {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .ps-footer-links {
+    display: flex;
+    gap: 16px;
+  }
+  .ps-footer-link {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+  .ps-footer-link:hover {
+    color: var(--text-primary);
+  }
+
+  /* ========================================================= */
+  /* SCREEN 2: TEST ARENA VIEW                                 */
+  /* ========================================================= */
+  #testArenaView {
+    display: none;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* HEADER */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 24px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    z-index: 20;
+  }
+  .brand-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .btn-hub-back {
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 8px;
+    color: var(--text-secondary);
+  }
+  .brand-title {
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .brand-badge {
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--neon-purple-subtle);
+    color: var(--neon-lilac);
+    border: 1px solid var(--neon-purple-border);
+    padding: 2px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .top-center {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .mode-pill {
+    display: inline-flex;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    padding: 3px;
+    border-radius: 9px;
+    gap: 2px;
+  }
+  .mode-btn {
+    border: none;
+    background: transparent;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .mode-btn.active {
+    background: var(--neon-purple);
+    color: #ffffff;
+    box-shadow: 0 1px 4px rgba(139, 92, 246, 0.4);
+  }
+  .timer-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    border-radius: 8px;
+  }
+  .timer-box.warning {
+    border-color: var(--incorrect);
+    color: var(--incorrect);
+    animation: timer-pulse 1s infinite alternate;
+  }
+  @keyframes timer-pulse {
+    from { opacity: 1; }
+    to { opacity: 0.6; }
+  }
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* ARENA SPLIT VIEW */
+  .test-arena {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+  }
+  .split-pane {
+    flex: 1;
+    overflow-y: auto;
+    padding: 32px 44px;
+    position: relative;
+  }
+  .pane-passage {
+    border-right: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+  .pane-question {
+    background: var(--bg-page);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* PASSAGE */
+  .passage-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .domain-tag {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--neon-purple);
+    background: var(--neon-purple-subtle);
+    border: 1px solid var(--neon-purple-border);
+    padding: 3px 9px;
+    border-radius: 6px;
+  }
+  .hl-tools {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .hl-tools span {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .hl-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: transform 0.15s ease;
+  }
+  .hl-dot:hover { transform: scale(1.18); }
+  .hl-dot.active { border-color: var(--text-primary); }
+  .hl-yellow { background: var(--hl-yellow); }
+  .hl-pink { background: var(--hl-pink); }
+  .hl-cyan { background: var(--hl-cyan); }
+
+  .passage-body {
+    font-family: var(--font-serif);
+    font-size: 17.5px;
+    line-height: 1.78;
+    color: var(--text-primary);
+    max-width: 660px;
+  }
+  .passage-body p { margin-bottom: 16px; }
+  .sat-blank {
+    display: inline-block;
+    min-width: 80px;
+    border-bottom: 2px solid var(--text-primary);
+    margin: 0 4px;
+    text-align: center;
+    font-style: italic;
+    color: var(--neon-purple);
+    font-weight: 600;
+  }
+  .sat-blank.filled {
+    border-bottom: 2px solid var(--neon-purple);
+    color: var(--neon-purple);
+    padding: 0 6px;
+  }
+
+  /* Highlighting marks */
+  mark.sat-hl {
+    border-radius: 3px;
+    padding: 2px 0;
+  }
+  mark.sat-hl-yellow { background: var(--hl-yellow); color: var(--hl-yellow-text); }
+  mark.sat-hl-pink { background: var(--hl-pink); color: var(--hl-pink-text); }
+  mark.sat-hl-cyan { background: var(--hl-cyan); color: var(--hl-cyan-text); }
+
+  /* Chart / Table in passage */
+  .chart-container {
+    margin: 20px 0;
+    max-width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px;
+    display: none;
+    text-align: center;
+  }
+  .chart-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  /* QUESTION PANE */
+  .q-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 22px;
+  }
+  .q-num-box {
+    background: var(--neon-purple);
+    color: #ffffff;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .q-module-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-left: 10px;
+  }
+  .flag-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .flag-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+  .flag-btn.active {
+    background: var(--flag-bg);
+    border-color: var(--flag-border);
+    color: var(--flag-color);
+  }
+
+  .question-stem {
+    font-size: 15.5px;
+    line-height: 1.6;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 22px;
+  }
+
+  /* OPTIONS */
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .opt-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    position: relative;
+  }
+  .opt-card:hover:not(.eliminated) {
+    border-color: var(--border-strong);
+    background: var(--bg-hover);
+  }
+  .opt-card.selected {
+    border-color: var(--neon-purple);
+    background: var(--neon-purple-subtle);
+    box-shadow: 0 0 0 1px var(--neon-purple);
+  }
+  .opt-card.correct {
+    border-color: var(--correct);
+    background: var(--correct-bg);
+    box-shadow: 0 0 0 1px var(--correct);
+  }
+  .opt-card.incorrect {
+    border-color: var(--incorrect);
+    background: var(--incorrect-bg);
+    box-shadow: 0 0 0 1px var(--incorrect);
+  }
+  .opt-card.eliminated {
+    opacity: 0.35;
+    background: var(--bg-subtle);
+    text-decoration: line-through;
+  }
+
+  .opt-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-strong);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: var(--text-secondary);
+    transition: all 0.15s ease;
+  }
+  .opt-card.selected .opt-circle {
+    border-color: var(--neon-purple);
+    background: var(--neon-purple);
+    color: #ffffff;
+  }
+  .opt-card.correct .opt-circle {
+    border-color: var(--correct);
+    background: var(--correct);
+    color: #ffffff;
+  }
+  .opt-card.incorrect .opt-circle {
+    border-color: var(--incorrect);
+    background: var(--incorrect);
+    color: #ffffff;
+  }
+
+  .opt-text {
+    flex: 1;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: var(--text-primary);
+  }
+  .opt-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-eliminate {
+    border: none;
+    background: transparent;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    padding: 3px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .btn-eliminate:hover {
+    background: var(--bg-subtle);
+    color: var(--text-primary);
+  }
+
+  /* CHECK ANSWER ROW */
+  .check-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .ans-feedback-tag {
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    display: none;
+  }
+  .ans-feedback-tag.correct {
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1px solid var(--correct-border);
+  }
+  .ans-feedback-tag.incorrect {
+    background: var(--incorrect-bg);
+    color: var(--incorrect);
+    border: 1px solid var(--incorrect-border);
+  }
+
+  /* EXPLANATION CARD */
+  .explanation-card {
+    display: none;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    margin-top: 10px;
+    animation: fadeIn 0.2s ease;
+  }
+  .explanation-card.show { display: block; }
+  .explanation-title {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--neon-purple);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .explanation-text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text-primary);
+  }
+
+  /* ARENA BOTTOM BAR */
+  .arena-footer {
+    height: 60px;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    flex-shrink: 0;
+  }
+  .nav-summary-btn {
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    padding: 7px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  .nav-summary-btn:hover {
+    background: var(--bg-hover);
+    border-color: var(--border-strong);
+  }
+
+  /* MODALS (PALETTE, TRANSITION, RESULTS) */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-backdrop.show { display: flex; }
+  .modal-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    max-width: 680px;
+    width: 100%;
+    padding: 28px;
+    box-shadow: var(--shadow-modal);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .modal-title {
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+  .modal-close {
+    font-size: 18px;
+    font-weight: 700;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+
+  /* PALETTE GRID */
+  .palette-filters {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .filter-pill {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    background: var(--bg-subtle);
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+  .filter-pill.active {
+    background: var(--neon-purple);
+    color: #ffffff;
+    border-color: var(--neon-purple);
+  }
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 8px;
+  }
+  .palette-cell {
+    aspect-ratio: 1;
+    border: 1px solid var(--border);
+    background: var(--bg-subtle);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+  }
+  .palette-cell:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+  .palette-cell.current {
+    border-color: var(--neon-purple);
+    box-shadow: 0 0 0 2px var(--neon-purple);
+    color: var(--text-primary);
+  }
+  .palette-cell.answered {
+    background: var(--neon-purple);
+    color: #ffffff;
+    border-color: var(--neon-purple);
+  }
+  .palette-cell.correct {
+    background: var(--correct);
+    color: #ffffff;
+    border-color: var(--correct);
+  }
+  .palette-cell.incorrect {
+    background: var(--incorrect);
+    color: #ffffff;
+    border-color: var(--incorrect);
+  }
+  .palette-cell.marked::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--flag-color);
+  }
+
+  /* MODULE TRANSITION MODAL (Official SAT Break Screen) */
+  .trans-box {
+    max-width: 540px;
+    text-align: center;
+    padding: 36px 32px;
+  }
+  .trans-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 99px;
+    background: var(--neon-purple-subtle);
+    border: 1px solid var(--neon-purple-border);
+    color: var(--neon-lilac);
+    margin-bottom: 16px;
+  }
+  .trans-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .trans-desc {
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+  }
+  .trans-stats {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .trans-stat-item {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 20px;
+    min-width: 100px;
+  }
+  .trans-stat-val {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+  .trans-stat-lbl {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* RESULTS MODAL (Official SAT 200-800 Scaled Report) */
+  .results-box {
+    max-width: 620px;
+    padding: 36px;
+    text-align: center;
+  }
+  .sat-score-huge {
+    font-family: var(--font-mono);
+    font-size: 64px;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 6px;
+    background: linear-gradient(180deg, #ffffff 30%, #c4b5fd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  [data-theme="light"] .sat-score-huge {
+    background: linear-gradient(180deg, #0f172a 30%, #6d28d9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sat-score-band {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--neon-lilac);
+    background: var(--neon-purple-subtle);
+    border: 1px solid var(--neon-purple-border);
+    display: inline-flex;
+    padding: 3px 12px;
+    border-radius: 99px;
+    margin-bottom: 20px;
+  }
+  .results-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 26px;
+  }
+  .res-stat-pill {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+  }
+  .res-stat-val {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+  .res-stat-lbl {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .domain-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 26px;
+    text-align: left;
+  }
+  .domain-bar-row {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+  }
+  .domain-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+  .domain-track {
+    height: 7px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .domain-fill {
+    height: 100%;
+    background: var(--neon-purple);
+    border-radius: 99px;
+    transition: width 0.5s ease;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .test-arena { flex-direction: column; overflow-y: auto; }
+    .split-pane { max-width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 20px; }
+    .hub-title { font-size: 32px; }
+    .volumes-grid { grid-template-columns: 1fr; }
+    .ps-stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .palette-grid { grid-template-columns: repeat(6, 1fr); }
+    .cissia-tail-wrapper { display: none; }
+    .ps-nav-links { display: none; }
+  }
+</style>
+
+<style>
+  /* Untimed Mode & Enhanced Pills */
+  .mode-btn.untimed-btn.active,
+  .hub-mode-btn.untimed-btn.active {
+    background: linear-gradient(135deg, #06b6d4, #0284c7) !important;
+    border-color: #38bdf8 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 16px rgba(14, 165, 233, 0.4) !important;
+  }
+  .timer-box.untimed-mode {
+    border-color: #0284c7 !important;
+    background: rgba(2, 132, 199, 0.12) !important;
+  }
+  .timer-box.untimed-mode #timerText {
+    color: #38bdf8 !important;
+    font-weight: 700;
+  }
+
+  /* Scan Modal / Viewer */
+  .scan-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    font-size: 11px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg-subtle);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: auto;
+  }
+  .scan-toggle-btn:hover {
+    color: var(--neon-purple);
+    border-color: var(--neon-purple);
+  }
+  .scan-modal-img {
+    max-width: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+</style>
+
 </head>
 <body>
 
-  <!-- =====================================================================
-       2D LANDING PAGE / HUB VIEW
-       ===================================================================== -->
-  <div id="hubView" class="hub-view">
-    <!-- Top Navigation -->
-    <header class="hub-nav">
-      <div class="hub-brand">
-        <div class="hub-logo-icon">🥷</div>
-        <div class="hub-title-group">
-          <h1>NINJA SAT <span class="hub-badge">Bluebook Suite</span></h1>
-        </div>
-      </div>
-      <div class="hub-nav-links">
-        <button id="hubShortcutsBtn" class="hub-link-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8"/></svg>
-          Shortcuts
-        </button>
-        <button id="hubGuideBtn" class="hub-link-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
-          Testing Guide
-        </button>
-      </div>
-    </header>
+<!-- Ambient Glows -->
+<div class="ps-aura" aria-hidden="true"></div>
+<div class="ps-aura-secondary" aria-hidden="true"></div>
 
-    <main class="hub-container">
-      <!-- Hero Section -->
-      <section class="hub-hero">
-        <div class="hero-tag"><span class="dot"></span> 100% Authentic Visual Fidelity • Zero Bugs</div>
-        <h2>Digital SAT Reading & Writing Practice</h2>
-        <p>
-          Master the Digital SAT with an authentic pixel-perfect recreation of College Board's Bluebook testing environment. 
-          Featuring full 54-question 2-module tests from Ninja English Practice Tests 1–5, official timers, 
-          Untimed practice modes, option eliminators, and question navigators.
-        </p>
-
-        <!-- Quick Stats -->
-        <div class="hub-stats-row">
-          <div class="stat-item">
-            <span class="stat-val">5</span>
-            <span class="stat-lbl">Practice Tests</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-val">10</span>
-            <span class="stat-lbl">Modules</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-val">270</span>
-            <span class="stat-lbl">R&W Questions</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-val">♾️</span>
-            <span class="stat-lbl">Untimed & Timed</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Resume Active Test Banner -->
-      <div id="resumeBanner" class="resume-banner" style="display: none;">
-        <div class="resume-info">
-          <h4 id="resumeTitle">Active Test Session Found</h4>
-          <p id="resumeSubtitle">Resume where you left off with preserved timer and responses.</p>
-        </div>
-        <div class="resume-actions">
-          <button id="resumeBtn" class="resume-btn">Resume Test</button>
-          <button id="discardBtn" class="discard-btn">Discard</button>
-        </div>
+<!-- ========================================================= -->
+<!-- SCREEN 1: PSYCHSAT LANDING HUB                            -->
+<!-- ========================================================= -->
+<div id="homeHubView">
+  <!-- TOP NAVBAR -->
+  <header class="ps-navbar">
+    <div class="ps-nav-inner">
+      <div class="ps-logo" onclick="showHub()">
+        <img src="assets/miyabi_ears_top.png" class="miyabi-ear-top" alt="Miyabi ear decoration" onclick="triggerEasterEgg('ear-top'); event.stopPropagation();" title="🦊 Focus Mode">
+        <span class="ps-brand-badge">NINJA SAT</span>
+        <span class="ps-brand-text">Reading & Writing <span>Suite</span></span>
       </div>
 
-      <!-- Practice Tests 2D Grid -->
-      <div id="testsGrid" class="tests-grid"></div>
+      <nav class="ps-nav-links">
+        <a class="ps-nav-link" onclick="startPracticeVolume('variant1')">Test 1</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('variant2')">Test 2</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('variant3')">Test 3</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('variant4')">Test 4</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('variant5')">Test 5</a>
+        <a class="ps-nav-link" href="#domainSection">Domain Mastery</a>
+      </nav>
 
-      <!-- Features Section -->
-      <section class="hub-features">
-        <h3>Bluebook System Capabilities</h3>
-        <div class="features-grid">
-          <div class="feature-box">
-            <div class="feature-icon">⏱️ / ♾️</div>
-            <h4>Timed & Untimed Modes</h4>
-            <p>Practice with official 32-minute module countdown timers, or toggle Untimed Mode anytime to study without pressure.</p>
-          </div>
-          <div class="feature-box">
-            <div class="feature-icon">🎯</div>
-            <h4>Crisp Visual Fidelity</h4>
-            <p>High-resolution authentic test questions with zero OCR artifacts. Exact typography, notes, and reading passages.</p>
-          </div>
-          <div class="feature-box">
-            <div class="feature-icon">✂️</div>
-            <h4>Option Eliminator</h4>
-            <p>Use the strikethrough tool (S̶) on answer choices to cross out incorrect options and eliminate distractions.</p>
-          </div>
-          <div class="feature-box">
-            <div class="feature-icon">📑</div>
-            <h4>Question Review Grid</h4>
-            <p>Jump to any question via the 1–27 navigator grid. Track answered, unanswered, and flagged questions at a glance.</p>
-          </div>
-        </div>
-      </section>
-    </main>
+      <div class="ps-nav-actions">
+        <button class="btn subtle" id="themeBtnNav" title="Toggle Theme" onclick="toggleTheme()">🌙</button>
+        <button class="btn primary" onclick="startSatExam(1)">Start Exam (Test 1)</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- COOL 2D HIGH-PERFORMANCE ANIMATED BACKGROUND -->
+  <div class="cyber-2d-background" id="cyber2dBackground">
+    <div class="cyber-grid-plane"></div>
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    <div class="ambient-orb orb-3"></div>
+    <canvas id="heroCanvas2D"></canvas>
   </div>
 
-  <!-- =====================================================================
-       AUTHENTIC BLUEBOOK TEST APP SHELL
-       ===================================================================== -->
-  <div id="testView" class="test-app-shell" style="display: none;">
-    <!-- Top Security Dashed Border -->
-    <div class="bb-dashed-border"></div>
+  <div class="hub-container">
 
-    <!-- Bluebook Header -->
-    <header class="bb-header">
-      <div class="bb-header-left">
-        <div id="bbSectionTitle" class="bb-section-title">Section 1, Module 1: Reading and Writing</div>
-        <button id="bbDirectionsBtn" class="bb-directions-btn">
-          Directions <span style="font-size: 10px;">▼</span>
-        </button>
+    <!-- HERO SECTION -->
+    <div class="ps-hero">
+      <div class="hero-2d-glow"></div>
+
+      <!-- Scattered Scores -->
+      <div class="score-scatter s1" onclick="triggerEasterEgg('score', this.textContent)" title="Target SAT Score 1590">1590</div>
+      <div class="score-scatter s2" onclick="triggerEasterEgg('score', this.textContent)" title="Target SAT Score 1530">1530</div>
+      <div class="score-scatter s3" onclick="triggerEasterEgg('score', this.textContent)" title="Target SAT Score 1470">1470</div>
+      <div class="score-scatter s4" onclick="triggerEasterEgg('score', this.textContent)" title="Target SAT Score 1550">1550</div>
+      <div class="score-scatter s5" onclick="triggerEasterEgg('score', this.textContent)" title="Target SAT Score 1520">1520</div>
+      <div class="score-scatter s6" onclick="triggerEasterEgg('score', this.textContent)" title="Target SAT Score 1600">1600</div>
+      <div class="score-scatter s7" onclick="triggerEasterEgg('score', this.textContent)" title="Target SAT Score 1500">1500</div>
+      <div class="score-scatter s8" onclick="triggerEasterEgg('score', this.textContent)" title="Target SAT Score 1580">1580</div>
+
+      <div class="hero-pre">— official digital sat reading & writing —</div>
+      <h1 class="hub-title">
+        <span class="hl-purple">Master</span> the <span class="hl-yellow">SAT</span> with <span class="hl-mint">Ninja Practice Suite</span>.
+      </h1>
+      <p class="hub-subtitle">Authentic College Board test forms with real SAT 2-module timed exam delivery (32m + 32m), Untimed Practice mode, official 200–800 scaled grading, Bluebook test tools, and 270 comprehensive practice questions.</p>
+
+      <!-- PsychSAT Score Ruler -->
+      <div class="ps-score-ruler scroll-reveal">
+        <span class="ps-score-pill">600</span>
+        <span>→</span>
+        <span class="ps-score-pill">680</span>
+        <span>→</span>
+        <span class="ps-score-pill">740</span>
+        <span>→</span>
+        <span class="ps-score-pill" style="border-color:var(--neon-purple);color:var(--neon-lilac);font-weight:700;">800 MAX</span>
       </div>
 
-      <!-- Center Timer & Untimed Controls -->
-      <div class="bb-timer-container">
-        <div class="timer-row" style="display: flex; align-items: center; gap: 8px;">
-          <div id="bbTimerDisplay" class="bb-timer-display">32:00</div>
-          <button id="bbTimerToggleBtn" class="bb-timer-toggle-btn">Hide</button>
-          <button id="bbUntimedToggleBtn" class="bb-untimed-toggle-btn" title="Toggle between timed countdown and untimed practice">
-            ♾️ Untimed
-          </button>
-        </div>
+      <!-- Mode Switcher (3 MODES) -->
+      <div class="hub-modes scroll-reveal">
+        <button class="hub-mode-btn active" id="hubModePractice" onclick="setMode('practice')">⚡ Practice Mode (Check Answer)</button>
+        <button class="hub-mode-btn" id="hubModeTest" onclick="setMode('test')">⏱️ Official SAT Exam (Timed 32m)</button>
+        <button class="hub-mode-btn untimed-btn" id="hubModeUntimed" onclick="setMode('untimed')">♾️ Untimed Mode (Take Your Time)</button>
       </div>
 
-      <!-- Right Header Tools -->
-      <div class="bb-header-right">
-        <button id="bbAnnotateBtn" class="bb-tool-btn" title="Highlight or annotate tools">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-          Annotate
-        </button>
-        <button id="bbMoreBtn" class="bb-tool-btn" title="More tools & options">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>
-          More
-        </button>
+      <!-- In-Progress Resume Banner -->
+      <div id="resumeBanner" class="resume-banner" style="display:none;" onclick="resumePractice()">
+        <div class="resume-title">⚡ Session in Progress</div>
+        <div class="resume-subtitle" id="resumeSubtitle">Continue where you left off.</div>
       </div>
-    </header>
-
-    <!-- Top Security Dashed Border Below Header -->
-    <div class="bb-dashed-border"></div>
-
-    <!-- Main Testing Split Area -->
-    <div id="bbMainArea" class="bb-main-area">
-      <!-- Left Pane: Crystal-Clear Reading Passage -->
-      <div id="bbLeftPane" class="bb-left-pane">
-        <div class="pane-content-wrapper">
-          <img id="bbPassageImg" class="bb-clean-img" src="" alt="Reading Passage" />
-        </div>
-      </div>
-
-      <!-- Resizable Center Divider -->
-      <div id="bbPaneDivider" class="bb-pane-divider" title="Drag to resize panes"></div>
-
-      <!-- Right Pane: Crystal-Clear Question & Interactive Choices -->
-      <div id="bbRightPane" class="bb-right-pane">
-        <!-- Question Header: [ Q# ] Mark for Review -->
-        <div class="bb-question-header">
-          <div id="bbQBadge" class="bb-q-badge">1</div>
-          <button id="bbMarkReviewBtn" class="bb-mark-review-btn">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-            <span id="bbMarkText">Mark for Review</span>
-          </button>
-        </div>
-
-        <!-- Question Prompt & Options Image -->
-        <div class="pane-content-wrapper">
-          <img id="bbQuestionImg" class="bb-clean-img" src="" alt="Question and Options" />
-        </div>
-
-        <!-- Interactive Choice Selection Bar -->
-        <div class="bb-interactive-choice-bar">
-          <div class="choice-bar-label">Select Your Answer:</div>
-          <div class="choice-bar-grid">
-            <div class="choice-btn-wrapper" data-opt="A">
-              <button class="bb-choice-btn" data-opt="A">
-                <span class="choice-pill">A</span>
-                <span class="choice-text">Option A</span>
-              </button>
-              <button class="bb-strike-toggle" data-strike="A" title="Eliminate option A"><s>S</s></button>
-            </div>
-            <div class="choice-btn-wrapper" data-opt="B">
-              <button class="bb-choice-btn" data-opt="B">
-                <span class="choice-pill">B</span>
-                <span class="choice-text">Option B</span>
-              </button>
-              <button class="bb-strike-toggle" data-strike="B" title="Eliminate option B"><s>S</s></button>
-            </div>
-            <div class="choice-btn-wrapper" data-opt="C">
-              <button class="bb-choice-btn" data-opt="C">
-                <span class="choice-pill">C</span>
-                <span class="choice-text">Option C</span>
-              </button>
-              <button class="bb-strike-toggle" data-strike="C" title="Eliminate option C"><s>S</s></button>
-            </div>
-            <div class="choice-btn-wrapper" data-opt="D">
-              <button class="bb-choice-btn" data-opt="D">
-                <span class="choice-pill">D</span>
-                <span class="choice-text">Option D</span>
-              </button>
-              <button class="bb-strike-toggle" data-strike="D" title="Eliminate option D"><s>S</s></button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Line Reader Tool Overlay -->
-      <div id="bbLineReader" class="bb-line-reader"></div>
     </div>
 
-    <!-- Bottom Security Dashed Border -->
-    <div class="bb-dashed-border"></div>
+    <!-- OVERALL SUITE SUMMARY -->
+    <div class="vol-stats-bar scroll-reveal">
+      <div class="vol-stat-group">
+        <span class="vol-stat-label" id="statFullProgress">0 / 270 Answered</span>
+        <div class="vol-stat-bar-outer"><div class="vol-stat-bar-inner" id="statFullBar" style="width:0%;"></div></div>
+      </div>
+      <div class="vol-stat-pills">
+        <span class="vol-pill">5 Official Practice Tests</span>
+        <span class="vol-pill">10 Modules (27 Qs each)</span>
+        <span class="vol-pill">270 Total Questions</span>
+      </div>
+    </div>
 
-    <!-- Bottom Navigation Bar -->
-    <footer class="bb-footer">
-      <div class="bb-footer-left">
-        <button id="bbEndModuleBtn" class="bb-end-module-btn">End module early</button>
+    <!-- SECTION: 5 OFFICIAL SAT PRACTICE TESTS -->
+    <div class="hub-section-heading scroll-reveal">
+      <h2>Digital SAT Practice Tests</h2>
+      <p>5 full-length Reading & Writing tests. Each test features two official 27-question modules.</p>
+    </div>
+
+    <div class="vol-grid">
+      <!-- MASTER 270-QUESTION SUITE -->
+      <div class="vol-card full-suite scroll-reveal" onclick="startPracticeVolume('all')">
+        <img src="assets/cissia_tail.png" class="cissia-tail-corner" alt="Cissia tail decoration" onclick="triggerEasterEgg('tail'); event.stopPropagation();" title="🐱 Cissia's Lucky Tail">
+        <div class="vol-badge" style="background:var(--neon-purple);color:#fff;">Master Suite • 270 Questions</div>
+        <div class="vol-title">Complete 5-Test Marathon</div>
+        <div class="vol-desc">Practice all 270 questions continuously across all 5 official practice test forms with instant feedback, notes, and progress tracking.</div>
+        
+        <div class="vol-meta">
+          <span>📚 270 Questions</span>
+          <span>⚡ Tests 1 – 5</span>
+          <span>🎯 All Domains</span>
+        </div>
+
+        <div class="vol-actions">
+          <button class="btn primary" onclick="startPracticeVolume('all'); event.stopPropagation();">Start Full Suite →</button>
+          <button class="btn subtle" onclick="startSatExam(1, true); event.stopPropagation();">♾️ Untimed Test</button>
+        </div>
       </div>
 
-      <!-- Center Question Navigator Dropdown Button -->
-      <div class="bb-footer-center">
-        <button id="bbNavGridBtn" class="bb-nav-grid-btn">
-          <span id="bbNavGridLabel">Question 1 of 27</span>
-          <span style="font-size: 10px;">▼</span>
-        </button>
+      <!-- PRACTICE TEST 1 -->
+      <div class="vol-card scroll-reveal" onclick="startSatExam(1)">
+        <div class="vol-badge">Official Test 1 • 54 Questions</div>
+        <div class="vol-title">Ninja Practice Test 1</div>
+        <div class="vol-desc">Two official 27-question modules covering Words in Context, Command of Evidence, Grammar Conventions, and Rhetorical Synthesis.</div>
+        
+        <div class="vol-progress-wrap">
+          <div class="vol-progress-text"><span id="progV1">0</span> / 54 Answered</div>
+          <div class="vol-progress-bar"><div class="vol-progress-fill" id="barV1" style="width:0%;"></div></div>
+        </div>
+
+        <div class="vol-actions">
+          <button class="btn primary" onclick="startSatExam(1); event.stopPropagation();">⏱️ Timed (32m)</button>
+          <button class="btn subtle" onclick="startSatExam(1, true); event.stopPropagation();">♾️ Untimed</button>
+          <button class="btn subtle" onclick="startPracticeVolume('variant1', 'm1'); event.stopPropagation();">Mod 1</button>
+          <button class="btn subtle" onclick="startPracticeVolume('variant1', 'm2'); event.stopPropagation();">Mod 2</button>
+        </div>
       </div>
 
-      <!-- Navigation Next / Back Buttons -->
-      <div class="bb-footer-right">
-        <button id="bbBtnBack" class="bb-btn-back" disabled>Back</button>
-        <button id="bbBtnNext" class="bb-btn-next">Next</button>
+      <!-- PRACTICE TEST 2 -->
+      <div class="vol-card scroll-reveal" onclick="startSatExam(2)">
+        <div class="vol-badge">Official Test 2 • 54 Questions</div>
+        <div class="vol-title">Ninja Practice Test 2</div>
+        <div class="vol-desc">Comprehensive test form featuring high-yield Standard English Conventions, nuanced literature excerpts, and scientific data tables.</div>
+        
+        <div class="vol-progress-wrap">
+          <div class="vol-progress-text"><span id="progV2">0</span> / 54 Answered</div>
+          <div class="vol-progress-bar"><div class="vol-progress-fill" id="barV2" style="width:0%;"></div></div>
+        </div>
+
+        <div class="vol-actions">
+          <button class="btn primary" onclick="startSatExam(2); event.stopPropagation();">⏱️ Timed (32m)</button>
+          <button class="btn subtle" onclick="startSatExam(2, true); event.stopPropagation();">♾️ Untimed</button>
+          <button class="btn subtle" onclick="startPracticeVolume('variant2', 'm1'); event.stopPropagation();">Mod 1</button>
+          <button class="btn subtle" onclick="startPracticeVolume('variant2', 'm2'); event.stopPropagation();">Mod 2</button>
+        </div>
       </div>
+
+      <!-- PRACTICE TEST 3 -->
+      <div class="vol-card scroll-reveal" onclick="startSatExam(3)">
+        <div class="vol-badge">Official Test 3 • 54 Questions</div>
+        <div class="vol-title">Ninja Practice Test 3</div>
+        <div class="vol-desc">Complete 2-module exam challenging your command of logical transitions, boundary punctuation, and text structure analysis.</div>
+        
+        <div class="vol-progress-wrap">
+          <div class="vol-progress-text"><span id="progV3">0</span> / 54 Answered</div>
+          <div class="vol-progress-bar"><div class="vol-progress-fill" id="barV3" style="width:0%;"></div></div>
+        </div>
+
+        <div class="vol-actions">
+          <button class="btn primary" onclick="startSatExam(3); event.stopPropagation();">⏱️ Timed (32m)</button>
+          <button class="btn subtle" onclick="startSatExam(3, true); event.stopPropagation();">♾️ Untimed</button>
+          <button class="btn subtle" onclick="startPracticeVolume('variant3', 'm1'); event.stopPropagation();">Mod 1</button>
+          <button class="btn subtle" onclick="startPracticeVolume('variant3', 'm2'); event.stopPropagation();">Mod 2</button>
+        </div>
+      </div>
+
+      <!-- PRACTICE TEST 4 -->
+      <div class="vol-card scroll-reveal" onclick="startSatExam(4)">
+        <div class="vol-badge">Official Test 4 • 54 Questions</div>
+        <div class="vol-title">Ninja Practice Test 4</div>
+        <div class="vol-desc">Rigorous test form emphasizing paired texts, cross-textual reasoning, hypothesis evaluation, and precise vocabulary.</div>
+        
+        <div class="vol-progress-wrap">
+          <div class="vol-progress-text"><span id="progV4">0</span> / 54 Answered</div>
+          <div class="vol-progress-bar"><div class="vol-progress-fill" id="barV4" style="width:0%;"></div></div>
+        </div>
+
+        <div class="vol-actions">
+          <button class="btn primary" onclick="startSatExam(4); event.stopPropagation();">⏱️ Timed (32m)</button>
+          <button class="btn subtle" onclick="startSatExam(4, true); event.stopPropagation();">♾️ Untimed</button>
+          <button class="btn subtle" onclick="startPracticeVolume('variant4', 'm1'); event.stopPropagation();">Mod 1</button>
+          <button class="btn subtle" onclick="startPracticeVolume('variant4', 'm2'); event.stopPropagation();">Mod 2</button>
+        </div>
+      </div>
+
+      <!-- PRACTICE TEST 5 -->
+      <div class="vol-card scroll-reveal" onclick="startSatExam(5)">
+        <div class="vol-badge">Official Test 5 • 54 Questions</div>
+        <div class="vol-title">Ninja Practice Test 5</div>
+        <div class="vol-desc">Final mastery test form with advanced sentence structure, inference synthesis, and high-difficulty reading passages.</div>
+        
+        <div class="vol-progress-wrap">
+          <div class="vol-progress-text"><span id="progV5">0</span> / 54 Answered</div>
+          <div class="vol-progress-bar"><div class="vol-progress-fill" id="barV5" style="width:0%;"></div></div>
+        </div>
+
+        <div class="vol-actions">
+          <button class="btn primary" onclick="startSatExam(5); event.stopPropagation();">⏱️ Timed (32m)</button>
+          <button class="btn subtle" onclick="startSatExam(5, true); event.stopPropagation();">♾️ Untimed</button>
+          <button class="btn subtle" onclick="startPracticeVolume('variant5', 'm1'); event.stopPropagation();">Mod 1</button>
+          <button class="btn subtle" onclick="startPracticeVolume('variant5', 'm2'); event.stopPropagation();">Mod 2</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: DOMAIN MASTERY -->
+    <div class="hub-section-heading scroll-reveal" id="domainSection" style="margin-top:50px;">
+      <h2>SAT Domain Mastery</h2>
+      <p>Target specific skill categories across all 270 questions to build targeted strengths.</p>
+    </div>
+
+    <div class="domain-grid">
+      <div class="domain-card scroll-reveal" onclick="startPracticeVolume('Craft and Structure')">
+        <div class="domain-badge">Domain 1</div>
+        <div class="domain-title">Craft and Structure</div>
+        <div class="domain-sub">Words in Context, Text Structure & Purpose, Cross-Text Connections</div>
+        <div class="domain-stats">
+          <span id="domainCount1">70 Questions</span>
+          <button class="btn subtle" style="padding:4px 10px;font-size:12px;">Practice →</button>
+        </div>
+      </div>
+
+      <div class="domain-card scroll-reveal" onclick="startPracticeVolume('Information and Ideas')">
+        <div class="domain-badge">Domain 2</div>
+        <div class="domain-title">Information and Ideas</div>
+        <div class="domain-sub">Central Ideas & Details, Command of Evidence, Inferences</div>
+        <div class="domain-stats">
+          <span id="domainCount2">75 Questions</span>
+          <button class="btn subtle" style="padding:4px 10px;font-size:12px;">Practice →</button>
+        </div>
+      </div>
+
+      <div class="domain-card scroll-reveal" onclick="startPracticeVolume('Standard English Conventions')">
+        <div class="domain-badge">Domain 3</div>
+        <div class="domain-title">Standard English Conventions</div>
+        <div class="domain-sub">Sentence Boundaries, Form, Structure, and Sense</div>
+        <div class="domain-stats">
+          <span id="domainCount3">65 Questions</span>
+          <button class="btn subtle" style="padding:4px 10px;font-size:12px;">Practice →</button>
+        </div>
+      </div>
+
+      <div class="domain-card scroll-reveal" onclick="startPracticeVolume('Expression of Ideas')">
+        <div class="domain-badge">Domain 4</div>
+        <div class="domain-title">Expression of Ideas</div>
+        <div class="domain-sub">Rhetorical Synthesis, Logical Transitions</div>
+        <div class="domain-stats">
+          <span id="domainCount4">60 Questions</span>
+          <button class="btn subtle" style="padding:4px 10px;font-size:12px;">Practice →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER WITH MIYABI'S EARS -->
+    <footer class="ps-footer">
+      <div class="footer-decor">
+        <img src="assets/miyabi_ears_bottom.png" class="miyabi-ear-bottom" alt="Miyabi decoration" onclick="triggerEasterEgg('ear-bottom');" title="🦊 Miyabi Ears">
+      </div>
+      <p>Digital SAT® is a registered trademark of the College Board, which is not affiliated with and does not endorse this practice suite.</p>
     </footer>
+
   </div>
+</div>
 
-  <!-- =====================================================================
-       MODULE REVIEW SCREEN (END OF MODULE)
-       ===================================================================== -->
-  <div id="reviewView" class="test-app-shell" style="display: none;">
-    <div class="bb-dashed-border"></div>
-    <header class="bb-header">
-      <div class="bb-header-left">
-        <div id="reviewSectionTitle" class="bb-section-title">Section 1, Module 1: Review</div>
+<!-- ========================================================= -->
+<!-- SCREEN 2: PSYCHSAT TEST ARENA                             -->
+<!-- ========================================================= -->
+<div id="testArenaView" style="display:none;">
+  <!-- ARENA HEADER -->
+  <header class="arena-header">
+    <div class="arena-header-left">
+      <button class="btn subtle btn-hub-back" id="backToHubBtn" title="Back to Home Menu">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>Hub</span>
+      </button>
+      <span class="brand-badge" id="arenaBadge">Test 1 • 270 Qs</span>
+    </div>
+
+    <div class="arena-header-center">
+      <!-- Mode Toggle -->
+      <div class="mode-toggle">
+        <button class="mode-btn active" id="modePracticeBtn">⚡ Practice</button>
+        <button class="mode-btn" id="modeTestBtn">⏱️ Exam</button>
+        <button class="mode-btn untimed-btn" id="modeUntimedBtn">♾️ Untimed</button>
       </div>
-      <div class="bb-timer-container">
-        <div id="reviewTimerDisplay" class="bb-timer-display">32:00</div>
-      </div>
-      <div class="bb-header-right"></div>
-    </header>
-    <div class="bb-dashed-border"></div>
 
-    <div class="bb-review-view">
-      <div class="bb-review-container">
-        <div class="bb-review-header">
-          <h2 id="reviewHeading">Section 1, Module 1: Review</h2>
-          <p>
-            Check your work before submitting this module. Once you move on, you cannot return to this module.
-            Click any question number below to review or change your response.
-          </p>
-        </div>
-
-        <div id="reviewAlertBox" class="bb-review-alert" style="display: none;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span id="reviewAlertText">You have unanswered questions.</span>
-        </div>
-
-        <!-- 27-Question Interactive Grid -->
-        <div id="reviewGrid" class="bb-review-grid"></div>
-
-        <div class="bb-review-actions">
-          <button id="reviewBackBtn" class="bb-btn-back">Return to Questions</button>
-          <button id="reviewProceedBtn" class="bb-btn-next">Next Section</button>
-        </div>
+      <!-- Official SAT Timer Display -->
+      <div class="timer-box" id="timerBox">
+        <span id="timerText">32:00</span>
+        <button id="timerToggleBtn" class="subtle" style="padding:2px 4px;font-size:11px;" title="Pause / Play">⏸</button>
+        <button id="timerHideBtn" class="subtle" style="padding:2px 6px;font-size:11px;" title="Hide Timer">Hide</button>
       </div>
     </div>
 
-    <div class="bb-dashed-border"></div>
-  </div>
-
-  <!-- =====================================================================
-       10-MINUTE BREAK SCREEN
-       ===================================================================== -->
-  <div id="breakView" class="test-app-shell" style="display: none;">
-    <div class="bb-dashed-border"></div>
-    <div class="bb-break-view">
-      <div class="bb-break-icon">☕</div>
-      <h2 class="bb-break-title">Take a Break</h2>
-      <p class="bb-break-desc">
-        You have completed Module 1! You can now take an optional 10-minute break before proceeding to Module 2.
-        Your timer for Module 2 will not start until you click resume.
-      </p>
-      <div id="breakTimerDisplay" class="bb-break-timer-circle">10:00</div>
-      <button id="resumeBreakBtn" class="bb-resume-test-btn">Resume Testing (Start Module 2)</button>
+    <div class="arena-header-right">
+      <button class="btn subtle" id="themeBtn" title="Toggle Theme">🌙</button>
+      <button class="btn primary" id="finishTestTopBtn">View Results</button>
     </div>
-    <div class="bb-dashed-border"></div>
-  </div>
+  </header>
 
-  <!-- =====================================================================
-       RESULTS & PERFORMANCE VIEW
-       ===================================================================== -->
-  <div id="resultsView" class="test-app-shell" style="display: none;">
-    <div class="bb-dashed-border"></div>
-    <div class="bb-results-view">
-      <div class="results-container">
-        <div class="results-card">
-          <div class="results-header">
-            <div style="font-size: 40px; margin-bottom: 8px;">🎯</div>
-            <h2 id="resultsTitle">Practice Test Completed!</h2>
-            <p style="color: #64748b; margin-top: 6px;">Digital SAT Reading and Writing Performance Summary</p>
+  <!-- ARENA SPLIT VIEW -->
+  <div class="arena-body">
+    <!-- LEFT PANE: PASSAGE & HIGHLIGHTER -->
+    <div class="split-pane pane-passage" id="passagePane">
+      <div class="passage-header">
+        <span class="domain-tag" id="domainTag">Words in Context</span>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <div class="hl-toolbar">
+            <button class="hl-tool yellow" onclick="applyHighlight('yellow')" title="Highlight Yellow"></button>
+            <button class="hl-tool pink" onclick="applyHighlight('pink')" title="Highlight Pink"></button>
+            <button class="hl-tool cyan" onclick="applyHighlight('cyan')" title="Highlight Cyan"></button>
+            <button class="btn subtle" id="clearHlBtn" style="padding:2px 6px;font-size:11px;">Clear</button>
           </div>
-
-          <div class="results-stats-row">
-            <div class="res-stat-card">
-              <div id="resStatAnswered" class="res-stat-num">54</div>
-              <div class="res-stat-label">Answered</div>
-            </div>
-            <div class="res-stat-card">
-              <div id="resStatUnanswered" class="res-stat-num" style="color: #dc2626;">0</div>
-              <div class="res-stat-label">Unanswered</div>
-            </div>
-            <div class="res-stat-card">
-              <div id="resStatMarked" class="res-stat-num" style="color: #eab308;">4</div>
-              <div class="res-stat-label">Marked for Review</div>
-            </div>
-            <div class="res-stat-card">
-              <div id="resStatTime" class="res-stat-num" style="color: #0284c7;">48:12</div>
-              <div class="res-stat-label">Total Time</div>
-            </div>
-          </div>
-
-          <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;">Question Responses Overview</h3>
-          <div id="resultsQuestionList" style="display: flex; flex-direction: column; gap: 8px; max-height: 380px; overflow-y: auto; padding-right: 8px;"></div>
-
-          <div style="margin-top: 32px; display: flex; justify-content: space-between;">
-            <button id="resultsHubBtn" class="bb-btn-back">Back to Practice Hub</button>
-            <button id="resultsReviewBtn" class="bb-btn-next">Review All Questions</button>
-          </div>
+          <button class="scan-toggle-btn" id="scanToggleBtn" onclick="toggleScanModal()" title="View authentic PDF page">📄 Scan</button>
         </div>
       </div>
-    </div>
-    <div class="bb-dashed-border"></div>
-  </div>
 
-  <!-- =====================================================================
-       QUESTION NAVIGATOR GRID POPOVER
-       ===================================================================== -->
-  <div id="gridModalOverlay" class="bb-grid-modal-overlay">
-    <div class="bb-grid-card">
-      <div class="bb-grid-header">
-        <h3 id="gridModalTitle">Section 1: Reading and Writing Questions</h3>
-        <button id="gridModalCloseBtn" class="bb-grid-close-btn">&times;</button>
+      <!-- Optional Chart / Quantitative Figure -->
+      <div class="chart-container" id="chartContainer" style="display:none;">
+        <img id="chartImg" src="" alt="Question Figure">
       </div>
-      <div id="gridModalItems" class="bb-grid-items"></div>
-      <div class="bb-grid-legend">
-        <div class="legend-item"><span class="legend-swatch sw-current"></span><span>Current</span></div>
-        <div class="legend-item"><span class="legend-swatch sw-unanswered"></span><span>Unanswered</span></div>
-        <div class="legend-item"><span class="legend-swatch sw-answered"></span><span>Answered</span></div>
-        <div class="legend-item"><span class="legend-swatch sw-flag"></span><span>For Review</span></div>
+
+      <!-- Passage Body -->
+      <div class="passage-body" id="passageBody"></div>
+
+      <!-- Floating Highlight Popover -->
+      <div id="hlPopover" style="display:none;position:absolute;z-index:99;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:4px;box-shadow:var(--shadow-md);gap:4px;">
+        <button class="btn subtle" onclick="applyHighlight('yellow')" style="padding:4px 8px;font-size:11px;color:#d97706;">Yellow</button>
+        <button class="btn subtle" onclick="applyHighlight('pink')" style="padding:4px 8px;font-size:11px;color:#db2777;">Pink</button>
+        <button class="btn subtle" onclick="applyHighlight('cyan')" style="padding:4px 8px;font-size:11px;color:#0891b2;">Cyan</button>
+        <button class="btn subtle" onclick="hideHlPopover()" style="padding:4px 8px;font-size:11px;">✕</button>
       </div>
     </div>
-  </div>
 
-  <!-- DIRECTIONS MODAL -->
-  <div id="directionsModal" class="bb-modal-backdrop" style="display: none;">
-    <div class="bb-modal-content">
-      <div class="bb-modal-header">
-        <h3>Reading and Writing Directions</h3>
-        <button id="directionsCloseBtn" class="bb-grid-close-btn">&times;</button>
-      </div>
-      <div class="bb-modal-body">
-        <p><strong>Timing:</strong> Each module has 27 questions and 32 minutes to complete them (or Untimed in practice mode).</p>
-        <br />
-        <p><strong>Instructions:</strong></p>
-        <ul>
-          <li>Each question has four answer choices. Read each question and choose the best answer.</li>
-          <li>All questions in this section are multiple-choice with four answer choices. Only one choice is correct.</li>
-          <li>You may take notes, highlight text, underline text, and eliminate answer choices as you work.</li>
-          <li>You can mark questions for review and return to them at any time before your time in the module expires.</li>
-          <li>Once you complete a module and proceed to the next module or submit the test, you will not be able to return to it.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- MORE OPTIONS MODAL -->
-  <div id="moreModal" class="bb-modal-backdrop" style="display: none;">
-    <div class="bb-modal-content">
-      <div class="bb-modal-header">
-        <h3>Tools & Settings</h3>
-        <button id="moreCloseBtn" class="bb-grid-close-btn">&times;</button>
-      </div>
-      <div class="bb-modal-body">
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>Line Reader Overlay</span>
-            <button id="toggleLineReaderBtn" style="padding: 6px 14px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; cursor: pointer;">Enable</button>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>Passage Zoom Scale</span>
-            <div style="display: flex; gap: 6px;">
-              <button id="fontDecBtn" style="padding: 4px 10px; border-radius: 4px; border: 1px solid #cbd5e1; cursor: pointer;">Zoom -</button>
-              <button id="fontIncBtn" style="padding: 4px 10px; border-radius: 4px; border: 1px solid #cbd5e1; cursor: pointer;">Zoom +</button>
-            </div>
-          </div>
-          <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 8px 0;" />
-          <h4 style="font-size: 14px; font-weight: 700;">Keyboard Shortcuts</h4>
-          <ul style="font-size: 13px; color: #475569;">
-            <li><strong>A / B / C / D</strong> or <strong>1 / 2 / 3 / 4</strong>: Select answer choice</li>
-            <li><strong>Left / Right Arrow</strong>: Previous / Next question</li>
-            <li><strong>M</strong>: Toggle Mark for Review</li>
-            <li><strong>H</strong>: Toggle Hide / Show Timer</li>
-            <li><strong>U</strong>: Toggle Untimed Mode</li>
-            <li><strong>G</strong>: Toggle Question Navigator Grid</li>
-          </ul>
-          <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 8px 0;" />
-          <div>
-            <button id="exitToHubBtn" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ef4444; color: #ef4444; background: transparent; font-weight: 700; cursor: pointer;">
-              Save & Exit to Hub
-            </button>
-          </div>
+    <!-- RIGHT PANE: QUESTION & OPTIONS -->
+    <div class="split-pane pane-question" id="questionPane">
+      <div class="q-header">
+        <div style="display:flex;align-items:center;">
+          <div class="q-num-box" id="qNumBox">1</div>
+          <div class="q-module-name" id="moduleName">Test 1 • Section 1, Module 1</div>
         </div>
+        <button class="flag-btn" id="flagBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+          <span id="flagLabel">Mark for Review</span>
+        </button>
       </div>
-    </div>
-  </div>
 
-  <!-- CONFIRM END MODULE MODAL -->
-  <div id="confirmModal" class="bb-modal-backdrop" style="display: none;">
-    <div class="bb-modal-content" style="max-width: 480px;">
-      <div class="bb-modal-header">
-        <h3 id="confirmModalTitle">End Module 1?</h3>
-        <button id="confirmCloseBtn" class="bb-grid-close-btn">&times;</button>
+      <!-- Question Stem -->
+      <div class="question-stem" id="questionStem"></div>
+
+      <!-- Choices (A, B, C, D) -->
+      <div class="options-list" id="optionsList"></div>
+
+      <!-- PRACTICE MODE: Check Answer Row -->
+      <div class="check-row" id="checkAnswerRow">
+        <button class="btn primary" id="checkAnswerBtn" style="padding:9px 20px;">Check Answer</button>
+        <span class="ans-feedback-tag" id="ansFeedbackTag"></span>
       </div>
-      <div class="bb-modal-body">
-        <p id="confirmModalMessage">
-          Are you sure you want to end this module? Once you proceed to the next module, you will not be able to return to review or change your answers.
-        </p>
-        <div style="margin-top: 24px; display: flex; justify-content: flex-end; gap: 12px;">
-          <button id="confirmCancelBtn" class="bb-btn-back">Cancel</button>
-          <button id="confirmProceedBtn" class="bb-btn-next">Confirm & Proceed</button>
+
+      <!-- Explanation Card -->
+      <div class="explanation-card" id="explanationCard">
+        <div class="explanation-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          Pedagogical Explanation
         </div>
+        <div class="explanation-text" id="explanationText"></div>
       </div>
     </div>
   </div>
 
-  <script src="data/tests_data.js"></script>
-  <script src="js/app.js"></script>
+  <!-- ARENA FOOTER / QUESTION PALETTE -->
+  <div class="arena-footer">
+    <button class="btn subtle" id="prevBtn" style="font-size:13px;">← Back</button>
+    
+    <button class="nav-summary-btn" id="navSummaryBtn">
+      <span>Question <span id="currentQNum">1</span> of <span id="totalActiveQNum">27</span></span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+
+    <button class="btn primary" id="nextBtn" style="font-size:13px;padding:8px 20px;">Next →</button>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- QUESTION PALETTE MODAL                                    -->
+<!-- ========================================================= -->
+<div class="modal-backdrop" id="navModalBackdrop">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Question Navigator</div>
+      <button class="modal-close" id="closeNavModalBtn">✕</button>
+    </div>
+
+    <div class="palette-filters">
+      <button class="filter-pill active" data-filter="all">All</button>
+      <button class="filter-pill" data-filter="unanswered">Unanswered</button>
+      <button class="filter-pill" data-filter="flagged">Flagged</button>
+      <button class="filter-pill" data-filter="incorrect">Incorrect</button>
+    </div>
+
+    <div class="palette-grid" id="paletteGrid"></div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- MODULE TRANSITION MODAL (Official SAT Inter-Module Break) -->
+<!-- ========================================================= -->
+<div class="modal-backdrop" id="moduleTransitionModal">
+  <div class="modal-box trans-box">
+    <div class="trans-badge">Section 1: Reading and Writing</div>
+    <h2 class="trans-title" id="transModuleTitle">Module 1 Complete!</h2>
+    <p class="trans-desc" id="transModuleDesc">You have finished Module 1 (27 Questions). In the official SAT, you cannot return to Module 1 questions once you proceed. Take a moment to relax before beginning Module 2.</p>
+    
+    <div class="trans-stats">
+      <div class="trans-stat-item">
+        <div class="trans-stat-val" id="transAnsweredCount" style="color:var(--neon-purple);">27</div>
+        <div class="trans-stat-lbl">Answered</div>
+      </div>
+      <div class="trans-stat-item">
+        <div class="trans-stat-val" id="transUnansweredCount" style="color:var(--text-muted);">0</div>
+        <div class="trans-stat-lbl">Unanswered</div>
+      </div>
+      <div class="trans-stat-item">
+        <div class="trans-stat-val" id="transFlaggedCount" style="color:var(--flag-color);">0</div>
+        <div class="trans-stat-lbl">Flagged</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:center;">
+      <button class="btn subtle" id="transReviewMod1Btn" style="padding:10px 20px;">Review Module 1</button>
+      <button class="btn primary" id="transStartMod2Btn" style="padding:11px 26px;font-size:14px;">Begin Module 2 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- RESULTS & OFFICIAL SAT 200–800 SCALED SCORE REPORT       -->
+<!-- ========================================================= -->
+<div class="modal-backdrop" id="resultsModalBackdrop">
+  <div class="modal-box results-box">
+    <div style="display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:99px;background:var(--neon-purple-subtle);border:1px solid var(--neon-purple-border);color:var(--neon-lilac);font-size:11.5px;font-weight:700;text-transform:uppercase;margin-bottom:12px;">
+      Official SAT Scaled Score Report
+    </div>
+    
+    <div class="sat-score-huge" id="resSatScaledScore">750</div>
+    <div class="sat-score-band" id="resPercentileBand">98th Percentile • Advanced</div>
+
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:20px;" id="resScoreSub">
+      48 / 54 Correct • 89% Raw Accuracy
+    </p>
+
+    <div class="results-stats-row">
+      <div class="res-stat-pill">
+        <div class="res-stat-val" style="color:var(--correct);" id="resCorrectCount">0</div>
+        <div class="res-stat-lbl">Correct</div>
+      </div>
+      <div class="res-stat-pill">
+        <div class="res-stat-val" style="color:var(--incorrect);" id="resIncorrectCount">0</div>
+        <div class="res-stat-lbl">Incorrect</div>
+      </div>
+      <div class="res-stat-pill">
+        <div class="res-stat-val" style="color:var(--neon-purple);" id="resModuleBreakdown">M1: 25 | M2: 23</div>
+        <div class="res-stat-lbl">Module 1 vs 2</div>
+      </div>
+    </div>
+
+    <div class="domain-bars" id="domainBarsContainer"></div>
+
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <button class="btn primary" id="closeResultsBtn" style="padding:10px 24px;">Review Questions & Explanations</button>
+      <button class="btn" id="restartPracticeBtn" style="padding:10px 20px;">Restart All</button>
+      <button class="btn subtle" onclick="showHub();resultsModalBackdrop.classList.remove('show');">Return to Hub</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================= -->
+<!-- AUTHENTIC SCAN MODAL                                      -->
+<!-- ========================================================= -->
+<div class="modal-backdrop" id="scanModalBackdrop">
+  <div class="modal-box" style="max-width:900px;">
+    <div class="modal-header">
+      <div class="modal-title">Authentic PDF Scan</div>
+      <button class="modal-close" onclick="toggleScanModal()">✕</button>
+    </div>
+    <div style="overflow-y:auto;max-height:75vh;text-align:center;">
+      <img id="scanModalImg" class="scan-modal-img" src="" alt="Authentic Scan">
+    </div>
+  </div>
+</div>
+
+<!-- EASTER EGG TOAST -->
+<div id="easterEggToast" class="easter-egg-toast"></div>
+
+<!-- DATA SCRIPT -->
+<script src="data/ninja_questions.js"></script>
+
+<!-- APPLICATION SCRIPT -->
+<script src="js/ninja_app.js"></script>
+
 </body>
 </html>
