@@ -34,7 +34,7 @@ let timerInterval = null;
 
 // DOM REFS
 let homeHubView, testArenaView, backToHubBtn, resumeBanner, resumeSubtitle, statFullProgress, statFullBar;
-let passageBody, chartContainer, chartImg, domainTag, qNumBox, moduleName, flagBtn;
+let passagePane, questionPane, passageBody, chartContainer, chartImg, domainTag, qNumBox, moduleName, flagBtn;
 let questionStem, optionsList, checkAnswerRow, checkAnswerBtn, ansFeedbackTag, explanationCard, explanationText;
 let currentQNum, totalActiveQNum, prevBtn, nextBtn, navModalBackdrop, paletteGrid, resultsModalBackdrop, moduleTransitionModal;
 let modePracticeBtn, modeTestBtn, modeUntimedBtn, hubModePractice, hubModeTest, hubModeUntimed;
@@ -49,6 +49,8 @@ function initDomRefs() {
   statFullProgress = document.getElementById('statFullProgress');
   statFullBar = document.getElementById('statFullBar');
 
+  passagePane = document.getElementById('passagePane');
+  questionPane = document.getElementById('questionPane');
   passageBody = document.getElementById('passageBody');
   chartContainer = document.getElementById('chartContainer');
   chartImg = document.getElementById('chartImg');
@@ -89,6 +91,8 @@ function initDomRefs() {
 function init() {
   initDomRefs();
   initTheme();
+
+  // Ensure scroll-reveal elements are 100% visible immediately
   initScrollAnimations();
 
   if (typeof ALL_QUESTIONS !== 'undefined' && ALL_QUESTIONS.length > 0) {
@@ -125,23 +129,32 @@ function updateThemeIcon(t) {
   if (btn2) btn2.textContent = icon;
 }
 
-// SCROLL ANIMATIONS
+// SCROLL ANIMATIONS (Guaranteed immediate visibility)
 function initScrollAnimations() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
+  const elements = document.querySelectorAll('.scroll-reveal');
+  elements.forEach(el => {
+    el.classList.add('revealed');
+    el.classList.add('visible');
+  });
 
-  document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('revealed');
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.05 });
+
+    elements.forEach(el => observer.observe(el));
+  }
 }
 
 // UPDATE HUB PROGRESS
 function updateHubProgress() {
-  if (typeof ALL_QUESTIONS === 'undefined') return;
+  if (typeof ALL_QUESTIONS === 'undefined' || !ALL_QUESTIONS.length) return;
 
   const total = ALL_QUESTIONS.length;
   let answeredTotal = 0;
@@ -194,17 +207,26 @@ function showHub() {
   if (homeHubView) homeHubView.style.display = 'block';
   if (testArenaView) testArenaView.style.display = 'none';
   updateHubProgress();
+  initScrollAnimations();
   window.scrollTo(0, 0);
 }
 
 function showArena() {
   if (homeHubView) homeHubView.style.display = 'none';
-  if (testArenaView) testArenaView.style.display = 'flex';
+  if (testArenaView) {
+    testArenaView.style.display = 'flex';
+    testArenaView.style.flexDirection = 'column';
+  }
   window.scrollTo(0, 0);
 }
 
 // START EXAM (Timed or Untimed)
 function startSatExam(vNum, isUntimed = false) {
+  if (typeof ALL_QUESTIONS === 'undefined' || !ALL_QUESTIONS.length) {
+    console.error('ALL_QUESTIONS not loaded');
+    return;
+  }
+
   satExamState.isActive = true;
   satExamState.variantNum = vNum;
   satExamState.currentModule = 1;
@@ -218,12 +240,12 @@ function startSatExam(vNum, isUntimed = false) {
     setMode('test');
   }
 
-  // Load Test V Module 1 (Q1-27)
+  // Load Version V Module 1 (Q1-27)
   const vQs = ALL_QUESTIONS.filter(q => q.variant_num === vNum && q.module === 'Module 1');
   activeQuestions = vQs;
   currentSubsetIdx = 0;
 
-  const badgeText = `Test ${vNum} • Mod 1 (27 Qs)${satExamState.isUntimed ? ' [Untimed]' : ''}`;
+  const badgeText = `Version ${vNum} • Mod 1 (27 Qs)${satExamState.isUntimed ? ' [Untimed]' : ''}`;
   document.getElementById('arenaBadge').textContent = badgeText;
   totalActiveQNum.textContent = activeQuestions.length;
 
@@ -250,7 +272,7 @@ function proceedToModule2() {
   activeQuestions = vQs;
   currentSubsetIdx = 0;
 
-  const badgeText = `Test ${satExamState.variantNum} • Mod 2 (27 Qs)${satExamState.isUntimed ? ' [Untimed]' : ''}`;
+  const badgeText = `Version ${satExamState.variantNum} • Mod 2 (27 Qs)${satExamState.isUntimed ? ' [Untimed]' : ''}`;
   document.getElementById('arenaBadge').textContent = badgeText;
   totalActiveQNum.textContent = activeQuestions.length;
 
@@ -289,26 +311,31 @@ function showModuleTransition() {
   moduleTransitionModal.classList.add('show');
 }
 
-// START PRACTICE VOLUME
+// START PRACTICE VOLUME (Full suite, Version 1-5, or Domain)
 function startPracticeVolume(volKey, subKey = '') {
+  if (typeof ALL_QUESTIONS === 'undefined' || !ALL_QUESTIONS.length) {
+    console.error('ALL_QUESTIONS not loaded');
+    return;
+  }
+
   satExamState.isActive = false;
   satExamState.isUntimed = (mode === 'untimed');
 
   if (volKey === 'all') {
     activeQuestions = ALL_QUESTIONS;
     document.getElementById('arenaBadge').textContent = '270 Questions';
-  } else if (volKey.startsWith('variant')) {
-    const vNum = parseInt(volKey.replace('variant', ''));
+  } else if (volKey.startsWith('variant') || volKey.startsWith('version')) {
+    const vNum = parseInt(volKey.replace('variant', '').replace('version', ''));
     const vQs = ALL_QUESTIONS.filter(q => q.variant_num === vNum);
     if (subKey === 'm1') {
       activeQuestions = vQs.filter(q => q.module === 'Module 1');
-      document.getElementById('arenaBadge').textContent = `Test ${vNum} • M1 (27 Qs)`;
+      document.getElementById('arenaBadge').textContent = `Version ${vNum} • M1 (27 Qs)`;
     } else if (subKey === 'm2') {
       activeQuestions = vQs.filter(q => q.module === 'Module 2');
-      document.getElementById('arenaBadge').textContent = `Test ${vNum} • M2 (27 Qs)`;
+      document.getElementById('arenaBadge').textContent = `Version ${vNum} • M2 (27 Qs)`;
     } else {
       activeQuestions = vQs;
-      document.getElementById('arenaBadge').textContent = `Test ${vNum} (54 Qs)`;
+      document.getElementById('arenaBadge').textContent = `Version ${vNum} (54 Qs)`;
     }
   } else {
     activeQuestions = ALL_QUESTIONS.filter(q => q.category === volKey || q.domain === volKey);
@@ -456,7 +483,7 @@ function renderQuestion(idx) {
   currentQNum.textContent = displayQNum;
   totalActiveQNum.textContent = activeQuestions.length;
   domainTag.textContent = q.category || q.domain || 'Reading and Writing';
-  moduleName.textContent = `${q.variant || 'Ninja Test'} • Section 1, ${q.module || 'Module 1'}`;
+  moduleName.textContent = `Version ${q.variant_num || 1} • Section 1, ${q.module || 'Module 1'}`;
 
   // Passage
   passageBody.innerHTML = q.p || '';
@@ -574,9 +601,11 @@ function renderQuestion(idx) {
     nextBtn.textContent = 'Next →';
   }
 
-  // Scroll to top
-  passageBody.scrollTop = 0;
-  optionsList.scrollTop = 0;
+  // Scroll both panes to top smoothly
+  if (passagePane) passagePane.scrollTop = 0;
+  if (questionPane) questionPane.scrollTop = 0;
+  if (passageBody) passageBody.scrollTop = 0;
+  if (optionsList) optionsList.scrollTop = 0;
 }
 
 // SELECT ANSWER
@@ -587,7 +616,6 @@ function selectAnswer(optIdx) {
   answers[qId] = optIdx;
   localStorage.setItem('sat_answers', JSON.stringify(answers));
 
-  // Reset checked state when answer changes in practice mode
   if (checkedQuestions[qId]) {
     delete checkedQuestions[qId];
     localStorage.setItem('sat_checked', JSON.stringify(checkedQuestions));
@@ -800,7 +828,6 @@ function showResults() {
     }
   });
 
-  // Calculate 200-800 scaled score
   let scaledScore = 200;
   const poolLen = pool.length;
   if (poolLen === 54) {
@@ -823,7 +850,6 @@ function showResults() {
   document.getElementById('resIncorrectCount').textContent = totalAnswered - totalCorrect;
   document.getElementById('resModuleBreakdown').textContent = `M1: ${m1Correct}/${m1Total} | M2: ${m2Correct}/${m2Total}`;
 
-  // Domain progress bars
   const barsContainer = document.getElementById('domainBarsContainer');
   barsContainer.innerHTML = '';
   Object.keys(domainStats).forEach(dom => {
@@ -1008,7 +1034,6 @@ function init2DHero() {
       ctx.fillStyle = `rgba(${color}, ${p.alpha})`;
       ctx.fill();
 
-      // Connect near particles
       for (let j = i + 1; j < particles.length; j++) {
         const p2 = particles[j];
         const dist = Math.hypot(p.x - p2.x, p.y - p2.y);

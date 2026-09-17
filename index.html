@@ -1854,6 +1854,106 @@
 </style>
 
 <style>
+  /* Bulletproof Scroll & Split Pane Layout */
+  #testArenaView {
+    display: none;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+  }
+
+  .test-arena,
+  .arena-body {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    position: relative;
+    min-height: 0;
+    height: calc(100vh - 120px);
+    height: calc(100dvh - 120px);
+  }
+
+  .split-pane {
+    flex: 1;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding: 28px 36px 90px 36px;
+    position: relative;
+    min-height: 0;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .pane-passage {
+    border-right: 1px solid var(--border);
+    background: var(--bg-card);
+    overflow-y: auto !important;
+  }
+
+  .pane-question {
+    background: var(--bg-page);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto !important;
+    padding-bottom: 120px !important;
+  }
+
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+    margin-bottom: 24px;
+    flex-shrink: 0;
+  }
+
+  .opt-card {
+    min-height: 48px;
+    flex-shrink: 0;
+  }
+
+  .check-row {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+  }
+
+  /* Responsive Fallback for screens < 900px */
+  @media (max-width: 900px) {
+    .test-arena,
+    .arena-body {
+      flex-direction: column !important;
+      overflow-y: auto !important;
+      height: calc(100vh - 120px) !important;
+    }
+    .split-pane {
+      max-width: 100% !important;
+      border-right: none !important;
+      border-bottom: 2px solid var(--border) !important;
+      padding: 20px !important;
+      height: auto !important;
+      overflow-y: visible !important;
+    }
+    .pane-question {
+      padding-bottom: 140px !important;
+    }
+  }
+
+  /* Guarantee Landing Cards are ALWAYS visible (Zero blank screen bugs) */
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .scroll-reveal.revealed,
+  .scroll-reveal.visible {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
   /* Untimed Mode & Enhanced Pills */
   .mode-btn.untimed-btn.active,
   .hub-mode-btn.untimed-btn.active {
@@ -1918,17 +2018,17 @@
       </div>
 
       <nav class="ps-nav-links">
-        <a class="ps-nav-link" onclick="startPracticeVolume('variant1')">Test 1</a>
-        <a class="ps-nav-link" onclick="startPracticeVolume('variant2')">Test 2</a>
-        <a class="ps-nav-link" onclick="startPracticeVolume('variant3')">Test 3</a>
-        <a class="ps-nav-link" onclick="startPracticeVolume('variant4')">Test 4</a>
-        <a class="ps-nav-link" onclick="startPracticeVolume('variant5')">Test 5</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('variant1')">Version 1</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('variant2')">Version 2</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('variant3')">Version 3</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('variant4')">Version 4</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('variant5')">Version 5</a>
         <a class="ps-nav-link" href="#domainSection">Domain Mastery</a>
       </nav>
 
       <div class="ps-nav-actions">
         <button class="btn subtle" id="themeBtnNav" title="Toggle Theme" onclick="toggleTheme()">🌙</button>
-        <button class="btn primary" onclick="startSatExam(1)">Start Exam (Test 1)</button>
+        <button class="btn primary" onclick="startSatExam(1)">Start Exam (V1)</button>
       </div>
     </div>
   </header>
@@ -1962,7 +2062,7 @@
       <h1 class="hub-title">
         <span class="hl-purple">Master</span> the <span class="hl-yellow">SAT</span> with <span class="hl-mint">Ninja Practice Suite</span>.
       </h1>
-      <p class="hub-subtitle">Authentic College Board test forms with real SAT 2-module timed exam delivery (32m + 32m), Untimed Practice mode, official 200–800 scaled grading, Bluebook test tools, and 270 comprehensive practice questions.</p>
+      <p class="hub-subtitle">Authentic College Board test forms with real SAT 2-module timed exam delivery (32m + 32m), Untimed Practice mode, official 200–800 scaled grading, Bluebook test tools, and 270 comprehensive practice questions across 5 complete test versions.</p>
 
       <!-- PsychSAT Score Ruler -->
       <div class="ps-score-ruler scroll-reveal">
@@ -1996,16 +2096,16 @@
         <div class="vol-stat-bar-outer"><div class="vol-stat-bar-inner" id="statFullBar" style="width:0%;"></div></div>
       </div>
       <div class="vol-stat-pills">
-        <span class="vol-pill">5 Official Practice Tests</span>
+        <span class="vol-pill">5 Official Test Versions</span>
         <span class="vol-pill">10 Modules (27 Qs each)</span>
         <span class="vol-pill">270 Total Questions</span>
       </div>
     </div>
 
-    <!-- SECTION: 5 OFFICIAL SAT PRACTICE TESTS -->
+    <!-- SECTION: 5 OFFICIAL SAT PRACTICE TEST VERSIONS -->
     <div class="hub-section-heading scroll-reveal">
-      <h2>Digital SAT Practice Tests</h2>
-      <p>5 full-length Reading & Writing tests. Each test features two official 27-question modules.</p>
+      <h2>Digital SAT Test Versions</h2>
+      <p>5 full-length Reading & Writing versions. Each version features two official 27-question modules.</p>
     </div>
 
     <div class="vol-grid">
@@ -2013,12 +2113,12 @@
       <div class="vol-card full-suite scroll-reveal" onclick="startPracticeVolume('all')">
         <img src="assets/cissia_tail.png" class="cissia-tail-corner" alt="Cissia tail decoration" onclick="triggerEasterEgg('tail'); event.stopPropagation();" title="🐱 Cissia's Lucky Tail">
         <div class="vol-badge" style="background:var(--neon-purple);color:#fff;">Master Suite • 270 Questions</div>
-        <div class="vol-title">Complete 5-Test Marathon</div>
-        <div class="vol-desc">Practice all 270 questions continuously across all 5 official practice test forms with instant feedback, notes, and progress tracking.</div>
+        <div class="vol-title">All Versions Marathon</div>
+        <div class="vol-desc">Practice all 270 questions continuously across all 5 official test versions with instant feedback, notes, and progress tracking.</div>
         
         <div class="vol-meta">
           <span>📚 270 Questions</span>
-          <span>⚡ Tests 1 – 5</span>
+          <span>⚡ Versions 1 – 5</span>
           <span>🎯 All Domains</span>
         </div>
 
@@ -2028,10 +2128,10 @@
         </div>
       </div>
 
-      <!-- PRACTICE TEST 1 -->
+      <!-- PRACTICE TEST 1 / VERSION 1 -->
       <div class="vol-card scroll-reveal" onclick="startSatExam(1)">
-        <div class="vol-badge">Official Test 1 • 54 Questions</div>
-        <div class="vol-title">Ninja Practice Test 1</div>
+        <div class="vol-badge">Official Version 1 • 54 Questions</div>
+        <div class="vol-title">Ninja Practice Test 1 (Version 1)</div>
         <div class="vol-desc">Two official 27-question modules covering Words in Context, Command of Evidence, Grammar Conventions, and Rhetorical Synthesis.</div>
         
         <div class="vol-progress-wrap">
@@ -2047,10 +2147,10 @@
         </div>
       </div>
 
-      <!-- PRACTICE TEST 2 -->
+      <!-- PRACTICE TEST 2 / VERSION 2 -->
       <div class="vol-card scroll-reveal" onclick="startSatExam(2)">
-        <div class="vol-badge">Official Test 2 • 54 Questions</div>
-        <div class="vol-title">Ninja Practice Test 2</div>
+        <div class="vol-badge">Official Version 2 • 54 Questions</div>
+        <div class="vol-title">Ninja Practice Test 2 (Version 2)</div>
         <div class="vol-desc">Comprehensive test form featuring high-yield Standard English Conventions, nuanced literature excerpts, and scientific data tables.</div>
         
         <div class="vol-progress-wrap">
@@ -2066,10 +2166,10 @@
         </div>
       </div>
 
-      <!-- PRACTICE TEST 3 -->
+      <!-- PRACTICE TEST 3 / VERSION 3 -->
       <div class="vol-card scroll-reveal" onclick="startSatExam(3)">
-        <div class="vol-badge">Official Test 3 • 54 Questions</div>
-        <div class="vol-title">Ninja Practice Test 3</div>
+        <div class="vol-badge">Official Version 3 • 54 Questions</div>
+        <div class="vol-title">Ninja Practice Test 3 (Version 3)</div>
         <div class="vol-desc">Complete 2-module exam challenging your command of logical transitions, boundary punctuation, and text structure analysis.</div>
         
         <div class="vol-progress-wrap">
@@ -2085,10 +2185,10 @@
         </div>
       </div>
 
-      <!-- PRACTICE TEST 4 -->
+      <!-- PRACTICE TEST 4 / VERSION 4 -->
       <div class="vol-card scroll-reveal" onclick="startSatExam(4)">
-        <div class="vol-badge">Official Test 4 • 54 Questions</div>
-        <div class="vol-title">Ninja Practice Test 4</div>
+        <div class="vol-badge">Official Version 4 • 54 Questions</div>
+        <div class="vol-title">Ninja Practice Test 4 (Version 4)</div>
         <div class="vol-desc">Rigorous test form emphasizing paired texts, cross-textual reasoning, hypothesis evaluation, and precise vocabulary.</div>
         
         <div class="vol-progress-wrap">
@@ -2104,10 +2204,10 @@
         </div>
       </div>
 
-      <!-- PRACTICE TEST 5 -->
+      <!-- PRACTICE TEST 5 / VERSION 5 -->
       <div class="vol-card scroll-reveal" onclick="startSatExam(5)">
-        <div class="vol-badge">Official Test 5 • 54 Questions</div>
-        <div class="vol-title">Ninja Practice Test 5</div>
+        <div class="vol-badge">Official Version 5 • 54 Questions</div>
+        <div class="vol-title">Ninja Practice Test 5 (Version 5)</div>
         <div class="vol-desc">Final mastery test form with advanced sentence structure, inference synthesis, and high-difficulty reading passages.</div>
         
         <div class="vol-progress-wrap">
@@ -2194,7 +2294,7 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
         <span>Hub</span>
       </button>
-      <span class="brand-badge" id="arenaBadge">Test 1 • 270 Qs</span>
+      <span class="brand-badge" id="arenaBadge">Version 1 • 270 Qs</span>
     </div>
 
     <div class="arena-header-center">
@@ -2219,8 +2319,8 @@
     </div>
   </header>
 
-  <!-- ARENA SPLIT VIEW -->
-  <div class="arena-body">
+  <!-- ARENA SPLIT VIEW (SIDE-BY-SIDE ON DESKTOP, FULLY SCROLLABLE) -->
+  <div class="test-arena arena-body">
     <!-- LEFT PANE: PASSAGE & HIGHLIGHTER -->
     <div class="split-pane pane-passage" id="passagePane">
       <div class="passage-header">
@@ -2258,7 +2358,7 @@
       <div class="q-header">
         <div style="display:flex;align-items:center;">
           <div class="q-num-box" id="qNumBox">1</div>
-          <div class="q-module-name" id="moduleName">Test 1 • Section 1, Module 1</div>
+          <div class="q-module-name" id="moduleName">Version 1 • Section 1, Module 1</div>
         </div>
         <button class="flag-btn" id="flagBtn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
@@ -2414,10 +2514,10 @@
 <div id="easterEggToast" class="easter-egg-toast"></div>
 
 <!-- DATA SCRIPT -->
-<script src="data/ninja_questions.js"></script>
+<script src="data/ninja_questions.js?v=2.2"></script>
 
 <!-- APPLICATION SCRIPT -->
-<script src="js/ninja_app.js"></script>
+<script src="js/ninja_app.js?v=2.2"></script>
 
 </body>
 </html>
