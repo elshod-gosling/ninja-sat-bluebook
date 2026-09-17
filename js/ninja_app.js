@@ -174,8 +174,8 @@ function updateHubProgress() {
     });
     const progEl = document.getElementById(`progV${i}`);
     const barEl = document.getElementById(`barV${i}`);
-    if (progEl) progEl.textContent = vAnswered;
-    if (barEl) barEl.style.width = `${Math.round((vAnswered / 54) * 100)}%`;
+    if (progEl) progEl.textContent = `${vAnswered} / ${vQs.length || 54} Answered`;
+    if (barEl) barEl.style.width = `${Math.round((vAnswered / (vQs.length || 54)) * 100)}%`;
   }
 
   if (statFullProgress) statFullProgress.textContent = `${answeredTotal} / ${total} Answered`;
@@ -197,12 +197,50 @@ function updateHubProgress() {
   // Resume Banner
   const lastQ = localStorage.getItem('sat_last_q');
   if (lastQ !== null && answeredTotal > 0 && answeredTotal < total) {
-    if (resumeBanner) resumeBanner.style.display = 'block';
+    if (resumeBanner) resumeBanner.style.display = 'flex';
     if (resumeSubtitle) resumeSubtitle.textContent = `Question ${parseInt(lastQ) + 1} of ${total} • ${answeredTotal} questions completed so far.`;
   } else {
     if (resumeBanner) resumeBanner.style.display = 'none';
   }
 }
+
+// RESET ALL PROGRESS
+function resetAllProgress() {
+  const answeredCount = Object.keys(answers).length;
+  const msg = answeredCount > 0
+    ? `Are you sure you want to remove all progress? This will clear all ${answeredCount} answered questions, saved flags, highlights, and eliminations. This action cannot be undone.`
+    : 'Are you sure you want to reset all test progress, saved answers, and flags?';
+
+  if (!confirm(msg)) {
+    return;
+  }
+
+  answers = {};
+  checkedQuestions = {};
+  flags = {};
+  eliminations = {};
+  highlights = {};
+
+  localStorage.removeItem('sat_answers');
+  localStorage.removeItem('sat_checked');
+  localStorage.removeItem('sat_flags');
+  localStorage.removeItem('sat_eliminations');
+  localStorage.removeItem('sat_highlights');
+  localStorage.removeItem('sat_last_q');
+
+  if (resultsModalBackdrop) resultsModalBackdrop.classList.remove('show');
+  if (navModalBackdrop) navModalBackdrop.classList.remove('show');
+  if (moduleTransitionModal) moduleTransitionModal.classList.remove('show');
+
+  updateHubProgress();
+
+  if (testArenaView && testArenaView.style.display === 'flex') {
+    renderQuestion(currentSubsetIdx);
+  }
+
+  triggerEasterEgg('toast', '🗑️ All progress and saved answers have been reset.');
+}
+window.resetAllProgress = resetAllProgress;
 
 // VIEW SWITCHING
 function showHub() {
@@ -937,21 +975,7 @@ function setupEvents() {
   const restartBtn = document.getElementById('restartPracticeBtn');
   if (restartBtn) {
     restartBtn.addEventListener('click', () => {
-      if (confirm('Are you sure you want to restart all progress? This will reset all saved answers.')) {
-        answers = {};
-        checkedQuestions = {};
-        flags = {};
-        eliminations = {};
-        highlights = {};
-        localStorage.removeItem('sat_answers');
-        localStorage.removeItem('sat_checked');
-        localStorage.removeItem('sat_flags');
-        localStorage.removeItem('sat_eliminations');
-        localStorage.removeItem('sat_highlights');
-        localStorage.removeItem('sat_last_q');
-        if (resultsModalBackdrop) resultsModalBackdrop.classList.remove('show');
-        showHub();
-      }
+      resetAllProgress();
     });
   }
 
@@ -1014,8 +1038,10 @@ function triggerEasterEgg(type, extra = '') {
 
   if (type === 'ear-top') toast.textContent = '🦊 Focus Mode Activated! Target: 800';
   else if (type === 'ear-bottom') toast.textContent = '🌟 Miyabi says: Stay sharp, read carefully!';
-  else if (type === 'tail') toast.textContent = '🐱 Cissia grants you +50 SAT reading luck!';
+  else if (type === 'tail' || type === 'cissia') toast.textContent = '🐱 Cissia grants you +50 SAT reading luck!';
   else if (type === 'score') toast.textContent = `🎯 Aiming high: Target ${extra}!`;
+  else if (type === 'toast' || type === 'info') toast.textContent = extra;
+  else toast.textContent = extra || type;
 
   toast.classList.add('show');
   setTimeout(() => toast.classList.remove('show'), 2800);

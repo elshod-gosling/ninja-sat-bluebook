@@ -534,6 +534,44 @@
     align-items: center;
     gap: 12px;
   }
+  .btn-reset-nav {
+    color: #f87171 !important;
+    border-color: rgba(239, 68, 68, 0.35) !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-reset-nav:hover {
+    background: rgba(239, 68, 68, 0.12) !important;
+    border-color: #ef4444 !important;
+    color: #fca5a5 !important;
+  }
+  .btn-reset-card {
+    padding: 10px 18px !important;
+    color: #f87171 !important;
+    border-color: rgba(239, 68, 68, 0.35) !important;
+    font-weight: 600 !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-reset-card:hover {
+    background: rgba(239, 68, 68, 0.14) !important;
+    border-color: #ef4444 !important;
+    color: #fca5a5 !important;
+    box-shadow: 0 0 16px rgba(239, 68, 68, 0.22);
+  }
+  @media (max-width: 600px) {
+    .reset-nav-label { display: none; }
+    .btn-reset-card { width: 100%; justify-content: center; margin-left: 0 !important; }
+  }
 
   /* ========================================================= */
   /* SCREEN 1: PSYCHSAT LANDING HUB                            */
@@ -2045,6 +2083,9 @@
 
       <div class="ps-nav-actions">
         <button class="btn subtle" id="themeBtnNav" title="Toggle Theme" onclick="toggleTheme()">🌙</button>
+        <button class="btn subtle btn-reset-nav" id="resetProgressNavBtn" title="Reset All Progress" onclick="resetAllProgress()">
+          <span>🗑️</span> <span class="reset-nav-label">Reset Progress</span>
+        </button>
         <button class="btn primary" onclick="startSatExam(1)">Start Exam (V1)</button>
       </div>
     </div>
@@ -2127,15 +2168,18 @@
     </div>
 
     <!-- RESUME SESSION BANNER -->
-    <div id="resumeBanner" class="resume-banner" style="display:none;" onclick="resumePractice()">
-      <div>
+    <div id="resumeBanner" class="resume-banner" style="display:none;">
+      <div onclick="resumePractice()" style="flex:1;cursor:pointer;">
         <div class="resume-title">
           <span>⚡ Resume Active Session</span>
           <span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--neon-purple);color:#fff;">In Progress</span>
         </div>
         <div class="resume-subtitle" id="resumeSubtitle">Continue where you left off.</div>
       </div>
-      <button class="btn primary">Resume →</button>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <button class="btn subtle btn-reset-nav" onclick="event.stopPropagation(); resetAllProgress();" title="Reset All Progress">🗑️ Reset</button>
+        <button class="btn primary" onclick="resumePractice()">Resume →</button>
+      </div>
     </div>
 
     <!-- PRIMARY 270 MASTER SUITE CARD (with Cissia Tail Decoration) -->
@@ -2161,10 +2205,11 @@
             <div id="statFullBar" style="width:0%;height:100%;background:linear-gradient(90deg,var(--neon-purple),#38bdf8);border-radius:99px;transition:width 0.4s ease;"></div>
           </div>
         </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
           <button class="btn primary" style="padding:10px 20px;" onclick="startPracticeVolume('all')">Start Master Suite →</button>
           <button class="btn" style="padding:10px 16px;" onclick="startSatExam(1)">Start Timed SAT Exam (V1) ⏱️</button>
           <button class="btn untimed-btn" style="padding:10px 16px;" onclick="startSatExam(1, true)">♾️ Untimed Test (V1)</button>
+          <button class="btn subtle btn-reset-card" onclick="resetAllProgress()" title="Clear all saved answers and reset test progress">🗑️ Reset All Progress</button>
         </div>
       </div>
     </div>
@@ -2437,6 +2482,11 @@
         <div class="decor-pill"></div>
         <div class="decor-dot"></div>
       </div>
+      <div style="margin: 18px 0 22px; text-align: center;">
+        <button class="btn subtle btn-reset-card" style="margin: 0 auto; display: inline-flex;" onclick="resetAllProgress()" title="Remove all saved progress and reset answers">
+          <span>🗑️</span> Remove All Progress & Reset Answers
+        </button>
+      </div>
       <div class="ps-footer-text">
         College Board, SAT, and Bluebook are registered trademarks of the College Entrance Examination Board.<br>
         This pedagogical suite is an independent study tool with 270 Reading & Writing questions across 5 test versions.
@@ -2679,10 +2729,10 @@
 <div id="easterEggToast" class="easter-egg-toast"></div>
 
 <!-- DATA SCRIPT -->
-<script src="data/ninja_questions.js?v=4.0"></script>
+<script src="data/ninja_questions.js?v=4.1"></script>
 
 <!-- APPLICATION SCRIPT -->
-<script src="js/ninja_app.js?v=4.0"></script>
+<script src="js/ninja_app.js?v=4.1"></script>
 
 </body>
 </html>
