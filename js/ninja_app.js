@@ -135,6 +135,8 @@ function initScrollAnimations() {
   elements.forEach(el => {
     el.classList.add('revealed');
     el.classList.add('visible');
+    el.style.opacity = '1';
+    el.style.transform = 'none';
   });
 
   if ('IntersectionObserver' in window) {
@@ -143,6 +145,8 @@ function initScrollAnimations() {
         if (e.isIntersecting) {
           e.target.classList.add('revealed');
           e.target.classList.add('visible');
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'none';
           observer.unobserve(e.target);
         }
       });
@@ -204,14 +208,23 @@ function updateHubProgress() {
 function showHub() {
   clearInterval(timerInterval);
   satExamState.timerRunning = false;
-  if (homeHubView) homeHubView.style.display = 'block';
+  document.body.style.overflow = 'auto';
+  document.documentElement.style.overflow = 'auto';
+  if (homeHubView) {
+    homeHubView.style.display = 'flex';
+    homeHubView.style.flexDirection = 'column';
+  }
   if (testArenaView) testArenaView.style.display = 'none';
   updateHubProgress();
   initScrollAnimations();
   window.scrollTo(0, 0);
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+  if (typeof resume2DCanvas === 'function') resume2DCanvas();
 }
 
 function showArena() {
+  if (typeof pause2DCanvas === 'function') pause2DCanvas();
   if (homeHubView) homeHubView.style.display = 'none';
   if (testArenaView) {
     testArenaView.style.display = 'flex';
@@ -890,45 +903,63 @@ function setupEvents() {
     }
   });
 
-  document.getElementById('transStartMod2Btn').addEventListener('click', proceedToModule2);
-  document.getElementById('transReviewMod1Btn').addEventListener('click', () => {
-    moduleTransitionModal.classList.remove('show');
+  const tStartMod2 = document.getElementById('transStartMod2Btn');
+  if (tStartMod2) tStartMod2.addEventListener('click', proceedToModule2);
+
+  const tReviewMod1 = document.getElementById('transReviewMod1Btn');
+  if (tReviewMod1) tReviewMod1.addEventListener('click', () => {
+    if (moduleTransitionModal) moduleTransitionModal.classList.remove('show');
   });
 
-  document.getElementById('navSummaryBtn').addEventListener('click', () => openNavModal());
-  document.getElementById('closeNavModalBtn').addEventListener('click', () => navModalBackdrop.classList.remove('show'));
-  navModalBackdrop.addEventListener('click', e => {
-    if (e.target === navModalBackdrop) navModalBackdrop.classList.remove('show');
+  const openPalBtn = document.getElementById('btnOpenPalette');
+  if (openPalBtn) openPalBtn.addEventListener('click', () => openNavModal());
+
+  const closeNavBtn = document.getElementById('closeNavModalBtn');
+  if (closeNavBtn) closeNavBtn.addEventListener('click', () => {
+    if (navModalBackdrop) navModalBackdrop.classList.remove('show');
   });
+
+  if (navModalBackdrop) {
+    navModalBackdrop.addEventListener('click', e => {
+      if (e.target === navModalBackdrop) navModalBackdrop.classList.remove('show');
+    });
+  }
 
   document.querySelectorAll('.filter-pill').forEach(btn => {
     btn.addEventListener('click', () => openNavModal(btn.dataset.filter));
   });
 
-  document.getElementById('closeResultsBtn').addEventListener('click', () => {
-    resultsModalBackdrop.classList.remove('show');
+  const closeResBtn = document.getElementById('closeResultsBtn');
+  if (closeResBtn) closeResBtn.addEventListener('click', () => {
+    if (resultsModalBackdrop) resultsModalBackdrop.classList.remove('show');
   });
 
-  document.getElementById('restartPracticeBtn').addEventListener('click', () => {
-    if (confirm('Are you sure you want to restart all progress? This will reset all saved answers.')) {
-      answers = {};
-      checkedQuestions = {};
-      flags = {};
-      eliminations = {};
-      highlights = {};
-      localStorage.removeItem('sat_answers');
-      localStorage.removeItem('sat_checked');
-      localStorage.removeItem('sat_flags');
-      localStorage.removeItem('sat_eliminations');
-      localStorage.removeItem('sat_highlights');
-      localStorage.removeItem('sat_last_q');
-      resultsModalBackdrop.classList.remove('show');
-      showHub();
-    }
-  });
+  const restartBtn = document.getElementById('restartPracticeBtn');
+  if (restartBtn) {
+    restartBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to restart all progress? This will reset all saved answers.')) {
+        answers = {};
+        checkedQuestions = {};
+        flags = {};
+        eliminations = {};
+        highlights = {};
+        localStorage.removeItem('sat_answers');
+        localStorage.removeItem('sat_checked');
+        localStorage.removeItem('sat_flags');
+        localStorage.removeItem('sat_eliminations');
+        localStorage.removeItem('sat_highlights');
+        localStorage.removeItem('sat_last_q');
+        if (resultsModalBackdrop) resultsModalBackdrop.classList.remove('show');
+        showHub();
+      }
+    });
+  }
 
-  document.getElementById('finishTestTopBtn').addEventListener('click', showResults);
-  document.getElementById('themeBtn').addEventListener('click', toggleTheme);
+  const finishTopBtn = document.getElementById('finishTestTopBtn');
+  if (finishTopBtn) finishTopBtn.addEventListener('click', showResults);
+
+  const themeBtnEl = document.getElementById('themeBtn');
+  if (themeBtnEl) themeBtnEl.addEventListener('click', toggleTheme);
 
   // Timer Buttons
   if (timerToggleBtn) {
@@ -1055,3 +1086,22 @@ function init2DHero() {
 }
 
 window.addEventListener('DOMContentLoaded', init);
+
+// AUTHENTIC PDF SCAN VIEWER MODAL
+function openScanModal() {
+  if (!activeQuestions || !activeQuestions[currentSubsetIdx]) return;
+  const q = activeQuestions[currentSubsetIdx];
+  const scanBackdrop = document.getElementById('scanModalBackdrop');
+  const scanImg = document.getElementById('scanModalImg');
+  const scanTitle = document.getElementById('scanModalTitle');
+  if (scanBackdrop && scanImg) {
+    if (scanTitle) scanTitle.textContent = `Authentic PDF Scan: Test ${q.variant_num || 1} • ${q.module} • Question ${q.q_num}`;
+    scanImg.src = `assets/scans/t${q.variant_num || 1}_m${q.module === 'Module 2' ? 2 : 1}_q${q.q_num}.png`;
+    scanBackdrop.style.display = 'flex';
+  }
+}
+
+function closeScanModal() {
+  const scanBackdrop = document.getElementById('scanModalBackdrop');
+  if (scanBackdrop) scanBackdrop.style.display = 'none';
+}

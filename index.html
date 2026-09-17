@@ -1854,96 +1854,7 @@
 </style>
 
 <style>
-  /* Bulletproof Scroll & Split Pane Layout */
-  #testArenaView {
-    display: none;
-    flex-direction: column;
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
-    position: relative;
-    z-index: 10;
-  }
-
-  .test-arena,
-  .arena-body {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
-    position: relative;
-    min-height: 0;
-    height: calc(100vh - 120px);
-    height: calc(100dvh - 120px);
-  }
-
-  .split-pane {
-    flex: 1;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch;
-    padding: 28px 36px 90px 36px;
-    position: relative;
-    min-height: 0;
-    height: 100%;
-    box-sizing: border-box;
-  }
-
-  .pane-passage {
-    border-right: 1px solid var(--border);
-    background: var(--bg-card);
-    overflow-y: auto !important;
-  }
-
-  .pane-question {
-    background: var(--bg-page);
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto !important;
-    padding-bottom: 120px !important;
-  }
-
-  .options-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 16px;
-    margin-bottom: 24px;
-    flex-shrink: 0;
-  }
-
-  .opt-card {
-    min-height: 48px;
-    flex-shrink: 0;
-  }
-
-  .check-row {
-    margin-top: 10px;
-    margin-bottom: 20px;
-    flex-shrink: 0;
-  }
-
-  /* Responsive Fallback for screens < 900px */
-  @media (max-width: 900px) {
-    .test-arena,
-    .arena-body {
-      flex-direction: column !important;
-      overflow-y: auto !important;
-      height: calc(100vh - 120px) !important;
-    }
-    .split-pane {
-      max-width: 100% !important;
-      border-right: none !important;
-      border-bottom: 2px solid var(--border) !important;
-      padding: 20px !important;
-      height: auto !important;
-      overflow-y: visible !important;
-    }
-    .pane-question {
-      padding-bottom: 140px !important;
-    }
-  }
-
-  /* Guarantee Landing Cards are ALWAYS visible (Zero blank screen bugs) */
+  /* Guaranteed Visibility & No Blank Cards */
   .scroll-reveal {
     opacity: 1 !important;
     transform: none !important;
@@ -1984,7 +1895,6 @@
     color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.2s;
-    margin-left: auto;
   }
   .scan-toggle-btn:hover {
     color: var(--neon-purple);
@@ -1994,6 +1904,113 @@
     max-width: 100%;
     border-radius: 8px;
     border: 1px solid var(--border);
+  }
+
+  /* Master Scrolling & Viewports */
+  html, body {
+    min-height: 100%;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto !important;
+  }
+
+  #homeHubView {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    padding-bottom: 90px;
+    position: relative;
+    z-index: 1;
+    overflow: visible !important;
+  }
+
+  #testArenaView {
+    display: none;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    position: relative;
+    z-index: 10;
+  }
+
+  .test-arena {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    position: relative;
+    min-height: 0;
+    height: calc(100vh - 120px);
+    height: calc(100dvh - 120px);
+  }
+
+  .split-pane {
+    flex: 1;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding: 28px 36px 90px 36px;
+    position: relative;
+    min-height: 0;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .pane-passage {
+    border-right: 1px solid var(--border);
+    background: var(--bg-card);
+    overflow-y: auto !important;
+    max-width: 50%;
+  }
+
+  .pane-question {
+    background: var(--bg-page);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto !important;
+    padding-bottom: 120px !important;
+  }
+
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+    margin-bottom: 24px;
+    flex-shrink: 0;
+  }
+
+  .opt-card {
+    min-height: 48px;
+    flex-shrink: 0;
+  }
+
+  .check-row {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    flex-shrink: 0;
+  }
+
+  /* Responsive Fallback for screens < 900px */
+  @media (max-width: 900px) {
+    .test-arena {
+      flex-direction: column !important;
+      overflow-y: auto !important;
+      height: calc(100vh - 120px) !important;
+    }
+    .split-pane {
+      max-width: 100% !important;
+      border-right: none !important;
+      border-bottom: 2px solid var(--border) !important;
+      padding: 20px !important;
+      height: auto !important;
+      overflow-y: visible !important;
+    }
+    .pane-question {
+      padding-bottom: 140px !important;
+    }
   }
 </style>
 
@@ -2012,17 +2029,17 @@
   <header class="ps-navbar">
     <div class="ps-nav-inner">
       <div class="ps-logo" onclick="showHub()">
-        <img src="assets/miyabi_ears_top.png" class="miyabi-ear-top" alt="Miyabi ear decoration" onclick="triggerEasterEgg('ear-top'); event.stopPropagation();" title="🦊 Focus Mode">
+        <img src="assets/miyabi_ears_top.png" class="miyabi-ear-top" alt="Miyabi ear decoration" onclick="triggerEasterEgg('ear-top'); event.stopPropagation();" title="🦊 Miyabi's Ears: Focus Mode">
         <span class="ps-brand-badge">NINJA SAT</span>
         <span class="ps-brand-text">Reading & Writing <span>Suite</span></span>
       </div>
 
       <nav class="ps-nav-links">
-        <a class="ps-nav-link" onclick="startPracticeVolume('variant1')">Version 1</a>
-        <a class="ps-nav-link" onclick="startPracticeVolume('variant2')">Version 2</a>
-        <a class="ps-nav-link" onclick="startPracticeVolume('variant3')">Version 3</a>
-        <a class="ps-nav-link" onclick="startPracticeVolume('variant4')">Version 4</a>
-        <a class="ps-nav-link" onclick="startPracticeVolume('variant5')">Version 5</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('version1')">Version 1</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('version2')">Version 2</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('version3')">Version 3</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('version4')">Version 4</a>
+        <a class="ps-nav-link" onclick="startPracticeVolume('version5')">Version 5</a>
         <a class="ps-nav-link" href="#domainSection">Domain Mastery</a>
       </nav>
 
@@ -2048,7 +2065,7 @@
     <div class="ps-hero">
       <div class="hero-2d-glow"></div>
 
-      <!-- Scattered Scores -->
+      <!-- Scattered Scores (PsychSAT style Easter Eggs) -->
       <div class="score-scatter s1" onclick="triggerEasterEgg('score', this.textContent)" title="Target SAT Score 1590">1590</div>
       <div class="score-scatter s2" onclick="triggerEasterEgg('score', this.textContent)" title="Target SAT Score 1530">1530</div>
       <div class="score-scatter s3" onclick="triggerEasterEgg('score', this.textContent)" title="Target SAT Score 1470">1470</div>
@@ -2072,276 +2089,420 @@
         <span>→</span>
         <span class="ps-score-pill">740</span>
         <span>→</span>
-        <span class="ps-score-pill" style="border-color:var(--neon-purple);color:var(--neon-lilac);font-weight:700;">800 MAX</span>
+        <span class="ps-score-pill active">800 MAX</span>
       </div>
 
-      <!-- Mode Switcher (3 MODES) -->
-      <div class="hub-modes scroll-reveal">
+      <!-- Practice vs Exam Mode Toggle (3 MODES) -->
+      <div class="hub-mode-bar scroll-reveal">
         <button class="hub-mode-btn active" id="hubModePractice" onclick="setMode('practice')">⚡ Practice Mode (Check Answer)</button>
         <button class="hub-mode-btn" id="hubModeTest" onclick="setMode('test')">⏱️ Official SAT Exam (Timed 32m)</button>
-        <button class="hub-mode-btn untimed-btn" id="hubModeUntimed" onclick="setMode('untimed')">♾️ Untimed Mode (Take Your Time)</button>
+        <button class="hub-mode-btn untimed-btn" id="hubModeUntimed" onclick="setMode('untimed')">♾️ Untimed Mode</button>
       </div>
 
-      <!-- In-Progress Resume Banner -->
-      <div id="resumeBanner" class="resume-banner" style="display:none;" onclick="resumePractice()">
-        <div class="resume-title">⚡ Session in Progress</div>
+      <!-- Hero CTA Button -->
+      <div style="margin: 22px 0 6px; position: relative; z-index: 10;">
+        <button class="btn primary" style="font-size: 15px; font-weight: 700; padding: 13px 36px; border-radius: 99px; box-shadow: 0 0 28px rgba(139, 92, 246, 0.45); cursor: pointer;" onclick="startPracticeVolume('all')">Enter to Solve Questions (270 Qs) →</button>
+      </div>
+
+      <!-- Stats Grid (with Perched Bottom Miyabi Ear) -->
+      <div class="ps-stats-grid">
+        <img src="assets/miyabi_ears_bottom.png" class="miyabi-ear-bottom" alt="Miyabi ear decoration" onclick="triggerEasterEgg('ear-bottom')" title="🦊 Click Miyabi's Ear (Grounding Focus)">
+        <div class="ps-stat-card scroll-reveal">
+          <div class="ps-stat-val">270</div>
+          <div class="ps-stat-label">Verified Questions</div>
+        </div>
+        <div class="ps-stat-card scroll-reveal">
+          <div class="ps-stat-val">5 Forms</div>
+          <div class="ps-stat-label">Versions 1, 2, 3, 4, 5</div>
+        </div>
+        <div class="ps-stat-card scroll-reveal">
+          <div class="ps-stat-val">32m + 32m</div>
+          <div class="ps-stat-label">SAT 2-Module Format</div>
+        </div>
+        <div class="ps-stat-card scroll-reveal">
+          <div class="ps-stat-val">200–800</div>
+          <div class="ps-stat-label">Scaled SAT Scoring</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESUME SESSION BANNER -->
+    <div id="resumeBanner" class="resume-banner" style="display:none;" onclick="resumePractice()">
+      <div>
+        <div class="resume-title">
+          <span>⚡ Resume Active Session</span>
+          <span style="font-size:11px;padding:2px 8px;border-radius:99px;background:var(--neon-purple);color:#fff;">In Progress</span>
+        </div>
         <div class="resume-subtitle" id="resumeSubtitle">Continue where you left off.</div>
       </div>
+      <button class="btn primary">Resume →</button>
     </div>
 
-    <!-- OVERALL SUITE SUMMARY -->
-    <div class="vol-stats-bar scroll-reveal">
-      <div class="vol-stat-group">
-        <span class="vol-stat-label" id="statFullProgress">0 / 270 Answered</span>
-        <div class="vol-stat-bar-outer"><div class="vol-stat-bar-inner" id="statFullBar" style="width:0%;"></div></div>
+    <!-- PRIMARY 270 MASTER SUITE CARD (with Cissia Tail Decoration) -->
+    <div class="volume-card scroll-reveal" style="--card-accent:var(--neon-purple); margin-bottom: 32px; padding: 28px; position:relative; overflow:visible !important;">
+      <div>
+        <span class="volume-tag">Complete Collection</span>
+        <div class="volume-title" style="font-size:22px;">Full Ninja SAT Master Suite (270 Questions)</div>
+        <div class="volume-desc" style="max-width:760px;">Practice all 270 authentic Reading & Writing questions from Versions 1, 2, 3, 4, and 5 in sequential order. Covers all official College Board domains with complete Bluebook tools and rationales.</div>
       </div>
-      <div class="vol-stat-pills">
-        <span class="vol-pill">5 Official Test Versions</span>
-        <span class="vol-pill">10 Modules (27 Qs each)</span>
-        <span class="vol-pill">270 Total Questions</span>
+
+      <!-- Cissia Tail (Easter Egg) -->
+      <div class="cissia-tail-wrapper" onclick="triggerEasterEgg('cissia')" title="🐾 Click Cissia's Tail for +50 SAT Luck!">
+        <img src="assets/cissia_tail.png" class="cissia-tail-img" alt="Cissia Tail">
+      </div>
+
+      <div>
+        <div class="volume-stats" style="flex-direction:column;align-items:flex-start;gap:6px;width:100%;margin-bottom:14px;">
+          <div style="display:flex;justify-content:space-between;width:100%;">
+            <span class="vol-stat-num">270 Questions</span>
+            <span class="vol-stat-label" id="statFullProgress">0 / 270 Answered</span>
+          </div>
+          <div style="width:100%;height:6px;background:var(--border);border-radius:99px;overflow:hidden;">
+            <div id="statFullBar" style="width:0%;height:100%;background:linear-gradient(90deg,var(--neon-purple),#38bdf8);border-radius:99px;transition:width 0.4s ease;"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn primary" style="padding:10px 20px;" onclick="startPracticeVolume('all')">Start Master Suite →</button>
+          <button class="btn" style="padding:10px 16px;" onclick="startSatExam(1)">Start Timed SAT Exam (V1) ⏱️</button>
+          <button class="btn untimed-btn" style="padding:10px 16px;" onclick="startSatExam(1, true)">♾️ Untimed Test (V1)</button>
+        </div>
       </div>
     </div>
 
-    <!-- SECTION: 5 OFFICIAL SAT PRACTICE TEST VERSIONS -->
+    <!-- SECTION: 5 OFFICIAL SAT VERSIONS -->
     <div class="hub-section-heading scroll-reveal">
-      <h2>Digital SAT Test Versions</h2>
-      <p>5 full-length Reading & Writing versions. Each version features two official 27-question modules.</p>
-    </div>
-
-    <div class="vol-grid">
-      <!-- MASTER 270-QUESTION SUITE -->
-      <div class="vol-card full-suite scroll-reveal" onclick="startPracticeVolume('all')">
-        <img src="assets/cissia_tail.png" class="cissia-tail-corner" alt="Cissia tail decoration" onclick="triggerEasterEgg('tail'); event.stopPropagation();" title="🐱 Cissia's Lucky Tail">
-        <div class="vol-badge" style="background:var(--neon-purple);color:#fff;">Master Suite • 270 Questions</div>
-        <div class="vol-title">All Versions Marathon</div>
-        <div class="vol-desc">Practice all 270 questions continuously across all 5 official test versions with instant feedback, notes, and progress tracking.</div>
-        
-        <div class="vol-meta">
-          <span>📚 270 Questions</span>
-          <span>⚡ Versions 1 – 5</span>
-          <span>🎯 All Domains</span>
-        </div>
-
-        <div class="vol-actions">
-          <button class="btn primary" onclick="startPracticeVolume('all'); event.stopPropagation();">Start Full Suite →</button>
-          <button class="btn subtle" onclick="startSatExam(1, true); event.stopPropagation();">♾️ Untimed Test</button>
-        </div>
-      </div>
-
-      <!-- PRACTICE TEST 1 / VERSION 1 -->
-      <div class="vol-card scroll-reveal" onclick="startSatExam(1)">
-        <div class="vol-badge">Official Version 1 • 54 Questions</div>
-        <div class="vol-title">Ninja Practice Test 1 (Version 1)</div>
-        <div class="vol-desc">Two official 27-question modules covering Words in Context, Command of Evidence, Grammar Conventions, and Rhetorical Synthesis.</div>
-        
-        <div class="vol-progress-wrap">
-          <div class="vol-progress-text"><span id="progV1">0</span> / 54 Answered</div>
-          <div class="vol-progress-bar"><div class="vol-progress-fill" id="barV1" style="width:0%;"></div></div>
-        </div>
-
-        <div class="vol-actions">
-          <button class="btn primary" onclick="startSatExam(1); event.stopPropagation();">⏱️ Timed (32m)</button>
-          <button class="btn subtle" onclick="startSatExam(1, true); event.stopPropagation();">♾️ Untimed</button>
-          <button class="btn subtle" onclick="startPracticeVolume('variant1', 'm1'); event.stopPropagation();">Mod 1</button>
-          <button class="btn subtle" onclick="startPracticeVolume('variant1', 'm2'); event.stopPropagation();">Mod 2</button>
-        </div>
-      </div>
-
-      <!-- PRACTICE TEST 2 / VERSION 2 -->
-      <div class="vol-card scroll-reveal" onclick="startSatExam(2)">
-        <div class="vol-badge">Official Version 2 • 54 Questions</div>
-        <div class="vol-title">Ninja Practice Test 2 (Version 2)</div>
-        <div class="vol-desc">Comprehensive test form featuring high-yield Standard English Conventions, nuanced literature excerpts, and scientific data tables.</div>
-        
-        <div class="vol-progress-wrap">
-          <div class="vol-progress-text"><span id="progV2">0</span> / 54 Answered</div>
-          <div class="vol-progress-bar"><div class="vol-progress-fill" id="barV2" style="width:0%;"></div></div>
-        </div>
-
-        <div class="vol-actions">
-          <button class="btn primary" onclick="startSatExam(2); event.stopPropagation();">⏱️ Timed (32m)</button>
-          <button class="btn subtle" onclick="startSatExam(2, true); event.stopPropagation();">♾️ Untimed</button>
-          <button class="btn subtle" onclick="startPracticeVolume('variant2', 'm1'); event.stopPropagation();">Mod 1</button>
-          <button class="btn subtle" onclick="startPracticeVolume('variant2', 'm2'); event.stopPropagation();">Mod 2</button>
-        </div>
-      </div>
-
-      <!-- PRACTICE TEST 3 / VERSION 3 -->
-      <div class="vol-card scroll-reveal" onclick="startSatExam(3)">
-        <div class="vol-badge">Official Version 3 • 54 Questions</div>
-        <div class="vol-title">Ninja Practice Test 3 (Version 3)</div>
-        <div class="vol-desc">Complete 2-module exam challenging your command of logical transitions, boundary punctuation, and text structure analysis.</div>
-        
-        <div class="vol-progress-wrap">
-          <div class="vol-progress-text"><span id="progV3">0</span> / 54 Answered</div>
-          <div class="vol-progress-bar"><div class="vol-progress-fill" id="barV3" style="width:0%;"></div></div>
-        </div>
-
-        <div class="vol-actions">
-          <button class="btn primary" onclick="startSatExam(3); event.stopPropagation();">⏱️ Timed (32m)</button>
-          <button class="btn subtle" onclick="startSatExam(3, true); event.stopPropagation();">♾️ Untimed</button>
-          <button class="btn subtle" onclick="startPracticeVolume('variant3', 'm1'); event.stopPropagation();">Mod 1</button>
-          <button class="btn subtle" onclick="startPracticeVolume('variant3', 'm2'); event.stopPropagation();">Mod 2</button>
-        </div>
-      </div>
-
-      <!-- PRACTICE TEST 4 / VERSION 4 -->
-      <div class="vol-card scroll-reveal" onclick="startSatExam(4)">
-        <div class="vol-badge">Official Version 4 • 54 Questions</div>
-        <div class="vol-title">Ninja Practice Test 4 (Version 4)</div>
-        <div class="vol-desc">Rigorous test form emphasizing paired texts, cross-textual reasoning, hypothesis evaluation, and precise vocabulary.</div>
-        
-        <div class="vol-progress-wrap">
-          <div class="vol-progress-text"><span id="progV4">0</span> / 54 Answered</div>
-          <div class="vol-progress-bar"><div class="vol-progress-fill" id="barV4" style="width:0%;"></div></div>
-        </div>
-
-        <div class="vol-actions">
-          <button class="btn primary" onclick="startSatExam(4); event.stopPropagation();">⏱️ Timed (32m)</button>
-          <button class="btn subtle" onclick="startSatExam(4, true); event.stopPropagation();">♾️ Untimed</button>
-          <button class="btn subtle" onclick="startPracticeVolume('variant4', 'm1'); event.stopPropagation();">Mod 1</button>
-          <button class="btn subtle" onclick="startPracticeVolume('variant4', 'm2'); event.stopPropagation();">Mod 2</button>
-        </div>
-      </div>
-
-      <!-- PRACTICE TEST 5 / VERSION 5 -->
-      <div class="vol-card scroll-reveal" onclick="startSatExam(5)">
-        <div class="vol-badge">Official Version 5 • 54 Questions</div>
-        <div class="vol-title">Ninja Practice Test 5 (Version 5)</div>
-        <div class="vol-desc">Final mastery test form with advanced sentence structure, inference synthesis, and high-difficulty reading passages.</div>
-        
-        <div class="vol-progress-wrap">
-          <div class="vol-progress-text"><span id="progV5">0</span> / 54 Answered</div>
-          <div class="vol-progress-bar"><div class="vol-progress-fill" id="barV5" style="width:0%;"></div></div>
-        </div>
-
-        <div class="vol-actions">
-          <button class="btn primary" onclick="startSatExam(5); event.stopPropagation();">⏱️ Timed (32m)</button>
-          <button class="btn subtle" onclick="startSatExam(5, true); event.stopPropagation();">♾️ Untimed</button>
-          <button class="btn subtle" onclick="startPracticeVolume('variant5', 'm1'); event.stopPropagation();">Mod 1</button>
-          <button class="btn subtle" onclick="startPracticeVolume('variant5', 'm2'); event.stopPropagation();">Mod 2</button>
-        </div>
+      <div class="hub-section-title">
+        <span>🏛️ 5 Official Ninja Practice Tests</span>
+        <span class="hub-section-badge">Full 2-Module Format</span>
       </div>
     </div>
 
-    <!-- SECTION: DOMAIN MASTERY -->
-    <div class="hub-section-heading scroll-reveal" id="domainSection" style="margin-top:50px;">
-      <h2>SAT Domain Mastery</h2>
-      <p>Target specific skill categories across all 270 questions to build targeted strengths.</p>
-    </div>
-
-    <div class="domain-grid">
-      <div class="domain-card scroll-reveal" onclick="startPracticeVolume('Craft and Structure')">
-        <div class="domain-badge">Domain 1</div>
-        <div class="domain-title">Craft and Structure</div>
-        <div class="domain-sub">Words in Context, Text Structure & Purpose, Cross-Text Connections</div>
-        <div class="domain-stats">
-          <span id="domainCount1">70 Questions</span>
-          <button class="btn subtle" style="padding:4px 10px;font-size:12px;">Practice →</button>
+    <div class="volumes-grid">
+      <!-- VERSION 1 -->
+      <div class="volume-card scroll-reveal" style="--card-accent:#3b82f6;">
+        <div>
+          <span class="volume-tag">Official Version 1</span>
+          <div class="volume-title">Ninja Practice Test 1 (Version 1)</div>
+          <div class="volume-desc">Complete 54-question test form. Features Words in Context, Command of Evidence, Grammar Conventions, and Rhetorical Synthesis.</div>
+        </div>
+        <div>
+          <div class="volume-stats" style="flex-direction:column;align-items:flex-start;gap:5px;width:100%;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;width:100%;">
+              <span class="vol-stat-num">54 Questions</span>
+              <span class="vol-stat-label" id="progV1">0 / 54 Answered</span>
+            </div>
+            <div style="width:100%;height:4px;background:var(--border);border-radius:99px;overflow:hidden;">
+              <div id="barV1" style="width:0%;height:100%;background:#3b82f6;border-radius:99px;transition:width 0.4s ease;"></div>
+            </div>
+          </div>
+          <div class="variant-btn-row">
+            <button class="btn primary" onclick="startSatExam(1)">⏱️ Timed (32m)</button>
+            <button class="btn untimed-btn" onclick="startSatExam(1, true)">♾️ Untimed</button>
+            <button class="btn" onclick="startPracticeVolume('version1', 'm1')">Module 1 (1–27)</button>
+            <button class="btn" onclick="startPracticeVolume('version1', 'm2')">Module 2 (28–54)</button>
+          </div>
         </div>
       </div>
 
-      <div class="domain-card scroll-reveal" onclick="startPracticeVolume('Information and Ideas')">
-        <div class="domain-badge">Domain 2</div>
-        <div class="domain-title">Information and Ideas</div>
-        <div class="domain-sub">Central Ideas & Details, Command of Evidence, Inferences</div>
-        <div class="domain-stats">
-          <span id="domainCount2">75 Questions</span>
-          <button class="btn subtle" style="padding:4px 10px;font-size:12px;">Practice →</button>
+      <!-- VERSION 2 -->
+      <div class="volume-card scroll-reveal" style="--card-accent:#a855f7;">
+        <div>
+          <span class="volume-tag">Official Version 2</span>
+          <div class="volume-title">Ninja Practice Test 2 (Version 2)</div>
+          <div class="volume-desc">Complete 54-question test form. Features Standard English Conventions, nuanced literature excerpts, and scientific data tables.</div>
+        </div>
+        <div>
+          <div class="volume-stats" style="flex-direction:column;align-items:flex-start;gap:5px;width:100%;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;width:100%;">
+              <span class="vol-stat-num">54 Questions</span>
+              <span class="vol-stat-label" id="progV2">0 / 54 Answered</span>
+            </div>
+            <div style="width:100%;height:4px;background:var(--border);border-radius:99px;overflow:hidden;">
+              <div id="barV2" style="width:0%;height:100%;background:#a855f7;border-radius:99px;transition:width 0.4s ease;"></div>
+            </div>
+          </div>
+          <div class="variant-btn-row">
+            <button class="btn primary" onclick="startSatExam(2)">⏱️ Timed (32m)</button>
+            <button class="btn untimed-btn" onclick="startSatExam(2, true)">♾️ Untimed</button>
+            <button class="btn" onclick="startPracticeVolume('version2', 'm1')">Module 1 (1–27)</button>
+            <button class="btn" onclick="startPracticeVolume('version2', 'm2')">Module 2 (28–54)</button>
+          </div>
         </div>
       </div>
 
-      <div class="domain-card scroll-reveal" onclick="startPracticeVolume('Standard English Conventions')">
-        <div class="domain-badge">Domain 3</div>
-        <div class="domain-title">Standard English Conventions</div>
-        <div class="domain-sub">Sentence Boundaries, Form, Structure, and Sense</div>
-        <div class="domain-stats">
-          <span id="domainCount3">65 Questions</span>
-          <button class="btn subtle" style="padding:4px 10px;font-size:12px;">Practice →</button>
+      <!-- VERSION 3 -->
+      <div class="volume-card scroll-reveal" style="--card-accent:#10b981;">
+        <div>
+          <span class="volume-tag">Official Version 3</span>
+          <div class="volume-title">Ninja Practice Test 3 (Version 3)</div>
+          <div class="volume-desc">Complete 54-question test form. Challenges command of logical transitions, boundary punctuation, and text structure analysis.</div>
+        </div>
+        <div>
+          <div class="volume-stats" style="flex-direction:column;align-items:flex-start;gap:5px;width:100%;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;width:100%;">
+              <span class="vol-stat-num">54 Questions</span>
+              <span class="vol-stat-label" id="progV3">0 / 54 Answered</span>
+            </div>
+            <div style="width:100%;height:4px;background:var(--border);border-radius:99px;overflow:hidden;">
+              <div id="barV3" style="width:0%;height:100%;background:#10b981;border-radius:99px;transition:width 0.4s ease;"></div>
+            </div>
+          </div>
+          <div class="variant-btn-row">
+            <button class="btn primary" onclick="startSatExam(3)">⏱️ Timed (32m)</button>
+            <button class="btn untimed-btn" onclick="startSatExam(3, true)">♾️ Untimed</button>
+            <button class="btn" onclick="startPracticeVolume('version3', 'm1')">Module 1 (1–27)</button>
+            <button class="btn" onclick="startPracticeVolume('version3', 'm2')">Module 2 (28–54)</button>
+          </div>
         </div>
       </div>
 
-      <div class="domain-card scroll-reveal" onclick="startPracticeVolume('Expression of Ideas')">
-        <div class="domain-badge">Domain 4</div>
-        <div class="domain-title">Expression of Ideas</div>
-        <div class="domain-sub">Rhetorical Synthesis, Logical Transitions</div>
-        <div class="domain-stats">
-          <span id="domainCount4">60 Questions</span>
-          <button class="btn subtle" style="padding:4px 10px;font-size:12px;">Practice →</button>
+      <!-- VERSION 4 -->
+      <div class="volume-card scroll-reveal" style="--card-accent:#f59e0b;">
+        <div>
+          <span class="volume-tag">Official Version 4</span>
+          <div class="volume-title">Ninja Practice Test 4 (Version 4)</div>
+          <div class="volume-desc">Complete 54-question test form. Emphasizes paired texts, cross-textual reasoning, hypothesis evaluation, and precise vocabulary.</div>
+        </div>
+        <div>
+          <div class="volume-stats" style="flex-direction:column;align-items:flex-start;gap:5px;width:100%;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;width:100%;">
+              <span class="vol-stat-num">54 Questions</span>
+              <span class="vol-stat-label" id="progV4">0 / 54 Answered</span>
+            </div>
+            <div style="width:100%;height:4px;background:var(--border);border-radius:99px;overflow:hidden;">
+              <div id="barV4" style="width:0%;height:100%;background:#f59e0b;border-radius:99px;transition:width 0.4s ease;"></div>
+            </div>
+          </div>
+          <div class="variant-btn-row">
+            <button class="btn primary" onclick="startSatExam(4)">⏱️ Timed (32m)</button>
+            <button class="btn untimed-btn" onclick="startSatExam(4, true)">♾️ Untimed</button>
+            <button class="btn" onclick="startPracticeVolume('version4', 'm1')">Module 1 (1–27)</button>
+            <button class="btn" onclick="startPracticeVolume('version4', 'm2')">Module 2 (28–54)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VERSION 5 -->
+      <div class="volume-card scroll-reveal" style="--card-accent:#ec4899;">
+        <div>
+          <span class="volume-tag">Official Version 5</span>
+          <div class="volume-title">Ninja Practice Test 5 (Version 5)</div>
+          <div class="volume-desc">Complete 54-question test form. Mastery test form with advanced sentence structure, inference synthesis, and high-difficulty passages.</div>
+        </div>
+        <div>
+          <div class="volume-stats" style="flex-direction:column;align-items:flex-start;gap:5px;width:100%;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;width:100%;">
+              <span class="vol-stat-num">54 Questions</span>
+              <span class="vol-stat-label" id="progV5">0 / 54 Answered</span>
+            </div>
+            <div style="width:100%;height:4px;background:var(--border);border-radius:99px;overflow:hidden;">
+              <div id="barV5" style="width:0%;height:100%;background:#ec4899;border-radius:99px;transition:width 0.4s ease;"></div>
+            </div>
+          </div>
+          <div class="variant-btn-row">
+            <button class="btn primary" onclick="startSatExam(5)">⏱️ Timed (32m)</button>
+            <button class="btn untimed-btn" onclick="startSatExam(5, true)">♾️ Untimed</button>
+            <button class="btn" onclick="startPracticeVolume('version5', 'm1')">Module 1 (1–27)</button>
+            <button class="btn" onclick="startPracticeVolume('version5', 'm2')">Module 2 (28–54)</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- FOOTER WITH MIYABI'S EARS -->
+    <!-- SECTION: TARGETED DOMAIN MASTERY -->
+    <div class="hub-section-heading scroll-reveal" id="domainSection">
+      <div class="hub-section-title">
+        <span>🎯 Targeted Domain Mastery</span>
+        <span class="hub-section-badge">Skill Slices</span>
+      </div>
+    </div>
+
+    <div class="volumes-grid">
+      <!-- CONVENTIONS FOCUS -->
+      <div class="volume-card scroll-reveal" style="--card-accent:#ea580c;" onclick="startPracticeVolume('Boundaries & Grammar')">
+        <div>
+          <span class="volume-tag">Standard English Conventions</span>
+          <div class="volume-title">Boundaries & Grammar</div>
+          <div class="volume-desc">Master clause boundaries, comma splices, semicolons, colons, subject-verb agreement, and modifier placement.</div>
+        </div>
+        <div>
+          <div class="volume-stats">
+            <span class="vol-stat-num">70 Questions</span>
+            <span class="vol-stat-label">Syntax & Mechanics</span>
+          </div>
+          <button class="btn volume-start-btn">Practice Grammar</button>
+        </div>
+      </div>
+
+      <!-- CENTRAL IDEAS -->
+      <div class="volume-card scroll-reveal" style="--card-accent:#0284c7;" onclick="startPracticeVolume('Central Ideas and Details')">
+        <div>
+          <span class="volume-tag">Information & Ideas</span>
+          <div class="volume-title">Central Ideas & Details</div>
+          <div class="volume-desc">Comprehend main themes, key claims, and nuanced supporting details across historical and scientific passages.</div>
+        </div>
+        <div>
+          <div class="volume-stats">
+            <span class="vol-stat-num">42 Questions</span>
+            <span class="vol-stat-label">Core Comprehension</span>
+          </div>
+          <button class="btn volume-start-btn">Practice Ideas</button>
+        </div>
+      </div>
+
+      <!-- VOCABULARY IN CONTEXT -->
+      <div class="volume-card scroll-reveal" style="--card-accent:#8b5cf6;" onclick="startPracticeVolume('Words in Context')">
+        <div>
+          <span class="volume-tag">Craft & Structure</span>
+          <div class="volume-title">Words in Context</div>
+          <div class="volume-desc">High-utility academic and literary vocabulary tailored to passage tone, nuances, and semantic cues.</div>
+        </div>
+        <div>
+          <div class="volume-stats">
+            <span class="vol-stat-num">30 Questions</span>
+            <span class="vol-stat-label">High-Level Vocab</span>
+          </div>
+          <button class="btn volume-start-btn">Practice Vocab</button>
+        </div>
+      </div>
+
+      <!-- TRANSITIONS -->
+      <div class="volume-card scroll-reveal" style="--card-accent:#059669;" onclick="startPracticeVolume('Transitions')">
+        <div>
+          <span class="volume-tag">Expression of Ideas</span>
+          <div class="volume-title">Transitions & Logic</div>
+          <div class="volume-desc">Master logical connecting words: contrast, causation, continuation, and exemplification.</div>
+        </div>
+        <div>
+          <div class="volume-stats">
+            <span class="vol-stat-num">30 Questions</span>
+            <span class="vol-stat-label">Connecting Ideas</span>
+          </div>
+          <button class="btn volume-start-btn">Practice Transitions</button>
+        </div>
+      </div>
+
+      <!-- RHETORICAL SYNTHESIS -->
+      <div class="volume-card scroll-reveal" style="--card-accent:#6366f1;" onclick="startPracticeVolume('Rhetorical Synthesis')">
+        <div>
+          <span class="volume-tag">Expression of Ideas</span>
+          <div class="volume-title">Rhetorical Synthesis</div>
+          <div class="volume-desc">Synthesize bullet-point research notes to accomplish specific rhetorical writing goals.</div>
+        </div>
+        <div>
+          <div class="volume-stats">
+            <span class="vol-stat-num">29 Questions</span>
+            <span class="vol-stat-label">Research Notes</span>
+          </div>
+          <button class="btn volume-start-btn">Practice Synthesis</button>
+        </div>
+      </div>
+
+      <!-- INFERENCES -->
+      <div class="volume-card scroll-reveal" style="--card-accent:#0891b2;" onclick="startPracticeVolume('Inferences')">
+        <div>
+          <span class="volume-tag">Information & Ideas</span>
+          <div class="volume-title">Inferences & Conclusions</div>
+          <div class="volume-desc">Select the most logical and supported conclusion based strictly on passage evidence.</div>
+        </div>
+        <div>
+          <div class="volume-stats">
+            <span class="vol-stat-num">20 Questions</span>
+            <span class="vol-stat-label">Logical Climax</span>
+          </div>
+          <button class="btn volume-start-btn">Practice Inferences</button>
+        </div>
+      </div>
+
+      <!-- QUANTITATIVE EVIDENCE (TABLES/CHARTS) -->
+      <div class="volume-card scroll-reveal" style="--card-accent:#d97706;" onclick="startPracticeVolume('Command of Evidence (Quantitative)')">
+        <div>
+          <span class="volume-tag">Information & Ideas</span>
+          <div class="volume-title">Data & Quantitative Evidence</div>
+          <div class="volume-desc">Accurately interpret tables, bar charts, line graphs, and comparative scientific data.</div>
+        </div>
+        <div>
+          <div class="volume-stats">
+            <span class="vol-stat-num">10 Questions</span>
+            <span class="vol-stat-label">With Visual Charts</span>
+          </div>
+          <button class="btn volume-start-btn">Practice Charts</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
     <footer class="ps-footer">
       <div class="footer-decor">
-        <img src="assets/miyabi_ears_bottom.png" class="miyabi-ear-bottom" alt="Miyabi decoration" onclick="triggerEasterEgg('ear-bottom');" title="🦊 Miyabi Ears">
+        <div class="decor-pill"></div>
+        <div class="decor-dot"></div>
       </div>
-      <p>Digital SAT® is a registered trademark of the College Board, which is not affiliated with and does not endorse this practice suite.</p>
+      <div class="ps-footer-text">
+        College Board, SAT, and Bluebook are registered trademarks of the College Entrance Examination Board.<br>
+        This pedagogical suite is an independent study tool with 270 Reading & Writing questions across 5 test versions.
+      </div>
     </footer>
-
   </div>
 </div>
 
 <!-- ========================================================= -->
-<!-- SCREEN 2: PSYCHSAT TEST ARENA                             -->
+<!-- SCREEN 2: DIGITAL SAT ARENA (BLUEBOOK REPLICA)            -->
 <!-- ========================================================= -->
-<div id="testArenaView" style="display:none;">
-  <!-- ARENA HEADER -->
-  <header class="arena-header">
-    <div class="arena-header-left">
+<div id="testArenaView">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="brand-group">
       <button class="btn subtle btn-hub-back" id="backToHubBtn" title="Back to Home Menu">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        <span>Hub</span>
+        ← Home
       </button>
-      <span class="brand-badge" id="arenaBadge">Version 1 • 270 Qs</span>
+      <div class="brand-title">
+        Digital SAT
+        <span class="brand-badge" id="arenaBadge">Version 1 • 270 Qs</span>
+      </div>
     </div>
 
-    <div class="arena-header-center">
-      <!-- Mode Toggle -->
-      <div class="mode-toggle">
+    <div class="top-center">
+      <div class="mode-pill">
         <button class="mode-btn active" id="modePracticeBtn">⚡ Practice</button>
         <button class="mode-btn" id="modeTestBtn">⏱️ Exam</button>
         <button class="mode-btn untimed-btn" id="modeUntimedBtn">♾️ Untimed</button>
       </div>
-
-      <!-- Official SAT Timer Display -->
       <div class="timer-box" id="timerBox">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
         <span id="timerText">32:00</span>
         <button id="timerToggleBtn" class="subtle" style="padding:2px 4px;font-size:11px;" title="Pause / Play">⏸</button>
-        <button id="timerHideBtn" class="subtle" style="padding:2px 6px;font-size:11px;" title="Hide Timer">Hide</button>
+        <button id="timerHideBtn" class="subtle" style="padding:2px 4px;font-size:11px;" title="Hide Timer">Hide</button>
       </div>
     </div>
 
-    <div class="arena-header-right">
+    <div class="top-actions">
+      <button class="btn subtle scan-toggle-btn" id="scanToggleBtn" onclick="openScanModal()" title="View Authentic PDF Scan">📄 Scan</button>
       <button class="btn subtle" id="themeBtn" title="Toggle Theme">🌙</button>
       <button class="btn primary" id="finishTestTopBtn">View Results</button>
     </div>
-  </header>
+  </div>
 
-  <!-- ARENA SPLIT VIEW (SIDE-BY-SIDE ON DESKTOP, FULLY SCROLLABLE) -->
-  <div class="test-arena arena-body">
-    <!-- LEFT PANE: PASSAGE & HIGHLIGHTER -->
+  <!-- ARENA (SPLIT PANE: LEFT PASSAGE, RIGHT QUESTION) -->
+  <div class="test-arena">
+    <!-- LEFT PANE: PASSAGE -->
     <div class="split-pane pane-passage" id="passagePane">
-      <div class="passage-header">
+      <div class="passage-meta">
         <span class="domain-tag" id="domainTag">Words in Context</span>
-        <div style="display:flex;gap:6px;align-items:center;">
-          <div class="hl-toolbar">
-            <button class="hl-tool yellow" onclick="applyHighlight('yellow')" title="Highlight Yellow"></button>
-            <button class="hl-tool pink" onclick="applyHighlight('pink')" title="Highlight Pink"></button>
-            <button class="hl-tool cyan" onclick="applyHighlight('cyan')" title="Highlight Cyan"></button>
-            <button class="btn subtle" id="clearHlBtn" style="padding:2px 6px;font-size:11px;">Clear</button>
-          </div>
-          <button class="scan-toggle-btn" id="scanToggleBtn" onclick="toggleScanModal()" title="View authentic PDF page">📄 Scan</button>
+        <div class="hl-tools">
+          <span>HL:</span>
+          <div class="hl-dot hl-yellow hl-tool-btn" data-color="yellow" title="Yellow Highlight"></div>
+          <div class="hl-dot hl-pink hl-tool-btn" data-color="pink" title="Pink Highlight"></div>
+          <div class="hl-dot hl-cyan hl-tool-btn" data-color="cyan" title="Cyan Highlight"></div>
+          <button class="btn subtle" id="clearHlBtn" style="padding:2px 6px;font-size:11px;">Clear</button>
         </div>
       </div>
 
-      <!-- Optional Chart / Quantitative Figure -->
-      <div class="chart-container" id="chartContainer" style="display:none;">
+      <!-- Embedded High-Resolution Table/Chart if applicable -->
+      <div class="chart-container" id="chartContainer">
         <img id="chartImg" src="" alt="Question Figure">
       </div>
 
-      <!-- Passage Body -->
+      <!-- Passage Text -->
       <div class="passage-body" id="passageBody"></div>
 
       <!-- Floating Highlight Popover -->
@@ -2390,20 +2551,24 @@
   </div>
 
   <!-- ARENA FOOTER / QUESTION PALETTE -->
-  <div class="arena-footer">
-    <button class="btn subtle" id="prevBtn" style="font-size:13px;">← Back</button>
-    
-    <button class="nav-summary-btn" id="navSummaryBtn">
-      <span>Question <span id="currentQNum">1</span> of <span id="totalActiveQNum">27</span></span>
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  <footer class="arena-footer">
+    <div style="font-size:12px;font-weight:600;color:var(--text-muted);">
+      Section 1: Reading and Writing
+    </div>
+
+    <button class="btn-palette" id="btnOpenPalette">
+      Question <span id="currentQNum">1</span> of <span id="totalActiveQNum">27</span> ▴
     </button>
 
-    <button class="btn primary" id="nextBtn" style="font-size:13px;padding:8px 20px;">Next →</button>
-  </div>
+    <div class="nav-cluster">
+      <button class="btn btn-nav" id="prevBtn">← Back</button>
+      <button class="btn primary btn-nav" id="nextBtn">Next →</button>
+    </div>
+  </footer>
 </div>
 
 <!-- ========================================================= -->
-<!-- QUESTION PALETTE MODAL                                    -->
+<!-- QUESTION NAVIGATOR MODAL                                  -->
 <!-- ========================================================= -->
 <div class="modal-backdrop" id="navModalBackdrop">
   <div class="modal-box">
@@ -2449,7 +2614,7 @@
 
     <div style="display:flex;gap:12px;justify-content:center;">
       <button class="btn subtle" id="transReviewMod1Btn" style="padding:10px 20px;">Review Module 1</button>
-      <button class="btn primary" id="transStartMod2Btn" style="padding:11px 26px;font-size:14px;">Begin Module 2 →</button>
+      <button class="btn primary" id="transStartMod2Btn" style="padding:11px 26px;font-size:14px;">Begin Module 2 (32 min) →</button>
     </div>
   </div>
 </div>
@@ -2496,16 +2661,16 @@
 </div>
 
 <!-- ========================================================= -->
-<!-- AUTHENTIC SCAN MODAL                                      -->
+<!-- AUTHENTIC PDF SCAN VIEWER MODAL                           -->
 <!-- ========================================================= -->
-<div class="modal-backdrop" id="scanModalBackdrop">
-  <div class="modal-box" style="max-width:900px;">
+<div class="modal-backdrop" id="scanModalBackdrop" style="display:none;" onclick="if(event.target === this) closeScanModal();">
+  <div class="modal-box" style="max-width:900px;width:95%;max-height:90vh;display:flex;flex-direction:column;">
     <div class="modal-header">
-      <div class="modal-title">Authentic PDF Scan</div>
-      <button class="modal-close" onclick="toggleScanModal()">✕</button>
+      <div class="modal-title" id="scanModalTitle">Authentic PDF Scan</div>
+      <button class="modal-close" onclick="closeScanModal()">✕</button>
     </div>
-    <div style="overflow-y:auto;max-height:75vh;text-align:center;">
-      <img id="scanModalImg" class="scan-modal-img" src="" alt="Authentic Scan">
+    <div style="overflow-y:auto;flex:1;text-align:center;padding:16px;">
+      <img id="scanModalImg" class="scan-modal-img" src="" alt="PDF Original Page Scan">
     </div>
   </div>
 </div>
@@ -2514,10 +2679,10 @@
 <div id="easterEggToast" class="easter-egg-toast"></div>
 
 <!-- DATA SCRIPT -->
-<script src="data/ninja_questions.js?v=2.2"></script>
+<script src="data/ninja_questions.js?v=3.0"></script>
 
 <!-- APPLICATION SCRIPT -->
-<script src="js/ninja_app.js?v=2.2"></script>
+<script src="js/ninja_app.js?v=3.0"></script>
 
 </body>
 </html>
